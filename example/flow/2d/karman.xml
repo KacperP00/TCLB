@@ -19,14 +19,14 @@
 		<Wall mask="ALL">
 			<Channel/>
 			<Wedge dx="120" nx="20" dy="50" ny="20" direction="LowerRight"/>
-			<Wedge dx="120" nx="20" dy="30" ny="20" direction="UpperRight"/>
+			<Wedge dx="120" nx="20" dy="31" ny="20" direction="UpperRight"/>
 			<Wedge dx="140" nx="20" dy="50" ny="20" direction="LowerLeft"/>
 			<Wedge dx="140" nx="20" dy="30" ny="20" direction="UpperLeft"/>
 		</Wall>
 	</Geometry>
 	<Model>
 		<Param name="VelocityX" value="0.01"/>
-		<Param name="Viscosity" value="0.02"/>
+		<Param name="Viscosity" value="0.0025"/>
 		<Param name="Smag" value="0.16"/>
 		<Param name="PressDiffInObj" value="1"/>
 		<Param name="EOSScale" value="0.05"/>
@@ -38,5 +38,5 @@
 		<Param name="InletTemperature" value="1"/>
 	</Model>
 	<VTK Iterations="1000"/>
-	<Solve Iterations="10000"/>
+	<Solve Iterations="200000"/>
 </CLBConfig>

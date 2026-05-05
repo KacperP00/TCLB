@@ -172,6 +172,9 @@ CudaDeviceFunction void Init() {
 	if ((NodeType & NODE_OBJECTIVE) == NODE_Obj1) {
 		w = 1-EnergySink;
 	}
+	if ((NodeType & NODE_OBJECTIVE) == NODE_Obj2) {
+		w = 1-EnergySink2;
+	}
 	if ((NodeType & NODE_BOUNDARY) == NODE_Solid) {
 		w = 0;
 	}
@@ -252,10 +255,29 @@ if ((NodeType & NODE_OBJECTIVE) == NODE_Obj1) {
 	AddToTotalDiff( ux*ux + uy*uy);
 	AddToEnergyGain( ux*ux + uy*uy);
 }
+if ((NodeType & NODE_OBJECTIVE) == NODE_Obj2) {
+
+	real_t current_time = (real_t)Time;
+    // 
+    real_t damping = exp(Wave_k_imag * (real_t)X);
+    
+    // 
+    real_t theoretical_height = Height + Wave_A * damping * cos(Wave_k_real * (real_t)X - Wave_w * current_time + Wave_Phase);
+    
+    // u
+    real_t error = d - theoretical_height;
+    
+    // 
+    AddToWaveError(error * error);
+    AddToEnergyGain2(ux*ux + uy*uy); 
+}
 ux *= w;
 uy *= w;
 if ((NodeType & NODE_OBJECTIVE) == NODE_Obj1) {
 	AddToEnergyGain( -(ux*ux + uy*uy));
+}
+if ((NodeType & NODE_OBJECTIVE) == NODE_Obj2) {
+	AddToEnergyGain2( -(ux*ux + uy*uy));
 }
 <?R
 	C(usq, sum(u*u)*dw);

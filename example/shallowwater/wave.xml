@@ -32,10 +32,11 @@
 	</Model>
 	<VTK Iterations="100"/>
 	<Log Iterations="10"/>
-	<InternalTopology/>
+    <Solve Iterations="2000"/>
+	<!--InternalTopology/>
 	<Optimize>
 		<Adjoint NumberOfSnaps="14" type="unsteady">
 			<Solve Iterations="2000"/>
 		</Adjoint>
-	</Optimize>
+	</Optimize-->
 </CLBConfig>

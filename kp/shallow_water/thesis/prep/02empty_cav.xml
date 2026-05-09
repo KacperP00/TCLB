@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<CLBConfig version="2.0" output="output/" permissive="true">
+    <Geometry nx="3840" ny="992">
+        <MRT>
+            <Box/>
+        </MRT>
+
+        <WPressure name="Inlet">
+            <Box dx="0" nx="1" dy="336" ny="320"/>
+        </WPressure>
+
+        <Wall>
+            <Box dy="0" ny="16"/>
+            <Box dy="976" ny="16"/>
+        </Wall>
+
+        <Wall>
+            <Box dx="0" nx="1920" dy="16" ny="320"/>
+            <Box dx="0" nx="1920" dy="656" ny="320"/>
+        </Wall>
+
+        <Wall>
+            <Box dx="2240" nx="1568" dy="16" ny="320"/>
+            <Box dx="2240" nx="1568" dy="656" ny="320"/>
+        </Wall>
+
+        <Wall>
+            <Box dx="3808" nx="32"/>
+        </Wall>
+    </Geometry>
+
+    <Model>
+        <Param name="Gravity" value="0.0002"/>
+        <Param name="nu" value="0.0005"/>
+        <Param name="Height" value="100.0"/>
+        <Param name="InletVelocity" value="0"/>
+
+        <Control Iterations="28000">
+            <CSV file="kp/shallow_water/thesis/inlet_wave.csv" Time="iter">
+                <Param name="Height" value="cos+100.0" zone="Inlet"/>
+            </CSV>
+        </Control>
+    </Model>
+
+    <VTK Iterations="50" what="Rho"/>
+
+    <Solve Iterations="28000"/>
+
+</CLBConfig>

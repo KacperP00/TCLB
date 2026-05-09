@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<CLBConfig version="2.0" output="output/" permissive="true">
+	<Geometry nx="2984" ny="964"> 
+		<MRT>
+			<Box/>
+		</MRT>
+		<DesignSpace>
+			<Box dx="964" dy="2" nx="320" ny="960"/><!--whole rectangle topology-->
+		</DesignSpace>
+		<None mask="DESIGNSPACE">
+			<Box dx="964" nx="320" ny="320" dy="322"/> <!--creating clean canal-->
+		</None>
+		<None name="high">
+			<Box dx="2" nx="60" ny="320" dy="322"/><!--wave in the beginning-->
+		</None>
+		<Wall mask="ALL">
+			<STL file="example/shallowwater/canal_geometry.stl" scale="20.0"/><!--importing canal geometry-->
+		</Wall>
+		<Obj1>
+			<Box dx="1402" dy="322" nx="40" ny="320"/><!--place to check properties to optimize-->
+		</Obj1>
+	</Geometry>
+	<Model>
+		<Param name="Gravity" value="0.1"/>
+		<Param name="nu" value="0.166666"/>
+		<Param name="Height" value="1.00"/>
+		<Param name="Height" value="1.10" zone="high"/>
+		<Param name="TotalDiffInObj" value="-1e6"/><!--weight to optimize for wave energy(?)-->
+		<Param name="MaterialInObj" value="-0.00001"/><!--weight to optimize for material usage-->
+	</Model>
+	<VTK Iterations="500"/>
+	<Log Iterations="10"/>
+	
+	<Solve Iterations="12000"/>
+</CLBConfig>

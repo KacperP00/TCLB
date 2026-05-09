@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<CLBConfig version="2.0" output="output/" permissive="true">
+    <Geometry nx="2984" ny="964">
+            <MRT>
+                <Box/>
+            </MRT>
+        
+            <Wall>
+                <Box nx="1"/>
+            </Wall>
+        
+            <WPressure name="Inlet">
+                <Box dx="1" nx="1"/>
+            </WPressure>
+
+            <Obj1> 
+                <Box dx="2484" nx="500"/>
+            </Obj1>
+
+            <Wall>
+                 <Box dx="-1"/>
+            </Wall>
+
+            <Wall mask="ALL">
+                <Box ny="1"/>
+                <Box dy="-1"/>
+            </Wall>
+    </Geometry>
+    <Model>
+        <Param name="Gravity" value="0.001"/>
+        <Param name="nu" value="0.05"/>
+        <Param name="EnergySink" value="0.05"/>
+        <Param name="Height" value="20.0"/>
+        
+        <Param name="InletVelocity" value="0"/>
+
+        <Control Iterations="25000">
+            <CSV file="kp/shallow_water/tests/wave_py.csv" Time="iter">
+                <Param name="Height" value="sin_val*0.5+20.0" zone="Inlet"/>
+            </CSV>
+        </Control>
+    </Model>
+
+    <VTK Iterations="250"/>
+    <Solve Iterations="25000"/>
+</CLBConfig>

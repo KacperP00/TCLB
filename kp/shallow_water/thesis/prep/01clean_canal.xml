@@ -1,50 +1,68 @@
 <?xml version="1.0"?>
 <CLBConfig version="2.0" output="output/" permissive="false">
-    <Geometry nx="14480" ny="352">
+    <Geometry nx="9728" ny="352">
         <MRT><Box/></MRT>
         <WPressure name="Inlet">
             <Box dx="0" nx="1" dy="16" ny="320"/>
         </WPressure>
+        <DesignSpace>
+			<Box dx="4800" nx="1280" dy="16" ny="320"/>
+		</DesignSpace>
+		
         <Wall name="Outlet">
-            <Box dx="14479" nx="1"/>
+            <Box dx="9690" nx="38"/>
         </Wall>
         <Wall>
             <Box dy="0" ny="16"/>
             <Box dy="336" ny="16"/>
         </Wall>
         <Obj2 name="Reflection_Zone">
-            <Box dx="5040" nx="1440" dy="160" ny="32"/>
+            <!--Box dx="3360" nx="960" dy="160" ny="32"/-->
+            <Box dx="3360" nx="960" dy="20" ny="312"/>
         </Obj2>
     </Geometry>
 
     <Model>
         <Param name="Gravity" value="0.0005"/>
+        <!--Param name="nu" value="0.00064"/-->
         <Param name="nu" value="0.00064"/>
         <Param name="InletVelocity" value="0"/>
         <Param name="EnergySink" value="0"/>
         <Param name="EnergySink2" value="0"/>
-
         <Param name="Height" value="40.000000"/>
-        <Param name="Wave_A" value="0.002000"/>
-        <Param name="Wave_k_real" value="0.005236"/>
-        <Param name="Wave_k_imag" value="0.000000"/>
-        <Param name="Wave_w" value="0.000740"/>
-        <Param name="Wave_Phase" value="0.000000"/>
         <Param name="Wave_Period" value="8485.281374"/>
         <Param name="Wave_Length" value="1200.000000"/>
 
+
+        <Param name="Wave_A" value="0.002000"/>
+        <Param name="Wave_k_real" value="0.005236"/>
+        <Param name="Wave_k_imag" value="0.0"/>
+        <Param name="Wave_w" value="0.000740"/>
+        <Param name="Wave_Phase" value="0.000000"/>
+        <Param name="Wave_Period" value="8485.281374"/>
+
+
+        <!--Param name="Wave_A" value="0.002000"/>
+        <Param name="Wave_k_real" value="0.00528894"/>
+        <Param name="Wave_k_imag" value="-6.88416385e-05"/>
+        <Param name="Wave_w" value="0.00074051"/>
+        <Param name="Wave_Phase" value="-0.000992"/-->
+        
+
         <Param name="WaveErrorInObj" value="1.0"/>
 
-        <Control Iterations="101823">
+        <Control Iterations="67882">
             <CSV file="kp/shallow_water/thesis/inlet_wave.csv" Time="iter">
                 <Param name="Height" value="cos+40" zone="Inlet"/>
             </CSV>
         </Control>
     </Model>
 
-    <VTK Iterations="500" what="Rho, BOUNDARY"/>
-    <Log Iterations="500"/>
-
-    <Solve Iterations="101823"/>
+    <!--VTK Iterations="50" what="Rho"/-->
+    <!--Log Iterations="500"/-->
+    <!--Solve Iterations="32000"/-->
+    <VTK Iterations="100" what="Rho"/>
+    <Log Iterations="100"/>
+    <Solve Iterations="67882"/>
 
 </CLBConfig>

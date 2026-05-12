@@ -6,216 +6,189 @@ import pyvista as pv
 import matplotlib.pyplot as plt
 from scipy.optimize import least_squares
 
-# Konfiguracja ścieżek
-CASE_DIR = sys.argv[1] if len(sys.argv) > 1 else "output01/"
+# =============================================================================
+# 1. KONFIGURACJA PARAMETRÓW (Zsynchronizowane z wave_inlet_02.py)
+# =============================================================================
+CASE_DIR = sys.argv[1] if len(sys.argv) > 1 else "output/"
 VTK_PREFIX = "01clean_canal_VTK_P00_"
-PLOT_DIR = "wykresy/"
 
-# Parametry fizyczne i czasowe
-LAMBDA_LU = 320.0
-PERIOD_ITERS = 2263
-VTK_STEP = 50
-MIN_ITER = 22000 
-MAX_ITER = 26526
+# Fizyka 
+GRAVITY = 0.0005
+HEIGHT = 40.0
+C_WAVE = np.sqrt(GRAVITY * HEIGHT)     # ~0.14142 lu/iter
+LAMBDA_LU = 1200.0
+PERIOD_ITERS = int(np.round(LAMBDA_LU / C_WAVE)) # 8485 iteracji
 
-# Geometria stref pomiarowych
-Y_RANGE = (16, 336) 
-X_UPSTREAM = (960, 1600) 
-X_DOWNSTREAM = (2300, 2700) # Sonda przesunięta bliżej wnęki
+# Pomiary czasowe
+VTK_STEP = 50   # WAŻNE: W XML musi być <VTK Iterations="50" .../>
+MIN_ITER = 25000 # Czekamy aż fala przepłynie przez wnękę i strefę transmisji
+MAX_ITER = MIN_ITER + PERIOD_ITERS # Pobieramy dokładnie jeden pełny okres (do 98485)
 
-def load_and_average_vtk(folder, prefix, min_iter, y_range, x_range_full):
-    # Wyszukiwanie plików VTK w katalogu wynikowym
+# Pomiary przestrzenne (Pasy pomiarowe)
+Y_RANGE = (16, 336)
+X_UPSTREAM = (3000, 5000)    # Czysta strefa przed wnęką
+X_DOWNSTREAM = (6500, 8000) # Czysta strefa za wnęką
+
+# Położenie wnęki
+X_START = 7200.0
+X_END = 8480.0
+
+# =============================================================================
+# 2. FUNKCJE POMOCNICZE
+# =============================================================================
+def load_vtk_sequence(folder, prefix, min_it, max_it, y_range):
     search_pattern = os.path.join(folder, f"*{prefix}*.vti")
     files = sorted(glob.glob(search_pattern))
     
-    # Selekcja plików wymuszająca całkowitą wielokrotność okresu fali
-    valid_files = [f for f in files if min_iter <= int(f.split('_')[-1].split('.')[0]) <= MAX_ITER]
-    
+    valid_files = []
+    for f in files:
+        try:
+            it = int(f.split('_')[-1].split('.')[0])
+            if min_it <= it <= max_it:
+                valid_files.append((it, f))
+        except:
+            pass
+            
     if not valid_files:
-        raise FileNotFoundError("Brak plików w podanym katalogu w zadanym oknie czasowym.")
-
-    first_mesh = pv.read(valid_files[0]).cell_data_to_point_data()
-    nx = first_mesh.dimensions[0]
-    
-    x_start, x_end = x_range_full
-    x_coords = np.arange(x_start, x_end)
-    data_matrix = np.zeros((len(valid_files), len(x_coords)))
-    time_steps = []
-    
-    print(f"[Wczytywanie] Przetwarzanie {len(valid_files)} plików...")
-    
-    for t_idx, filepath in enumerate(valid_files):
-        iteration = int(filepath.split('_')[-1].split('.')[0])
-        time_steps.append(iteration)
+        raise ValueError(f"Nie znaleziono plików VTK w przedziale {min_it} - {max_it} iteracji!")
         
-        mesh = pv.read(filepath).cell_data_to_point_data()
-        dims = mesh.dimensions
+    print(f"Wczytano {len(valid_files)} ramek VTK.")
+    
+    time_series = []
+    x_coords = None
+    
+    for it, f in valid_files:
+        mesh = pv.read(f)
         
-        rho_3d = mesh.point_data["Rho"].reshape((dims[2], dims[1], dims[0]))
-        rho_2d = rho_3d[0, :, :]
+        # Pobranie plaskiej tablicy danych
+        if 'Rho' in mesh.array_names:
+            rho_flat = mesh['Rho']
+        elif 'rho' in mesh.array_names:
+            rho_flat = mesh['rho']
+        else:
+            raise KeyError(f"CRITICAL: Brak gęstości. Dostępne zmienne: {mesh.array_names}")
+            
+        # Logika zmiany ksztaltu dla Cell Data lub Point Data
+        is_point_data = (rho_flat.size == np.prod(mesh.dimensions))
         
-        rho_averaged = np.mean(rho_2d[y_range[0]:y_range[1], x_start:x_end], axis=0)
-        data_matrix[t_idx, :] = rho_averaged
+        if is_point_data:
+            dims = mesh.dimensions
+            x_arr = np.arange(dims[0])
+            y_arr = np.arange(dims[1])
+        else:
+            dims = (max(1, mesh.dimensions[0] - 1), 
+                    max(1, mesh.dimensions[1] - 1), 
+                    max(1, mesh.dimensions[2] - 1))
+            # Wyznaczenie idealnych srodkow komorek (bez dotykania mesh.x/mesh.y)
+            x_arr = np.arange(dims[0]) + 0.5
+            y_arr = np.arange(dims[1]) + 0.5
+
+        # Inicjalizacja osi w pierwszej iteracji
+        if x_coords is None:
+            print(f"-> Zmienne VTK: {mesh.array_names}")
+            print(f"-> Typ zapisu: {'Point Data' if is_point_data else 'Cell Data'}")
+            print(f"-> Skalibrowane wymiary: {dims}")
+            x_coords = x_arr
+            y_coords = y_arr
+            y_mask = (y_coords >= y_range[0]) & (y_coords <= y_range[1])
+            
+        # Zmiana ksztaltu i redukcja osi
+        rho = rho_flat.reshape(dims, order='F')
         
-    return data_matrix, np.array(time_steps), x_coords
-
-def temporal_transform(data_matrix, time_steps, omega, dt):
-    # Bezpośrednia transformata Fouriera do domeny zespolonej
-    complex_amps = []
-    t = time_steps
-    t_f = t[-1] - t[0]
-    
-    for x_idx in range(data_matrix.shape[1]):
-        eta = data_matrix[:, x_idx]
-        eta_centered = eta - np.mean(eta)
+        # Średnia po wysokości kanału (redukcja szumu)
+        rho_avg = np.mean(rho[:, y_mask, 0], axis=1)
+        time_series.append(rho_avg)
         
-        integral = np.sum(eta_centered * np.exp(-1j * omega * t)) * dt
-        coeff = (integral / t_f) * 2.0
-        complex_amps.append(coeff)
+    return x_coords, np.array(time_series)
+
+def extract_fourier(time_series, vtk_step, period_iters):
+    T = time_series.shape[0]
+    mean_height = np.mean(time_series, axis=0)
+    fluctuation = time_series - mean_height
+    
+    time_array = np.arange(T) * vtk_step
+    omega = 2.0 * np.pi / period_iters
+    
+    complex_amp = np.zeros(fluctuation.shape[1], dtype=complex)
+    for i in range(fluctuation.shape[1]):
+        # Ręczna transformata Fouriera dla częstotliwości podstawowej fali
+        z = fluctuation[:, i] * np.exp(1j * omega * time_array)
+        complex_amp[i] = 2.0 * np.mean(z)
         
-    return np.array(complex_amps)
+    return mean_height, complex_amp, omega
 
-def residuals_upstream(params, x, eta_obs):
-    # Superpozycja fali padającej (A) i odbitej (B)
-    ReA, ImA, ReB, ImB, kr, ki = params
-    A = ReA + 1j * ImA
-    B = ReB + 1j * ImB
-    k_complex = kr + 1j * ki
+def fit_wave_spatial(x, complex_amp):
+    # Dopasowanie numeryczne: A_c * exp(k_imag * x) * exp(i * k_real * x)
+    def residuals(p):
+        A_r, A_i, k_r, k_i = p
+        A_c = A_r + 1j * A_i
+        model = A_c * np.exp(k_i * x) * np.exp(1j * k_r * x)
+        diff = model - complex_amp
+        return np.concatenate((diff.real, diff.imag))
+        
+    # Punkty startowe optymalizacji
+    k_r_guess = 2.0 * np.pi / LAMBDA_LU
+    p0 = [np.mean(np.abs(complex_amp)), 0.0, k_r_guess, 0.0]
     
-    model = A * np.exp(-1j * k_complex * x) + B * np.exp(1j * k_complex * x)
-    diff = model - eta_obs
-    return np.concatenate([diff.real, diff.imag])
+    res = least_squares(residuals, p0, method='lm')
+    A_r, A_i, k_r, k_i = res.x
+    return (A_r + 1j * A_i), k_r, k_i
 
-def residuals_downstream_fixed_k(params, x, eta_obs, k_complex):
-    # Model fali transmitowanej z wymuszonym tłumieniem
-    ReC, ImC = params
-    C = ReC + 1j * ImC
-    
-    model = C * np.exp(-1j * k_complex * x)
-    diff = model - eta_obs
-    return np.concatenate([diff.real, diff.imag])
-
-def calc_stats(res, x_coords, eta_vals):
-    # Statystyki dopasowania RMSE i R^2
-    sse = np.sum(res.fun**2)
-    vals_stacked = np.concatenate([eta_vals.real, eta_vals.imag])
-    sst = np.sum((vals_stacked - np.mean(vals_stacked))**2)
-    fit_quality = 1 - (sse / sst) if sst > 0 else 0
-    rmse = np.sqrt(sse / (2 * len(x_coords)))
-    return fit_quality, rmse
-
-def main():
-    os.makedirs(PLOT_DIR, exist_ok=True)
-    print(f"\n--- Analiza Odbicia i Transmisji ---")
-    
-    full_x_range = (X_UPSTREAM[0], X_DOWNSTREAM[1])
-    data_matrix, time_steps, x_coords = load_and_average_vtk(
-        CASE_DIR, VTK_PREFIX, MIN_ITER, Y_RANGE, full_x_range
-    )
-    
-    omega = 2.0 * np.pi / PERIOD_ITERS
-    dt = VTK_STEP
-    eta_vals = temporal_transform(data_matrix, time_steps, omega, dt)
-    k_theory = (2.0 * np.pi) / LAMBDA_LU
-    
-    # --- STREFA DOLOTOWA ---
-    mask_up = (x_coords >= X_UPSTREAM[0]) & (x_coords < X_UPSTREAM[1])
-    x_up, eta_up = x_coords[mask_up], eta_vals[mask_up]
-    
-    bounds_up = ([-np.inf, -np.inf, -np.inf, -np.inf, k_theory * 0.8, -0.01], 
-                 [np.inf, np.inf, np.inf, np.inf, k_theory * 1.2, 0.01])
-    x0_up = [np.mean(np.abs(eta_up)), 0.0, 0.0, 0.0, k_theory, 0.0]
-    
-    res_up = least_squares(residuals_upstream, x0_up, args=(x_up, eta_up), bounds=bounds_up)
-    ReA, ImA, ReB, ImB, kr_up, ki_up = res_up.x
-    A = ReA + 1j * ImA
-    B = ReB + 1j * ImB
-    k_comp_up = kr_up + 1j * ki_up
-    
-    fit_q_up, rmse_up = calc_stats(res_up, x_up, eta_up)
-    
-    # --- STREFA WYLOTOWA ---
-    mask_down = (x_coords >= X_DOWNSTREAM[0]) & (x_coords < X_DOWNSTREAM[1])
-    x_down, eta_down = x_coords[mask_down], eta_vals[mask_down]
-    
-    x0_down = [np.mean(np.abs(eta_down)), 0.0]
-    res_down = least_squares(residuals_downstream_fixed_k, x0_down, args=(x_down, eta_down, k_comp_up))
-    
-    ReC, ImC = res_down.x
-    C = ReC + 1j * ImC
-    
-    kr_down, ki_down = kr_up, ki_up 
-    k_comp_down = k_comp_up
-    
-    fit_q_down, rmse_down = calc_stats(res_down, x_down, eta_down)
-    
-    # --- PRZELICZENIE NA PŁASZCZYZNY ODNIESIENIA ---
-    X_START = 1920.0 # Współrzędna początku wnęki.
-    X_END = 2240.0   # Współrzędna końca wnęki.
-    
-    # Rzutowanie amplitud na wspólną płaszczyznę odniesienia X_START w celu kalibracji naturalnego tłumienia.
-    A_inc = abs(A) * np.exp(ki_up * X_START)
-    A_ref = abs(B) * np.exp(-ki_up * X_START)
-    A_trans = abs(C) * np.exp(ki_up * X_START)
-
-    R_val = A_ref / A_inc if A_inc > 0 else 0
-    T_val = A_trans / A_inc if A_inc > 0 else 0
-    D_val = 1.0 - (R_val**2 + T_val**2)
-
-    # --- WYDRUK WYNIKÓW ---
-    print("\n[1] STREFA DOLOTOWA")
-    print(f"Fala Padająca (A): {abs(A):.6f} lu (Faza: {np.angle(A, deg=True):.1f}°)")
-    print(f"Fala Odbita (B):   {abs(B):.6f} lu (Faza: {np.angle(B, deg=True):.1f}°)")
-    print(f"Liczba falowa k:   {kr_up:.5f} + {ki_up:.2e}j")
-    print(f"Jakość Fit (R^2):  {fit_q_up:.4f} | RMSE: {rmse_up:.6f}")
-    
-    print("\n[2] STREFA WYLOTOWA")
-    print(f"Fala Transmit. (C):{abs(C):.6f} lu (Faza: {np.angle(C, deg=True):.1f}°)")
-    print(f"Liczba falowa k:   {kr_down:.5f} + {ki_down:.2e}j (Narzucona)")
-    print(f"Jakość Fit (R^2):  {fit_q_down:.4f} | RMSE: {rmse_down:.6f}")
-    
-    print("\n[3] WYNIKI FIZYCZNE (Granice wnęk)")
-    print(f"Amplituda padająca (X={X_START}):      {A_inc:.6f} lu")
-    print(f"Amplituda odbita (X={X_START}):        {A_ref:.6f} lu")
-    print(f"Amplituda transmitowana (X={X_START}):   {A_trans:.6f} lu")
-    print("-" * 35)
-    print(f"=> Odbicie (R):    {R_val:.4f}")
-    print(f"=> Transmisja (T): {T_val:.4f}")
-    print(f"=> Dyssypacja (D): {D_val:.4f}")
-
-    # --- WIZUALIZACJA ---
-    plot_filename = os.path.join(PLOT_DIR, f"{VTK_PREFIX}analysis.png")
-    fig, axs = plt.subplots(2, 2, figsize=(14, 8), sharey='row')
-    
-    model_up = A * np.exp(-1j * k_comp_up * x_up) + B * np.exp(1j * k_comp_up * x_up)
-    model_down = C * np.exp(-1j * k_comp_down * x_down)
-    
-    axs[0,0].plot(x_up, eta_up.real, 'ko', alpha=0.4, markersize=3, label='Symulacja Re')
-    axs[0,0].plot(x_up, model_up.real, 'r-', linewidth=1.5, label='Model Re')
-    axs[0,0].set_title(f"Dolot (Re) | R = {R_val:.4f}")
-    axs[0,0].set_ylabel(r"$Re(\eta)$ [lu]")
-    axs[0,0].grid(True, alpha=0.3); axs[0,0].legend()
-    
-    axs[1,0].plot(x_up, eta_up.imag, 'bo', alpha=0.4, markersize=3, label='Symulacja Im')
-    axs[1,0].plot(x_up, model_up.imag, 'r-', linewidth=1.5, label='Model Im')
-    axs[1,0].set_title("Dolot (Im)")
-    axs[1,0].set_ylabel(r"$Im(\eta)$ [lu]"); axs[1,0].set_xlabel("X [lu]")
-    axs[1,0].grid(True, alpha=0.3); axs[1,0].legend()
-    
-    axs[0,1].plot(x_down, eta_down.real, 'ko', alpha=0.4, markersize=3, label='Symulacja Re')
-    axs[0,1].plot(x_down, model_down.real, 'g-', linewidth=1.5, label='Model Re')
-    axs[0,1].set_title(f"Wylot (Re) | T = {T_val:.4f}")
-    axs[0,1].grid(True, alpha=0.3); axs[0,1].legend()
-    
-    axs[1,1].plot(x_down, eta_down.imag, 'bo', alpha=0.4, markersize=3, label='Symulacja Im')
-    axs[1,1].plot(x_down, model_down.imag, 'g-', linewidth=1.5, label='Model Im')
-    axs[1,1].set_title("Wylot (Im)")
-    axs[1,1].set_xlabel("X [lu]")
-    axs[1,1].grid(True, alpha=0.3); axs[1,1].legend()
-    
-    plt.tight_layout()
-    plt.savefig(plot_filename, dpi=150)
-    print(f"\n[Wykres] Zapisano analizę do: {plot_filename}")
-
+# =============================================================================
+# 3. GŁÓWNA LOGIKA SKRYPTU
+# =============================================================================
 if __name__ == "__main__":
-    main()
+    print("Rozpoczęcie analizy fali LBM...")
+    
+    x, t_series = load_vtk_sequence(CASE_DIR, VTK_PREFIX, MIN_ITER, MAX_ITER, Y_RANGE)
+    
+    # 1. Analiza Fouriera (Czasowa)
+    print("Wykonywanie transformaty czasowej...")
+    _, complex_amp, omega_tu = extract_fourier(t_series, VTK_STEP, PERIOD_ITERS)
+    
+    # 2. Wycinanie danych dla stref (Przestrzenna)
+    mask_up = (x >= X_UPSTREAM[0]) & (x <= X_UPSTREAM[1])
+    mask_down = (x >= X_DOWNSTREAM[0]) & (x <= X_DOWNSTREAM[1])
+    
+    # 3. Dopasowanie parametrów fali
+    print("Dopasowywanie obwiedni przestrzennej (Tłumienie i dyspersja)...")
+    A_up, kr_up, ki_up = fit_wave_spatial(x[mask_up], complex_amp[mask_up])
+    A_down, kr_down, ki_down = fit_wave_spatial(x[mask_down], complex_amp[mask_down])
+    
+    # Przeliczenie amplitud z uwzględnieniem tłumienia do płaszczyzn wnęki
+    A_in = A_up * np.exp(ki_up * X_START) * np.exp(1j * kr_up * X_START)
+    A_out = A_down * np.exp(ki_down * X_END) * np.exp(1j * kr_down * X_END)
+    
+    # Ostateczne wyliczenie współczynnika transmisji i dyssypacji
+    T_coef = abs(A_out) / abs(A_in)
+    D_coef = 1.0 - (T_coef**2) # Kanał czysty: Odbicie = 0, więc D = 1 - T^2
+    
+    print("\n" + "="*50)
+    print(f" WYNIKI ANALIZY FALI (Czysty Kanał)")
+    print("="*50)
+    print(f"Transmisja (T):   {T_coef:.6f}")
+    print(f"Dyssypacja (D):   {D_coef:.6f}  <- Błąd numeryczny lepkości LBM")
+    print(f"Tłumienie lepk.: {ki_up:.8e} 1/lu")
+    
+    print("\n[GOTOWY BLOK DO PLIKU 01clean_canal.xml]")
+    print(f'        <Param name="Wave_A" value="{abs(A_up):.6f}"/>')
+    print(f'        <Param name="Wave_k_real" value="{kr_up:.8f}"/>')
+    print(f'        <Param name="Wave_k_imag" value="{ki_up:.8e}"/>')
+    print(f'        <Param name="Wave_w" value="{omega_tu:.8f}"/>')
+    print(f'        <Param name="Wave_Phase" value="{np.angle(A_up):.6f}"/>')
+    print("="*50)
+
+    # Opcjonalny wykres dopasowania dla kontroli
+    plt.figure(figsize=(10, 5))
+    plt.plot(x, np.abs(complex_amp), 'k.', markersize=2, label='Symulacja LBM (Amplituda w węzłach)', alpha=0.3)
+    plt.plot(x[mask_up], np.abs(A_up * np.exp(ki_up * x[mask_up])), 'r-', linewidth=2, label='Dopasowanie przed wnęką')
+    plt.plot(x[mask_down], np.abs(A_down * np.exp(ki_down * x[mask_down])), 'b-', linewidth=2, label='Dopasowanie za wnęką')
+    plt.axvline(X_START, color='g', linestyle='--', label='Początek wnęki')
+    plt.axvline(X_END, color='g', linestyle='-.', label='Koniec wnęki')
+    plt.xlabel('Oś X [lu]')
+    plt.ylabel('Amplituda Fali [lu]')
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig('dopasowanie_fali_czysty_kanal.png', dpi=150)
+    print("\nZapisano wykres kontrolny 'dopasowanie_fali_czysty_kanal.png'")

@@ -10,7 +10,7 @@ NY = 352
 L = 320 # Szerookość kanału (lu)
 WALL_WIDTH = 16      # Szerokość ścian bocznych (dy)
 CAVITY_NX = 1280      # Rozmiar wnęki (64cm)
-NO_PERIODS_IN_CAVITYZONE = 5
+NO_PERIODS_IN_CAVITYZONE = 4
 k = 2.0 * np.pi / WAVE_LENGTH
 WAVE_PHASE = 0.0
 k_imag = 0.0
@@ -78,12 +78,11 @@ c = np.sqrt(GRAVITY * HEIGHT)
 period = WAVE_LENGTH / c
 
 
-# Logika 6T i 5T
-nx_upstream = int(np.round((NO_PERIODS_IN_CAVITYZONE+1) * WAVE_LENGTH))
-nx_downstream = int(np.round(NO_PERIODS_IN_CAVITYZONE * WAVE_LENGTH))
+nx_upstream = int(np.round((NO_PERIODS_IN_CAVITYZONE) * WAVE_LENGTH))
+nx_downstream = int(np.round((NO_PERIODS_IN_CAVITYZONE-1) * WAVE_LENGTH))
 
 # Generowanie plików CSV (istniejąca logika)
-t = np.arange(12*period*1.2)
+t = np.arange(2*NO_PERIODS_IN_CAVITYZONE*period*1.2)
 omega = 2.0 * np.pi / period
 wave_h = AMPLITUDE * np.cos(omega * t)
 df = pd.DataFrame({'iter': t, 'cos': wave_h})
@@ -98,7 +97,7 @@ print(f"Liczba falowa (k): {k:.6} 1/lu")
 print(f"Częstość omega: {omega:.6f} 1/tu")
 print(f"Kanał dolotowy: {nx_upstream} lu | Kanał wylotowy: {nx_downstream} lu")
 print(f"Okres fali: {period:.6f}")
-print(f"Ilość iteracji: {12 * period:.6f}")
+print(f"Ilość iteracji: {np.round(2 * NO_PERIODS_IN_CAVITYZONE * period)}")
 print(f"kL/pi: {k*L/np.pi:.6f} <? 1")
 print(f"k*h: {k * HEIGHT:.6f} <? 0.3")
 print(clean_geo)

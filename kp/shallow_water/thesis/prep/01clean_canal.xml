@@ -36,9 +36,9 @@
 
         <Param name="Wave_A" value="0.002000"/>
         <Param name="Wave_k_real" value="0.005236"/>
-        <Param name="Wave_k_imag" value="0.0"/>
+        <Param name="Wave_k_imag" value="-6.88416385e-05"/>
         <Param name="Wave_w" value="0.000740"/>
-        <Param name="Wave_Phase" value="0.000000"/>
+        <Param name="Wave_Phase" value="0.0"/>
         <Param name="Wave_Period" value="8485.281374"/>
 
 
@@ -61,7 +61,7 @@
     <!--VTK Iterations="50" what="Rho"/-->
     <!--Log Iterations="500"/-->
     <!--Solve Iterations="32000"/-->
-    <VTK Iterations="100" what="Rho"/>
+    <!--VTK Iterations="100" what="Rho"/-->
     <Log Iterations="100"/>
     <Solve Iterations="67882"/>
 

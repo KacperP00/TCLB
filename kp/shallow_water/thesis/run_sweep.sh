@@ -14,7 +14,7 @@
 cd $HOME/TCLB
 
 # Załadowanie Pythona dostępnego na Athenie
-module load Python/3.10.4
+source env/bin/activate 
 
 # Uruchomienie centrum dowodzenia
-python3 kp/shallow_water/thesis/master_script.py
+python3 kp/shallow_water/thesis/run_sweep.py

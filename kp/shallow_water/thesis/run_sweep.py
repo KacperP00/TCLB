@@ -20,7 +20,7 @@ for l in lambdas:
     
     # 3. Uruchomienie symulacji TCLB (Czeka na zakończenie dzięki --wait)
     print("2/3 -> Symulacja TCLB na GPU...")
-    subprocess.run(["./p/run", "sw", "kp/shallow_water/thesis/clean_canal.xml", "1", "--wait"], check=True)
+    subprocess.run(["CLB/sw/main", "kp/shallow_water/thesis/clean_canal.xml"], check=True)
     
     # 4. Analiza wyników i dopisanie (append) do zbiorczego pliku
     print("3/3 -> Analiza wyników (baseline.py)...")

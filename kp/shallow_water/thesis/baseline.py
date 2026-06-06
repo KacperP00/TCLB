@@ -44,19 +44,27 @@ def load_last_period_vtk(folder, prefix, period, y_range):
         mesh = pv.read(f)
         rho_flat = mesh['Rho'] if 'Rho' in mesh.array_names else mesh['rho']
         
-        if rho_flat.size == np.prod(mesh.dimensions):
-            dims = mesh.dimensions
-            x_arr, y_arr = np.arange(dims[0]), np.arange(dims[1])
-        else:
-            dims = (max(1, mesh.dimensions[0]-1), max(1, mesh.dimensions[1]-1), max(1, mesh.dimensions[2]-1))
-            x_arr, y_arr = np.arange(dims[0]) + 0.5, np.arange(dims[1]) + 0.5
+        # Poprawne pobranie absolutnych współrzędnych przestrzennych z pliku VTK
+        x_bounds = mesh.bounds[0:2] # min_x, max_x
+        y_bounds = mesh.bounds[2:4] # min_y, max_y
+        
+        dims = (mesh.dimensions[0]-1, mesh.dimensions[1]-1) if rho_flat.size < np.prod(mesh.dimensions) else mesh.dimensions[0:2]
+        
+        x_arr = np.linspace(x_bounds[0], x_bounds[1], dims[0], endpoint=False) + (mesh.spacing[0]/2 if rho_flat.size < np.prod(mesh.dimensions) else 0)
+        y_arr = np.linspace(y_bounds[0], y_bounds[1], dims[1], endpoint=False) + (mesh.spacing[1]/2 if rho_flat.size < np.prod(mesh.dimensions) else 0)
 
         if x_coords is None:
             x_coords = x_arr
             y_mask = (y_arr >= y_range[0]) & (y_arr <= y_range[1])
             
         rho = rho_flat.reshape(dims, order='F')
-        time_series.append(np.mean(rho[:, y_mask, 0], axis=1))
+        # Dynamiczne dopasowanie do wymiarowości zwracanej przez PyVista
+        if rho.ndim == 3:
+            y_slice = rho[:, y_mask, 0]
+        else:
+            y_slice = rho[:, y_mask]
+        
+        time_series.append(np.mean(y_slice, axis=1))
         time_array.append(it)
         
     return x_coords, np.array(time_series), np.array(time_array)

@@ -4,7 +4,7 @@ import numpy as np
 
 # 1. Definicja badanej przestrzeni (Zmienione na 2 iteracje dla szybkiego testu!)
 # Gdy upewnisz się, że plik CSV się buduje, zmień '2' na '20'
-lambdas = np.linspace(200, 400, 21)
+lambdas = np.linspace(200, 400, 1)
 
 for l in lambdas:
     print(f"\n==========================================")
@@ -20,9 +20,9 @@ for l in lambdas:
     
     # 3. Uruchomienie symulacji TCLB (Czeka na zakończenie dzięki --wait)
     print("2/3 -> Symulacja TCLB na GPU...")
-    subprocess.run(["CLB/sw/main", "kp/shallow_water/thesis/clean_canal.xml"], check=True)
+    subprocess.run(["CLB/sw/main", "kp/shallow_water/thesis/optimization.xml"], check=True)
     
     # 4. Analiza wyników i dopisanie (append) do zbiorczego pliku
     print("3/3 -> Analiza wyników (baseline.py)...")
-    subprocess.run(["python3", "kp/shallow_water/thesis/baseline.py", str(l)], check=True)
+    subprocess.run(["python3", "kp/shallow_water/thesis/anal.py", str(l)], check=True)
 print("\n>>> EKSPERYMENT ZAKONCZONY POMYSLNIE <<<")

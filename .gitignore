@@ -23,3 +23,7 @@ p
 /*.txt
 .idea/*
 *.ipynb_checkpoint*
+*.png
+kp/shallow_water/thesis/*.csv
+kp/shallow_water/thesis/*.png
+kp/shallow_water/thesis/gauss_trials/*

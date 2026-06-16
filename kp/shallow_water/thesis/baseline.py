@@ -18,7 +18,7 @@ PERIOD_ITERS = int(np.round(current_lambda / c))
 
 # Konfiguracja ścieżek
 CASE_DIR = "output/"
-CSV_FILE = "kp/shallow_water/thesis/baza_fal.csv"
+CSV_FILE = "kp/shallow_water/thesis/check.csv"
 PREFIX = "clean_canal_VTK_P00_"
 
 Y_RANGE = (4, 104)

@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <CLBConfig version="2.0" output="output/" permissive="false">
-    <Geometry nx="4408" ny="308">
+    <Geometry nx="8416" ny="308">
         <MRT><Box /></MRT>
         
         <WPressure name="Inlet">
@@ -8,26 +8,30 @@
         </WPressure>
         
         <DesignSpace>
-            <Box dx="2000" nx="400" dy="4" ny="100" />
-            <Box dx="2000" nx="400" dy="204" ny="100" />
+            <Box dx="4000" nx="400" dy="4" ny="100" />
+            <Box dx="4000" nx="400" dy="204" ny="100" />
         </DesignSpace>
         
         <Wall name="Outlet">
-            <Box dx="4400" nx="8" />
+            <Box dx="8400" nx="16" />
         </Wall>
         
         <Wall>
-            <Box dx="0" nx="2000" dy="0" ny="104" />
-            <Box dx="2400" nx="2008" dy="0" ny="104" />
-            <Box dx="2000" nx="400" dy="0" ny="4" />
+            <Box dx="0" nx="4000" dy="0" ny="104" />
+            <Box dx="4400" nx="4008" dy="0" ny="104" />
+            <Box dx="4000" nx="400" dy="0" ny="4" />
 
-            <Box dx="0" nx="2000" dy="204" ny="104" />
-            <Box dx="2400" nx="2008" dy="204" ny="104" />
-            <Box dx="2000" nx="400" dy="304" ny="4" />
+            <Box dx="0" nx="4000" dy="204" ny="104" />
+            <Box dx="4400" nx="4008" dy="204" ny="104" />
+            <Box dx="4000" nx="400" dy="304" ny="4" />
         </Wall>
 
+        <Obj1 name="Transmission_Zone">
+            <Box dx="4600" nx="400" dy="154" ny="8" />
+        </Obj1>
+
         <Obj2 name="Reflection_Zone">
-            <Box dx="1400" nx="400" dy="154" ny="8" />
+            <Box dx="1500" nx="400" dy="154" ny="8" />
         </Obj2>
     </Geometry>
 
@@ -37,18 +41,40 @@
         <Param name="EnergySink" value="0" />
         <Param name="EnergySink2" value="0" />
         <Param name="Height" value="9.55" />
+        
+        <Param name="Wave_A" value="0.062483"/>
+        <Param name="Wave_k_real" value="0.018288"/>
+        <Param name="Wave_k_imag" value="-0.00049267"/>
+        <Param name="Wave_w" value="0.002539"/>
+        <Param name="Wave_Phase" value="-0.013391"/>
+        <Param name="Wave_Period" value="2475.00"/>
+
         <Param name="WaveErrorInObj" value="1.0" />
+        <Param name="WaveError2InObj" value="1.0" />
         
         <Param name="nu" value="0.000228" />
 
-        <Control Iterations="31113">
-            <CSV file="kp/shallow_water/thesis/inlet_wave.csv" Time="iter">
-                <Param name="Height" value="cos+9.55" zone="Inlet" />
+        <Param name="Adjnt_start_Obj1" value="3000" />
+        <Param name="Adjnt_start_Obj2" value="3000" />
+        <Param name="Adjnt_end" value="63000" />  
+
+        <Control Iterations="65000">
+            <CSV file="kp/shallow_water/thesis/inlet_packet.csv" Time="iter">
+                <Param name="Height" value="h_inlet+9.55" zone="Inlet" />
             </CSV>
         </Control>
     </Model>
 
-    <VTK Iterations="50" what="Rho"/>
-    <Solve Iterations="31113" />
+    <!--VTK Iterations="500"/-->
+    <Log Iterations="10"/>
+
+    <InternalTopology/>
+    
+    <Optimize MaxEvaluations="2">
+        
+        <Adjoint NumberOfSnaps="14" type="unsteady">
+            <Solve Iterations="65000"/>
+        </Adjoint>
+    </Optimize>
 
 </CLBConfig>

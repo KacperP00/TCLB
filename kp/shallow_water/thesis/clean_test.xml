@@ -8,7 +8,7 @@
         <DesignSpace>
 			<Box dx="2000" nx="400" dy="4" ny="100" />
 		</DesignSpace>
-		
+
         <Wall name="Outlet">
             <Box dx="4400" nx="8" />
         </Wall>
@@ -17,7 +17,7 @@
             <Box dy="104" ny="4" />
         </Wall>
         <Obj2 name="Reflection_Zone">
-            
+
             <Box dx="1400" nx="400" dy="50" ny="8" />
         </Obj2>
     </Geometry>
@@ -29,21 +29,23 @@
         <Param name="EnergySink2" value="0" />
         <Param name="Height" value="9.55" />
         <Param name="WaveErrorInObj" value="1.0" />
-        
+        <Param name="Adjnt_start_Obj1" value="3000" />
+        <Param name="Adjnt_start_Obj2" value="3000" />
+
         <Param name="nu" value="0.000228" />
 
-        <Param name="Wave_Length" value="400" />
+        <Param name="Wave_Length" value="200" />
 
-          <Param name="Wave_A" value="0.062483"/>
-        <Param name="Wave_k_real" value="0.018288"/>
-        <Param name="Wave_k_imag" value="-0.00049267"/>
-        <Param name="Wave_w" value="0.002539"/>
-        <Param name="Wave_Phase" value="-0.013391"/>
-        <Param name="Wave_Period" value="2475.00"/>
-                
+        <Param name="Wave_A" value="0.062483"/>
+        <Param name="Wave_k_real" value="0.03181"/>
+        <Param name="Wave_k_imag" value="-0.000975"/>
+        <Param name="Wave_w" value="0.0044436"/>
+        <Param name="Wave_Phase" value="0.004432"/>
+        <Param name="Wave_Period" value="1414.00"/>
 
-        
-        
+
+
+
 
         <Control Iterations="31113">
             <CSV file="kp/shallow_water/thesis/inlet_wave.csv" Time="iter">
@@ -52,10 +54,10 @@
         </Control>
     </Model>
 
-    
+
     <Log Iterations="50"/>
-    
-    
+
+
     <Solve Iterations="31113" />
 
 </CLBConfig>

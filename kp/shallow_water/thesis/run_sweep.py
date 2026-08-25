@@ -4,7 +4,7 @@ import numpy as np
 
 # 1. Definicja badanej przestrzeni (Zmienione na 2 iteracje dla szybkiego testu!)
 # Gdy upewnisz się, że plik CSV się buduje, zmień '2' na '20'
-lambdas = np.linspace(200, 400, 20)
+lambdas = np.linspace(200, 400, 2)
 
 for l in lambdas:
     print(f"\n==========================================")

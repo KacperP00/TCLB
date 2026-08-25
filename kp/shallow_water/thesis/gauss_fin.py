@@ -11,9 +11,10 @@ c_wave = np.sqrt(g * H)
 A0 = 0.0625
 
 # Parametry czasu
-N = 31113
+N = 65000
 t = np.arange(N)
-t_center = N // 2
+sigma = 3000
+t_center = 5*sigma
 
 # Definicja docelowego, szarego pasma badawczego
 f_min = c_wave / 400.0
@@ -28,7 +29,7 @@ omega_c = 2.0 * np.pi * f_c
 # ---------------------------------------------------------
 # Zwiększenie sigmy zwęża spektrum częstotliwości. 
 # Wartość 4200 gwarantuje, że widmo nie wyleje się poza zakres 10%.
-sigma = 3000
+
 
 # 1. Okno Gaussa (kształtuje gładki dzwon)
 gauss_window = np.exp(-0.5 * ((t - t_center) / sigma)**2)

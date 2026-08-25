@@ -1,16 +1,16 @@
 <?xml version='1.0' encoding='utf-8'?>
 <CLBConfig version="2.0" output="output/" permissive="false">
-    <Geometry nx="4408" ny="108">
+    <Geometry nx="8408" ny="108">
         <MRT><Box /></MRT>
         <WPressure name="Inlet">
             <Box dx="0" nx="1" dy="4" ny="100" />
         </WPressure>
         <DesignSpace>
-			<Box dx="2000" nx="400" dy="4" ny="100" />
+			<Box dx="4000" nx="400" dy="4" ny="100" />
 		</DesignSpace>
 		
         <Wall name="Outlet">
-            <Box dx="4400" nx="8" />
+            <Box dx="8400" nx="8" />
         </Wall>
         <Wall>
             <Box dy="0" ny="4" />
@@ -18,8 +18,13 @@
         </Wall>
         <Obj2 name="Reflection_Zone">
             
-            <Box dx="1400" nx="400" dy="50" ny="8" />
+            <Box dx="3400" nx="400" dy="4" ny="100" />
         </Obj2>
+
+        <Obj1 name="Transmission_Zone">
+            <Box dx="4600" nx="400" dy="4" ny="100" />
+        </Obj1>
+
     </Geometry>
 
     <Model>
@@ -29,26 +34,36 @@
         <Param name="EnergySink2" value="0" />
         <Param name="Height" value="9.55" />
         <Param name="WaveErrorInObj" value="1.0" />
+        <Param name="WaveError2InObj" value="1.0" />
         
         <Param name="nu" value="0.000228" />
 
         <Param name="Wave_Period" value="2828.427690" />
         <Param name="Wave_Length" value="400.000000" />
 
+        <Param name="Wave_A" value="0.0"/> <!-- Amplitude = 0 means checking the deflection from Height -->
+        <Param name="Wave_k_real" value="0.018288"/>
+        <Param name="Wave_k_imag" value="-0.00049267"/>
+        <Param name="Wave_w" value="0.002539"/>
+        <Param name="Wave_Phase" value="-0.013391"/>
+        <Param name="Wave_Period" value="2475.00"/>
+
+
         
         
 
-        <Control Iterations="31113">
-            <CSV file="kp/shallow_water/thesis/inlet_wave.csv" Time="iter">
-                <Param name="Height" value="cos+9.55" zone="Inlet" />
+        <Control Iterations="65000">
+            <CSV file="kp/shallow_water/thesis/inlet_packet.csv" Time="iter">
+                <Param name="Height" value="h_inlet+9.55" zone="Inlet" />
             </CSV>
         </Control>
     </Model>
 
     
-    <VTK Iterations="50" what="Rho" />
+    <!--VTK Iterations="50" what="Rho" /-->
+    <Log Iterations="5"/>
     
     
-    <Solve Iterations="31113" />
+    <Solve Iterations="65000" />
 
 </CLBConfig>

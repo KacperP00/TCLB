@@ -44,12 +44,17 @@ AddSetting(name="Wave_Phase", default=0, comment='wave phase')
 AddSetting(name="Wave_Period", default=1, comment='wave period')
 AddSetting(name="Wave_Length", default=1, comment='wave length')
 
+AddSetting(name="Adjnt_start_Obj1", default=0.0, comment='Start of adjoint algorithm for Obj1')
+AddSetting(name="Adjnt_start_Obj2", default=0.0, comment='Start of adjoint algorithm for Obj2')
+AddSetting(name="Adjnt_end", default=1000000000.0, comment='End of adjoint algorithm')
+
 AddGlobal(name="PressDiff", comment='pressure loss')
 AddGlobal(name="TotalDiff", comment='total variation of velocity')
 AddGlobal(name="Material", comment='total material')
 AddGlobal(name="EnergyGain", comment='pressure loss')
 AddGlobal(name="EnergyGain2", comment='energy loss in zone 2')
 AddGlobal(name="WaveError", comment='squared difference between simulated and theoretical wave')
+AddGlobal(name="WaveError2", comment='measure of deviation from base height')
 
 AddNodeType(name="Obj1", group="OBJECTIVE")
 AddNodeType(name="Obj2", group="OBJECTIVE")

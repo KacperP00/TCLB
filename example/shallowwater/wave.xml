@@ -30,13 +30,12 @@
 		<Param name="Height" value="1.01" zone="high"/>
 		<Param name="TotalDiffInObj" value="1e6"/>
 	</Model>
-	<VTK Iterations="100"/>
-	<Log Iterations="10"/>
-    <Solve Iterations="2000"/>
-	<!--InternalTopology/>
+	<VTK Iterations="1999"/>
+	<Log Iterations="1999"/>
+	<InternalTopology/>
 	<Optimize>
 		<Adjoint NumberOfSnaps="14" type="unsteady">
 			<Solve Iterations="2000"/>
 		</Adjoint>
-	</Optimize-->
+	</Optimize>
 </CLBConfig>

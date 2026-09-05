@@ -137,6 +137,7 @@ CudaDeviceFunction void EPressure()
 
 CudaDeviceFunction void Run() {
 //	printf("Run %d %d -> (%d,%d)\n", CudaBlock.x, CudaBlock.y, X, Y);
+printf("t, %d\n", (int)Time);
 //    AddToObjective(w*(1-w)/10);
     switch (NodeType & NODE_BOUNDARY) {
 //	case NODE_Solid:
@@ -253,7 +254,7 @@ for (i in selR) {
 ?>
 real_t current_time = (real_t)Time;
 // Bramkowanie za pomoca numeru ITERACJI (zamiast czasu fizycznego)
-if (Time > Adjnt_start_Obj1) {
+if (Time > Adjnt_start_Obj1 && Time < Adjnt_end) {
 	if ((NodeType & NODE_OBJECTIVE) == NODE_Obj1) {
 		real_t error = d - Height;
 		AddToEnergyGain( ux*ux + uy*uy);
@@ -262,8 +263,9 @@ if (Time > Adjnt_start_Obj1) {
 }
 
 // Bramkowanie za pomoca numeru ITERACJI
-if (Time > Adjnt_start_Obj2) {
+if (Time > Adjnt_start_Obj2 && Time < Adjnt_end) {
 	if ((NodeType & NODE_OBJECTIVE) == NODE_Obj2) {
+		//printf("Time: %f", current_time);
     	real_t damping = exp(Wave_k_imag * (real_t)X);
 		real_t theoretical_height = Height + Wave_A * damping * cos(Wave_k_real * (real_t)X - Wave_w * current_time + Wave_Phase);
 		real_t error = d - theoretical_height;
@@ -273,6 +275,11 @@ if (Time > Adjnt_start_Obj2) {
 }
 ux *= w;
 uy *= w;
+
+if ((real_t)X == 150 && (real_t)Y == 150) {
+    // Wypisujemy natywną wartość zmiennej Time z przestrzeni GPU
+    printf("t, %d\n", (int)Time);
+}
 
 <?R
 	C(usq, sum(u*u)*dw);

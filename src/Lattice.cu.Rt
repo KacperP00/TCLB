@@ -908,6 +908,7 @@ void Lattice::IterateTill(int it, int iter_type)
 		pop_settings();
 		Iteration(s1, s3, iter_type);
 		Record_Iter = i+1;
+		container->iter = i+1;
 		if (s2 >= nSnaps){
 			if (reverse_save) {
 				debug2("Reverse Adjoint Disk Write it:%d level:%d\n", i+1, s2);
@@ -950,6 +951,7 @@ void Lattice::Iterate(int niter, int iter_type)
 					exit(-1);
 				}
 				IterateTill(Record_Iter, ITER_NORM);
+				container->iter = Record_Iter;
 				Iteration_Adj(Snap, (Snap+1) % 2, aSnap % 2, (aSnap+1) % 2, iter_type);
 			}
 			break;

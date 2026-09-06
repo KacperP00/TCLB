@@ -137,7 +137,7 @@ CudaDeviceFunction void EPressure()
 
 CudaDeviceFunction void Run() {
 //	printf("Run %d %d -> (%d,%d)\n", CudaBlock.x, CudaBlock.y, X, Y);
-printf("t, %d\n", (int)Time);
+// printf("t, %d\n", (int)Time); checking if time is properly understood during optimization.
 //    AddToObjective(w*(1-w)/10);
     switch (NodeType & NODE_BOUNDARY) {
 //	case NODE_Solid:

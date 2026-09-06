@@ -47,8 +47,8 @@
         
         <Param name="nu" value="0.000228" />
 
-        <Param name="Adjnt_start_Obj1" value="1000" />
-        <Param name="Adjnt_start_Obj2" value="1000" />
+        <Param name="Adjnt_start_Obj1" value="34000" />
+        <Param name="Adjnt_start_Obj2" value="42000" />
         <Param name="Adjnt_end" value="2000" />  
 
         <Control Iterations="65000">
@@ -58,15 +58,15 @@
         </Control>
     </Model>
 
-    <VTK Iterations="100"/>
-    <Log Iterations="10"/>
+    <VTK Iterations="65000"/>
+    <Log Iterations="100"/>
 
     <InternalTopology/>
     
-    <Optimize MaxEvaluations="2">
+    <Optimize MaxEvaluations="1">
         
-        <Adjoint NumberOfSnaps="14" type="unsteady">
-            <Solve Iterations="2000"/>
+        <Adjoint NumberOfSnaps="16" type="unsteady">
+            <Solve Iterations="65000"/>
         </Adjoint>
     </Optimize>
 

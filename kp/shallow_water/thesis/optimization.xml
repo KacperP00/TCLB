@@ -42,14 +42,16 @@
         <Param name="EnergySink2" value="0" />
         <Param name="Height" value="9.55" />
 
-        <Param name="WaveErrorInObj" value="1.0" />
-        <Param name="WaveError2InObj" value="1.0" />
-        
+        <Param name="WaveErrorInObj" value="-1.0" />
+        <Param name="WaveError2InObj" value="-1.0" />
+        <Param name="PenaltyInObj" value="-0.00000001" />  
+
         <Param name="nu" value="0.000228" />
 
-        <Param name="Adjnt_start_Obj1" value="34000" />
-        <Param name="Adjnt_start_Obj2" value="42000" />
-        <Param name="Adjnt_end" value="2000" />  
+        <Param name="Adjnt_start_Obj1" value="0" />
+        <Param name="Adjnt_start_Obj2" value="0" />
+        <Param name="Adjnt_end" value="65000" />
+        
 
         <Control Iterations="65000">
             <CSV file="kp/shallow_water/thesis/inlet_packet.csv" Time="iter">
@@ -58,12 +60,12 @@
         </Control>
     </Model>
 
-    <VTK Iterations="65000"/>
+    <VTK Iterations="65000" what="W"/>
     <Log Iterations="100"/>
 
     <InternalTopology/>
     
-    <Optimize MaxEvaluations="1">
+    <Optimize MaxEvaluations="275">
         
         <Adjoint NumberOfSnaps="16" type="unsteady">
             <Solve Iterations="65000"/>

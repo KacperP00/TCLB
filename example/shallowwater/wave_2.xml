@@ -29,11 +29,12 @@
 		<Param name="Height" value="1.0"/>
 		<Param name="Height" value="1.01" zone="high"/>
 		<Param name="TotalDiffInObj" value="1e6"/>
+		<Param name="PenaltyInObj" value="-0.000001" />
 	</Model>
-	<VTK Iterations="1999"/>
-	<Log Iterations="1999"/>
+	<VTK Iterations="100"/>
+	<Log Iterations="10"/>
 	<InternalTopology/>
-	<Optimize>
+	<Optimize MaxEvaluations="10">
 		<Adjoint NumberOfSnaps="14" type="unsteady">
 			<Solve Iterations="2000"/>
 		</Adjoint>

@@ -55,6 +55,7 @@ AddGlobal(name="EnergyGain", comment='pressure loss')
 AddGlobal(name="EnergyGain2", comment='energy loss in zone 2')
 AddGlobal(name="WaveError", comment='squared difference between simulated and theoretical wave')
 AddGlobal(name="WaveError2", comment='measure of deviation from base height')
+AddGlobal(name="Penalty", comment='Weight for pushing material to 0 or 1')
 
 AddNodeType(name="Obj1", group="OBJECTIVE")
 AddNodeType(name="Obj2", group="OBJECTIVE")

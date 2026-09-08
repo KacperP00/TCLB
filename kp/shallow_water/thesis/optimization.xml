@@ -48,8 +48,8 @@
 
         <Param name="nu" value="0.000228" />
 
-        <Param name="Adjnt_start_Obj1" value="0" />
-        <Param name="Adjnt_start_Obj2" value="0" />
+        <Param name="Adjnt_start_Obj1" value="34000" />
+        <Param name="Adjnt_start_Obj2" value="42000" />
         <Param name="Adjnt_end" value="65000" />
         
 

@@ -28,9 +28,12 @@
 		<Param name="nu" value="0.166666"/>
 		<Param name="Height" value="1.0"/>
 		<Param name="Height" value="1.01" zone="high"/>
-		<Param name="TotalDiffInObj" value="1e6"/>
+		<Param name="TotalDiffInObj" value="-1e2"/>
 		
 	</Model>
+
+	<LoadMemoryDump file="output/wave_testing_polygon_memory_dump_01" />
+
 	<VTK Iterations="2000"/>
 	<Log Iterations="10"/>
 	<InternalTopology/>
@@ -39,5 +42,5 @@
 			<Solve Iterations="2000"/>
 		</Adjoint>
 	</Optimize>
-	<SaveMemoryDump file="memory_dump_01" />
+	<SaveMemoryDump file="memory_dump_02" />
 </CLBConfig>

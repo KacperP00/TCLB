@@ -60,16 +60,18 @@
         </Control>
     </Model>
 
-    <VTK Iterations="65000" what="W, WB"/>
+    <VTK Iterations="65000" what="W"/>
     <Log Iterations="100"/>
 
     <InternalTopology/>
     
-    <Optimize MaxEvaluations="4">
+    <Optimize MaxEvaluations="50">
         
         <Adjoint NumberOfSnaps="16" type="unsteady">
             <Solve Iterations="65000"/>
         </Adjoint>
     </Optimize>
+
+    <SaveMemoryDump file="memory_dump_01" />
 
 </CLBConfig>

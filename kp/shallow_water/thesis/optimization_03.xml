@@ -44,7 +44,7 @@
 
         <Param name="WaveErrorInObj" value="-1.0" />
         <Param name="WaveError2InObj" value="-1.0" />
-        <Param name="PenaltyInObj" value="0.0" />  
+        <Param name="PenaltyInObj" value="-3e-9" />  
 
         <Param name="nu" value="0.000228" />
 
@@ -60,20 +60,20 @@
         </Control>
     </Model>
 
-    <LoadMemoryDump file="output/memory_dump_02.bin" />
+    <LoadMemoryDump file="output/optimization_02_memory_dump_02" />
 
     <VTK Iterations="65000" what="W"/>
     <Log Iterations="100"/>
 
     <InternalTopology/>
     
-    <Optimize MaxEvaluations="50">
+    <Optimize MaxEvaluations="75">
         
         <Adjoint NumberOfSnaps="16" type="unsteady">
             <Solve Iterations="65000"/>
         </Adjoint>
     </Optimize>
 
-    <SaveMemoryDump file="output/memory_dump_03.bin" />
+    <SaveMemoryDump file="memory_dump_03" />
 
 </CLBConfig>

@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!-- Symulacja wtrysku poprzecznego (Cold-Flow) -->
+<!-- Re = 80, D = 40 LU, Stosunek lepkosci = 5:1 -->
+<CLBConfig output="results/">
+    <Geometry nx="400" ny="200">
+        <!-- Zdefiniowanie obszarow wlotu i wylotu -->
+        <Inlet box="[0, 1, 0, ny-2]" name="Inlet_Continuous" />
+        <Outlet box="[nx-1, 1, nx-1, ny-2]" name="Outlet_Main" />
+        <Inlet box="[100, 140, 0, 0]" name="Inlet_Dispersed" />
+        
+        <!-- Zdefiniowanie scian bocznych (warunek no-slip) -->
+        <Wall box="[0, nx-1, 0, 0]" name="Wall_Bottom" />
+        <Wall box="[0, nx-1, ny-1, ny-1]" name="Wall_Top" />
+    </Geometry>
+
+    <!-- Silnik rozwiazujacy: wieloskladnikowy Shan-Chen 2D -->
+    <Model name="d2q9_mcmp" />
+
+    <Params>
+        <!-- Czasy relaksacji dla obu faz -->
+        <Param name="tau1" value="0.65" /> 
+        <Param name="tau2" value="0.53" /> 
+        
+        <!-- Sila napiecia powierzchniowego -->
+        <Param name="G" value="1.2" /> 
+        
+        <!-- Wymuszenia predkosci -->
+        <!-- Predkosc gazu poprzecznego (oleju) -->
+        <Param name="u_continuous" value="0.1" /> 
+        <!-- Predkosc wtrysku paliwa (zazwyczaj nzsza niz strumienia glównego) -->
+        <Param name="u_dispersed" value="0.04" /> 
+    </Params>
+
+    <Solve iterations="100000">
+        <!-- Zapis post-processingu w formacie czytelnym dla PyVista -->
+        <VTK iter="1000" />
+    </Solve>
+</CLBConfig>

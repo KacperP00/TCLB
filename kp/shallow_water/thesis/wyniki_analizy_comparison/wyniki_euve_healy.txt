@@ -1,0 +1,6 @@
+RAPORT Z ANALIZY PRZESTRZENNEJ (FALA CIĄGŁA - HEALY)
+====================================================
+Amplituda padająca (wyliczona z fali stojącej): 0.022207 LU
+Współczynnik Odbicia (C_R): 61.37%
+Współczynnik Transmisji (C_T): 6.94%
+Dyssypacja Energii: 61.86%

@@ -38,18 +38,6 @@
         
         <Param name="nu" value="0.000228" />
 
-        <Param name="Wave_Period" value="2828.427690" />
-        <Param name="Wave_Length" value="400.000000" />
-
-        <Param name="Wave_A" value="0.0"/> <!-- Amplitude = 0 means checking the deflection from Height -->
-        <Param name="Wave_k_real" value="0.018288"/>
-        <Param name="Wave_k_imag" value="-0.00049267"/>
-        <Param name="Wave_w" value="0.002539"/>
-        <Param name="Wave_Phase" value="-0.013391"/>
-        <Param name="Wave_Period" value="2475.00"/>
-
-
-        
         
 
         <Control Iterations="65000">
@@ -60,10 +48,8 @@
     </Model>
 
     
-    <!--VTK Iterations="50" what="Rho" /-->
-    <Log Iterations="5"/>
-    
-    
-    <Solve Iterations="65000" />
+    <VTK Iterations="200" what="Rho,W"/>
+    <Log Iterations="1000"/>
+    <Solve Iterations="65000"/>
 
 </CLBConfig>

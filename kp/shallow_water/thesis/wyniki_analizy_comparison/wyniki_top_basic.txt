@@ -1,0 +1,5 @@
+RAPORT Z ANALIZY WIDMOWEJ - TOPOLOGIA (BASIC)
+================================================
+Średnie odbicie amplitudowe (200-400 LU): 2.99%
+Średnia transmisja amplitudowa (200-400 LU): 1.77%
+Dyssypacja (Tłumienie lepkosciowe w wodzie): 99.84%

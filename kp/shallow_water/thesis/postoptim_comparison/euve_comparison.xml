@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='utf-8'?>
+<CLBConfig version="2.0" output="output/" permissive="false">
+    <Geometry nx="8416" ny="308">
+        <MRT><Box /></MRT>
+        
+        <WPressure name="Inlet">
+            <Box dx="0" nx="1" dy="104" ny="100" />
+        </WPressure>
+        
+        <Wall name="Outlet">
+            <Box dx="8400" nx="16" />
+        </Wall>
+        
+        <Wall>
+            <!-- 1. Górna ściana: Całkowicie płaska i szczelna (zamknięty górny DesignSpace) -->
+            <Box dx="0" nx="8416" dy="204" ny="104" />
+
+            <!-- 2. Dolna ściana: Lity odcinek przed falochronem -->
+            <Box dx="0" nx="4154" dy="0" ny="104" />
+
+            <!-- 3. Pierwsza wnęka Euve (szerokość 44, głębokość b1 = 54) -->
+            <!-- Kanał zaczyna się na dy=104. Wnęka wchodzi na 54 węzły w głąb ściany, więc lita podstawa pod nią ma 104 - 54 = 50 węzłów -->
+            <Box dx="4154" nx="44" dy="0" ny="50" />
+
+            <!-- 4. Przegroda między wnękami (grubość 4 węzły, zlicowana z główną ścianą falowodu) -->
+            <Box dx="4198" nx="4" dy="0" ny="104" />
+
+            <!-- 5. Druga wnęka Euve (szerokość 44, głębokość b2 = 61) -->
+            <!-- Lita podstawa pod nią ma 104 - 61 = 43 węzły -->
+            <Box dx="4202" nx="44" dy="0" ny="43" />
+
+            <!-- 6. Dolna ściana: Lity odcinek za falochronem -->
+            <!-- 8416 - (4154 + 44 + 4 + 44) = 4170 węzłów -->
+            <Box dx="4246" nx="4170" dy="0" ny="104" />
+        </Wall>
+    </Geometry>
+
+    <Model>
+        <Param name="Gravity" value="0.00209424" />
+        <Param name="InletVelocity" value="0" />
+        <Param name="EnergySink" value="0" />
+        <Param name="EnergySink2" value="0" />
+        <Param name="Height" value="9.55" />
+        <Param name="nu" value="0.000228" />
+
+        <Control Iterations="71000">
+            <!-- Wymuszenie paczką falową zostaje bez zmian -->
+            <CSV file="kp/shallow_water/thesis/inlet_wave.csv" Time="iter">
+                <Param name="Height" value="h_inlet+9.55" zone="Inlet" />
+            </CSV>
+        </Control>
+    </Model>
+
+    <!-- Zrzut gęstości/wysokości do weryfikacji w skrypcie analitycznym -->
+    <VTK Iterations="200" what="Rho"/>
+    <Log Iterations="1000"/>
+    <Solve Iterations="71000"/>
+
+</CLBConfig>

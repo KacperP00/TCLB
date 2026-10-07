@@ -63,7 +63,7 @@
 
     <InternalTopology/>
     
-    <Optimize MaxEvaluations="50">
+    <Optimize MaxEvaluations="60">
         <Param name="PenaltyInObj" value="0.0" />
         <Adjoint NumberOfSnaps="17" type="unsteady">
             <Solve Iterations="97500"/>
@@ -71,7 +71,7 @@
     </Optimize>
     <SaveMemoryDump file="memory_dump_dense_01" />
 
-    <Optimize MaxEvaluations="50">
+    <Optimize MaxEvaluations="60">
         <Param name="PenaltyInObj" value="-3.5e-9" />
         <Adjoint NumberOfSnaps="17" type="unsteady">
             <Solve Iterations="97500"/>

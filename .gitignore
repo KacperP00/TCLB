@@ -28,3 +28,12 @@ kp/shallow_water/thesis/*.csv
 kp/shallow_water/thesis/*.png
 kp/shallow_water/thesis/gauss_trials/*
 time_log.csv
+*.err
+*.out
+.RData
+.Rhistory
+Rplots.pdf
+env/
+venv/
+tmp.job.scr
+athena_fourth_numbering

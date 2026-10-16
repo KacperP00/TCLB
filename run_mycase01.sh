@@ -8,7 +8,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem=60G
 # Zabezpieczenie limitu czasu (format GG:MM:SS)
-#SBATCH --time=24:00:00
+#SBATCH --time=1:00:00
 # Powiazanie zadania z aktywnym grantem
 #SBATCH --account=plgclb2026-gpu-a100
 # Zrzut logow standardowych i bledow do plikow
@@ -19,4 +19,4 @@
 cd $HOME/TCLB
 
 # Uruchomienie procesu optymalizacji solverem TCLB
-CLB/sw/main kp/shallow_water/thesis/optimization.xml
+p/run CLB/sw/main kp/shallow_water/thesis/optimization.xml

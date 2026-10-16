@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from scipy.fft import fft2, fftshift, fftfreq
 import pandas as pd
 
-# Konfiguracja - Zmień na odpowiedni folder z PACZKĄ FALOWĄ
+# Konfiguracja - Zmien na odpowiedni folder z PACZKa FALOWa
 input_dir = sys.argv[1] if len(sys.argv) > 1 else "output/" 
 case_name = sys.argv[2] if len(sys.argv) > 2 else "unknown_case"
 out_prefix = f"kp/shallow_water/thesis/wyniki_analizy_comparison/{case_name}_2DFFT"
@@ -21,12 +21,12 @@ c_wave = np.sqrt(0.00209424 * h_base)
 x_up_min, x_up_max = 1500, 3500      
 x_down_min, x_down_max = 4500, 5500  
 
-# Dla paczki falowej wczytujemy CAŁY proces symulacji (nie tylko stan ustalony)
+# Dla paczki falowej wczytujemy CAlY proces symulacji (nie tylko stan ustalony)
 files = sorted(glob.glob(os.path.join(input_dir, "*.vti")))
 if not files:
     files = sorted(glob.glob(os.path.join(input_dir, "*.pvti")))
 
-print(f"Ekstrakcja pełnej macierzy przestrzenno-czasowej z {len(files)} plików...")
+print(f"Ekstrakcja penej macierzy przestrzenno-czasowej z {len(files)} plikw...")
 
 data_up_2d, data_down_2d, iterations = [], [], []
 x_up_coords, x_down_coords = None, None
@@ -70,47 +70,51 @@ t = np.array(iterations)
 dt = np.mean(np.diff(t))
 dx = np.mean(np.diff(x_up_coords))
 
-# Usunięcie składowej stałej (wypłaszczenie poziomu morza)
+# Usuniecie skladowej stalej (wyplaszczenie poziomu morza)
 matrix_up -= np.mean(matrix_up)
 matrix_down -= np.mean(matrix_down)
 
 print("Obliczanie szerokopasmowego widma 2D FFT...")
-fft_up = fftshift(fft2(matrix_up))
-fft_down = fftshift(fft2(matrix_down))
+Nt, Nx_up = matrix_up.shape
+_, Nx_down = matrix_down.shape
 
-Nt, Nx = matrix_up.shape
+# Normalizacja amplitud przez rozmiar dziedziny (Nt * Nx)
+fft_up = fftshift(fft2(matrix_up)) / (Nt * Nx_up)
+fft_down = fftshift(fft2(matrix_down)) / (Nt * Nx_down)
 freqs_t = fftshift(fftfreq(Nt, d=dt))
-freqs_x = fftshift(fftfreq(Nx, d=dx))
+freqs_x_up = fftshift(fftfreq(Nx_up, d=dx))
+freqs_x_down = fftshift(fftfreq(Nx_down, d=dx))
 
-# Szukamy tylko dodatnich częstotliwości
+# Szukamy tylko dodatnich czestotliwosci
 mask_f_positive = freqs_t > 0
 valid_freqs = freqs_t[mask_f_positive]
 lambda_waves = c_wave / valid_freqs
 
-# Inicjalizacja wyników
+# Inicjalizacja wynikow
 cr_spectrum = np.zeros_like(valid_freqs)
 ct_spectrum = np.zeros_like(valid_freqs)
-idx_center_k = np.argmin(np.abs(freqs_x))
+idx_center_k_up = np.argmin(np.abs(freqs_x_up))
+idx_center_k_down = np.argmin(np.abs(freqs_x_down))
 
-# Dekonstrukcja kierunkowa dla każdej częstotliwości w paczce falowej
+# Dekonstrukcja kierunkowa dla kazdej czestotliwosci w paczce falowej
 for idx, f_val in enumerate(valid_freqs):
     global_idx_f = np.where(freqs_t == f_val)[0][0]
     
-    # Przekrój poziomy widma k (Liczba falowa) dla danej częstotliwości f
+    # Przekroj poziomy widma k (Liczba falowa) dla danej czestotliwosci f
     k_slice_up = np.abs(fft_up[global_idx_f, :])
     k_slice_down = np.abs(fft_down[global_idx_f, :])
     
-    # W paczce falowej dominującym sygnałem jest zawsze fala padająca (max pik)
+    # W paczce falowej dominujacym sygnalem jest zawsze fala padajaca (max pik)
     idx_k_inc = np.argmax(k_slice_up)
     
-    # Fala odbita znajduje się matematycznie po przeciwnej stronie osi k (symetria kierunku)
-    dist_from_center = idx_k_inc - idx_center_k
-    idx_k_ref = idx_center_k - dist_from_center
+    # Fala odbita znajduje sie matematycznie po przeciwnej stronie osi k (symetria kierunku)
+    dist_from_center = idx_k_inc - idx_center_k_up
+    idx_k_ref = idx_center_k_up - dist_from_center
     
     amp_inc = k_slice_up[idx_k_inc]
     amp_ref = k_slice_up[idx_k_ref]
     
-    # Podobnie dla transmisji (szukamy fali biegnącej w tym samym kierunku co padająca)
+    # Podobnie dla transmisji (szukamy fali biegnacej w tym samym kierunku co padajaca)
     idx_k_trans = np.argmax(k_slice_down) 
     amp_trans = k_slice_down[idx_k_trans]
     
@@ -118,7 +122,7 @@ for idx, f_val in enumerate(valid_freqs):
         cr_spectrum[idx] = amp_ref / amp_inc
         ct_spectrum[idx] = amp_trans / amp_inc
 
-# Ograniczenie do użytecznego pasma energetycznego paczki (200 - 400 LU)
+# Ograniczenie do uzytecznego pasma energetycznego paczki (200 - 400 LU)
 band = (lambda_waves >= 200) & (lambda_waves <= 400)
 mean_Cr = np.mean(cr_spectrum[band]) * 100
 mean_Ct = np.mean(ct_spectrum[band]) * 100
@@ -126,8 +130,8 @@ mean_Ct = np.mean(ct_spectrum[band]) * 100
 report_text = (
     "RAPORT Z SZEROKOPASMOWEJ ANALIZY 2D FFT (PACZKA FALOWA)\n"
     "=======================================================\n"
-    f"Średnie Odbicie Amplitudowe (C_R) w paśmie 200-400 LU: {mean_Cr:.2f}%\n"
-    f"Średnia Transmisja Amplitudowa (C_T) w paśmie 200-400 LU: {mean_Ct:.2f}%\n"
+    f"srednie Odbicie Amplitudowe (C_R) w pasmie 200-400 LU: {mean_Cr:.2f}%\n"
+    f"srednia Transmisja Amplitudowa (C_T) w pasmie 200-400 LU: {mean_Ct:.2f}%\n"
 )
 
 with open(f"{out_prefix}_report.txt", "w", encoding="utf-8") as f:
@@ -146,10 +150,10 @@ df_out.to_csv(f"{out_prefix}_widmo.csv", index=False)
 plt.figure(figsize=(10, 6))
 plt.plot(lambda_waves[band], cr_spectrum[band]*100, 'r--', label='Odbicie C_R', linewidth=2)
 plt.plot(lambda_waves[band], ct_spectrum[band]*100, 'g-', label='Transmisja C_T', linewidth=2)
-plt.axvspan(200, 400, color='gray', alpha=0.15, label='Główne pasmo paczki')
+plt.axvspan(200, 400, color='gray', alpha=0.15, label='Glowne pasmo paczki')
 plt.title("Charakterystyka Widmowa z Dekonstrukcji 2D FFT")
-plt.xlabel("Długość fali λ [LU]")
-plt.ylabel("Współczynnik [%]")
+plt.xlabel("Dlugosc fali ? [LU]")
+plt.ylabel("Wspolczynnik [%]")
 plt.xlim(200, 400)
 plt.ylim(0, 100)
 plt.legend()

@@ -1,0 +1,5 @@
+RAPORT Z ANALIZY 2D FFT (KIERUNKOWEJ)
+=====================================
+Wspolczynnik Odbicia Rzeczywistego (C_R): 0.00%
+Wspolczynnik Transmisji (C_T): 28.51%
+Dyssypacja (Tlumienie + Absorpcja): 91.87%

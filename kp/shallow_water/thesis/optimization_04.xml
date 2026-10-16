@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='utf-8'?>
+<CLBConfig version="2.0" output="output/" permissive="false">
+    <Geometry nx="8416" ny="308">
+        <MRT><Box /></MRT>
+        
+        <WPressure name="Inlet">
+            <Box dx="0" nx="1" dy="104" ny="100" />
+        </WPressure>
+        
+        <DesignSpace>
+            <Box dx="4000" nx="400" dy="4" ny="100" />
+            <Box dx="4000" nx="400" dy="204" ny="100" />
+        </DesignSpace>
+        
+        <Wall name="Outlet">
+            <Box dx="8400" nx="16" />
+        </Wall>
+        
+        <Wall>
+            <Box dx="0" nx="4000" dy="0" ny="104" />
+            <Box dx="4400" nx="4008" dy="0" ny="104" />
+            <Box dx="4000" nx="400" dy="0" ny="4" />
+
+            <Box dx="0" nx="4000" dy="204" ny="104" />
+            <Box dx="4400" nx="4008" dy="204" ny="104" />
+            <Box dx="4000" nx="400" dy="304" ny="4" />
+        </Wall>
+
+        <Obj1 name="Transmission_Zone">
+            <Box dx="4600" nx="400" dy="154" ny="8" />
+        </Obj1>
+
+        <Obj2 name="Reflection_Zone">
+            <Box dx="1500" nx="400" dy="154" ny="8" />
+        </Obj2>
+    </Geometry>
+
+    <Model>
+        <Param name="Gravity" value="0.00209424" />
+        <Param name="InletVelocity" value="0" />
+        <Param name="EnergySink" value="0" />
+        <Param name="EnergySink2" value="0" />
+        <Param name="Height" value="9.55" />
+
+        <Param name="WaveErrorInObj" value="-1.0" />
+        <Param name="WaveError2InObj" value="-1.0" />
+        <Param name="PenaltyInObj" value="-5e-9" />  
+
+        <Param name="nu" value="0.000228" />
+
+        <Param name="Adjnt_start_Obj1" value="34000" />
+        <Param name="Adjnt_start_Obj2" value="42000" />
+        <Param name="Adjnt_end" value="65000" />
+        
+
+        <Control Iterations="65000">
+            <CSV file="kp/shallow_water/thesis/inlet_packet.csv" Time="iter">
+                <Param name="Height" value="h_inlet+9.55" zone="Inlet" />
+            </CSV>
+        </Control>
+    </Model>
+
+    <LoadMemoryDump file="output/optimization_03_memory_dump_03" />
+
+    <VTK Iterations="65000" what="W"/>
+    <Log Iterations="100"/>
+
+    <InternalTopology/>
+    
+    <Optimize MaxEvaluations="50">
+        
+        <Adjoint NumberOfSnaps="16" type="unsteady">
+            <Solve Iterations="65000"/>
+        </Adjoint>
+    </Optimize>
+
+    <SaveMemoryDump file="memory_dump_04" />
+
+</CLBConfig>

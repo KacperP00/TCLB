@@ -1,5 +1,0 @@
-RAPORT Z ANALIZY WIDMOWEJ - CZYSTY KANAŁ (BASIC)
-================================================
-Średnie odbicie amplitudowe (200-400 LU): 0.18%
-Średnia transmisja amplitudowa (200-400 LU): 22.30%
-Dyssypacja (Tłumienie lepkosciowe w wodzie): 94.69%

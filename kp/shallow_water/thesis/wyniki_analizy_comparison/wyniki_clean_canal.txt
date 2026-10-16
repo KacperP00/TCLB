@@ -1,5 +1,0 @@
-RAPORT Z ANALIZY WIDMOWEJ - CZYSTY KANAŁ (BASELINE)
-===================================================
-Średni współczynnik odbicia (200-400 LU): 0.18% (Oczekiwane ~0.00%)
-Średni współczynnik transmisji (200-400 LU): 10.42%
-Wypadkowa dyssypacja lepkościowa (200-400 LU): 89.40%

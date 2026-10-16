@@ -1,5 +1,0 @@
-RAPORT Z ANALIZY WIDMOWEJ - EUVE (BASIC)
-================================================
-Średnie odbicie amplitudowe (200-400 LU): 100.20%
-Średnia transmisja amplitudowa (200-400 LU): 12.95%
-Dyssypacja (Tłumienie lepkosciowe w wodzie): -31.61%

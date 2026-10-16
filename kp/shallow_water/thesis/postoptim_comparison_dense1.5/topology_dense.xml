@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='utf-8'?>
+<CLBConfig version="2.0" output="output/" permissive="false">
+    <Geometry nx="12624" ny="462">
+        <MRT><Box /></MRT>
+        
+        <WPressure name="Inlet">
+            <Box dx="0" nx="1" dy="156" ny="150" />
+        </WPressure>
+        
+        <DesignSpace>
+            <Box dx="6000" nx="600" dy="6" ny="150" />
+            <Box dx="6000" nx="600" dy="306" ny="150" />
+        </DesignSpace>
+        
+        <Wall name="Outlet">
+            <Box dx="12600" nx="24" />
+        </Wall>
+        
+        <Wall>
+            <Box dx="0" nx="6000" dy="0" ny="156" />
+            <Box dx="6600" nx="6012" dy="0" ny="156" />
+            <Box dx="6000" nx="600" dy="0" ny="6" />
+
+            <Box dx="0" nx="6000" dy="306" ny="156" />
+            <Box dx="6600" nx="6012" dy="306" ny="156" />
+            <Box dx="6000" nx="600" dy="456" ny="6" />
+            <STL file="kp/shallow_water/thesis/dense_mesh_topology_00.stl" />
+        </Wall>
+
+        <Obj1 name="Transmission_Zone">
+            <Box dx="6900" nx="600" dy="231" ny="12" />
+        </Obj1>
+
+        <Obj2 name="Reflection_Zone">
+            <Box dx="2250" nx="600" dy="231" ny="12" />
+        </Obj2>
+    </Geometry>
+
+    <Model>
+        <Param name="Gravity" value="0.00209424" />
+        <Param name="InletVelocity" value="0" />
+        <Param name="EnergySink" value="0" />
+        <Param name="EnergySink2" value="0" />
+        <Param name="Height" value="9.55" />
+
+        <Param name="WaveErrorInObj" value="-1.0" />
+        <Param name="WaveError2InObj" value="-1.0" />
+
+        <Param name="nu" value="0.000342" />
+
+        <Param name="Adjnt_start_Obj1" value="51000" />
+        <Param name="Adjnt_start_Obj2" value="63000" />
+        <Param name="Adjnt_end" value="97500" />
+        
+        <Control Iterations="106500">
+            <CSV file="kp/shallow_water/thesis/inlet_packet_1_5x.csv" Time="iter">
+                <Param name="Height" value="h_inlet+9.55" zone="Inlet" />
+            </CSV>
+        </Control>
+    </Model>
+
+    <VTK Iterations="250" what="Rho"/>
+    <Log Iterations="7500"/>
+    <Solve Iterations="106500"/>
+</CLBConfig>

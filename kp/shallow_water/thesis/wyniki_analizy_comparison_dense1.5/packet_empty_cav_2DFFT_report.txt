@@ -1,0 +1,4 @@
+RAPORT Z SZEROKOPASMOWEJ ANALIZY 2D FFT (PACZKA FALOWA)
+=======================================================
+Srednie Odbicie Amplitudowe (C_R) w pasmie 200-400 LU: 2.42%
+Srednia Transmisja Amplitudowa (C_T) w pasmie 200-400 LU: 7.28%

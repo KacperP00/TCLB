@@ -1,0 +1,9 @@
+RAPORT R/T NA PLASZCZYZNACH ABSORBERA (dopasowanie dwukierunkowe)
+================================================================
+Zakres wiarygodny: 228-346 LU (16 binow)
+Plaszczyzny: wejscie x=4000, wyjscie x=4400 (odcinek 400 LU)
+Odbicie  R (amplitudowe): 0.05%
+Transmisja T (amplitudowa): 78.08%
+Dyssypacja D = 1-R^2-T^2: 39.03%  (zawiera tlumienie numeryczne odcinka: T_baza = 77.9%)
+Tlumienie alpha (przed): 6.26e-04 1/LU, predkosc fazowa 0.1393 (c = 0.1414); fala odbita za absorberem R_down = 0.1%
+Jakosc dopasowania R^2: 1.000 (przed), 1.000 (za)

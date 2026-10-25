@@ -36,4 +36,5 @@ Rplots.pdf
 env/
 venv/
 tmp.job.scr
-athena_fourth_numbering
+athena_fourth_numberingframes/
+*Zone.Identifier*

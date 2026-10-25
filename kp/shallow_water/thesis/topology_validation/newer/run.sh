@@ -37,7 +37,7 @@ export USE_BOTTLENECK=0
 cd /net/people/plgrid/plgkpiechocki/TCLB
 
 TCLB_EXEC="/net/people/plgrid/plgkpiechocki/TCLB/CLB/sw/main"
-SCRIPT_DIR="kp/shallow_water/thesis/validation/newer"
+SCRIPT_DIR="kp/shallow_water/thesis/topology_validation/newer"
 THESIS_DIR="kp/shallow_water/thesis"
 OUT_BASE="output/validation_scale_${SCALE}x"
 RES_DIR="${THESIS_DIR}/wyniki_fit_${SCALE}x"

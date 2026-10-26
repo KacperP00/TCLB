@@ -42,8 +42,8 @@ THESIS_DIR="kp/shallow_water/thesis"
 OUT_BASE="output/validation_scale_${SCALE}x"
 RES_DIR="${THESIS_DIR}/wyniki_fit_${SCALE}x"
 
-# Dlugosc rekordu (iteracje przy skali 1.0x): paczka 65000 = jak w optymalizacji, fala ciagla 71000 (dluzsze okno stanu ustalonego)
-PACKET_ITERS=65000
+# Dlugosc rekordu (iteracje przy skali 1.0x): paczka 71000 = jak w optymalizacji, fala ciagla 71000 (dluzsze okno stanu ustalonego)
+PACKET_ITERS=71000
 SINGLE_ITERS=71000
 
 PACKET_CSV="${THESIS_DIR}/inlet_packet_${SCALE}x.csv"

@@ -7,7 +7,7 @@ import pandas as pd
 # Argumenty: 1: mnoznik skali, 2: sciezka wyjsciowa CSV
 scale = float(sys.argv[1]) if len(sys.argv) > 1 else 1.0
 output_csv = sys.argv[2] if len(sys.argv) > 2 else f"kp/shallow_water/thesis/inlet_packet_{scale}x.csv"
-base_iters = float(sys.argv[3]) if len(sys.argv) > 3 else 65000.0   # 3: dlugosc rekordu na siatce 1.0x (musi byc = SOLVE_ITERS)
+base_iters = float(sys.argv[3]) if len(sys.argv) > 3 else 71000.0   # 3: dlugosc rekordu na siatce 1.0x (musi byc = SOLVE_ITERS)
 
 g = 0.00209424
 H = 9.55

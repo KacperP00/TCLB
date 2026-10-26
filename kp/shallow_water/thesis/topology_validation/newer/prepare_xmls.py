@@ -9,7 +9,7 @@ out_xml_path = sys.argv[3]
 out_dir = sys.argv[4]
 csv_file = sys.argv[5]
 stl_file = sys.argv[6] if len(sys.argv) > 6 else ""
-base_iters = float(sys.argv[7]) if len(sys.argv) > 7 else 65000.0   # 7: dlugosc rekordu na siatce 1.0x
+base_iters = float(sys.argv[7]) if len(sys.argv) > 7 else 71000.0   # 7: dlugosc rekordu na siatce 1.0x
 
 def sc(val):
     # FIX-A1: zaokraglanie 'half-up' (round() w Pythonie zaokragla .5 do parzystej, np. round(62.5)=62 ale round(91.5)=92)

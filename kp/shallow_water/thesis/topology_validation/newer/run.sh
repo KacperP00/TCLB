@@ -94,7 +94,7 @@ for model_name in "${!templates[@]}"; do
     mpirun $TCLB_EXEC $temp_xml
 
     python3 $SCRIPT_DIR/diagnostics.py $run_out_dir "single_${model_name}" $SCALE $RES_DIR $BASE_LAMBDA
-    rm ${run_out_dir}*.vti
+    # rm ${run_out_dir}*.vti
 done
 
 echo "=== 4. GENEROWANIE RAPORTU ==="

@@ -60,7 +60,7 @@
     </Model>
 
 
-    <VTK Iterations="200" what="Rho"/>
+    <VTK Iterations="10" what="W"/>
     <Log Iterations="200"/>
     <Solve Iterations="71000"/>
 

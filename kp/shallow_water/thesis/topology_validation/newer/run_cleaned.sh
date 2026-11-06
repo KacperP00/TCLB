@@ -46,10 +46,10 @@ RES_DIR="${THESIS_DIR}/wyniki_fit_clean_${SCALE}x"
 PACKET_ITERS=71000
 SINGLE_ITERS=71000
 
-PACKET_CSV="${THESIS_DIR}/inlet_packet_${SCALE}x.csv"
-SINGLE_CSV="${THESIS_DIR}/inlet_wave_${SCALE}x.csv"
 BASE_STL="${THESIS_DIR}/cleaned_topology_01.stl"
-SCALED_STL="${THESIS_DIR}/topology_${SCALE}x.stl"
+PACKET_CSV="${THESIS_DIR}/inlet_packet_clean_${SCALE}x.csv"
+SINGLE_CSV="${THESIS_DIR}/inlet_wave_clean_${SCALE}x.csv"
+SCALED_STL="${THESIS_DIR}/topology_clean_${SCALE}x.stl"
 
 # Wygenerowane XML-e zostaja do wgladu (male pliki), nie sa usuwane
 XML_DIR="${RES_DIR}/xml"
@@ -61,10 +61,7 @@ python3 $SCRIPT_DIR/gen_gauss.py $SCALE $PACKET_CSV $PACKET_ITERS
 python3 $SCRIPT_DIR/gen_singlewave.py $SCALE $BASE_LAMBDA $SINGLE_CSV $SINGLE_ITERS
 
 declare -A templates=(
-    ["clean_canal"]="$SCRIPT_DIR/clean_canal.xml.tpl"
-    ["euve"]="$SCRIPT_DIR/euve.xml.tpl"
     ["topology"]="$SCRIPT_DIR/topology.xml.tpl"
-    ["empty_cav"]="$SCRIPT_DIR/empty_cavities.xml.tpl"
 )
 
 echo "=== 2. ETAP 1: PACZKI FALOWE (${SCALE}x) ==="
@@ -94,7 +91,7 @@ for model_name in "${!templates[@]}"; do
     mpirun $TCLB_EXEC $temp_xml
 
     python3 $SCRIPT_DIR/diagnostics.py $run_out_dir "single_${model_name}" $SCALE $RES_DIR $BASE_LAMBDA
-    rm ${run_out_dir}*.vti
+    # rm ${run_out_dir}*.vti
 done
 
 echo "=== 4. GENEROWANIE RAPORTU ==="

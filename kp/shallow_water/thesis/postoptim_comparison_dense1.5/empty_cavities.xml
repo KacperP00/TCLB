@@ -59,6 +59,6 @@
     </Model>
 
     <VTK Iterations="250" what="Rho"/>
-    <Log Iterations="7500"/>
+    <Log Iterations="10650"/>
     <Solve Iterations="106500"/>
 </CLBConfig>

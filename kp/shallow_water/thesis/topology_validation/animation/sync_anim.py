@@ -9,7 +9,7 @@ from matplotlib.animation import FuncAnimation, FFMpegWriter, PillowWriter
 # Argumenty: 1: skala (np. 1.0), 2: tryb ("packet" lub "single"), 3: plik wyjsciowy (.mp4 lub .gif)
 scale = float(sys.argv[1]) if len(sys.argv) > 1 else 1.0
 mode = sys.argv[2] if len(sys.argv) > 2 else "packet"
-out_file = sys.argv[3] if len(sys.argv) > 3 else f"anim_sync_{mode}_{scale:g}x.mp4"
+out_file = sys.argv[3] if len(sys.argv) > 3 else f"anim_sync_{mode}_{scale:.1f}x.mp4"
 
 H_BASE = 9.55
 VMIN, VMAX = -0.045, 0.045
@@ -18,10 +18,10 @@ T_START, T_END = int(round(26000 * scale)), int(round(66000 * scale))
 
 # Konfiguracja 4 katalogow i opcjonalnych plikow STL do nalozenia maski scian
 CASES = [
-    ("1. Topologia Pierwotna", f"output/validation_scale_{scale:g}x/topology_{mode}_{scale:g}x", f"kp/shallow_water/thesis/topology_{scale:g}x.stl"),
-    ("2. Topologia Oczyszczona (area >= 50)", f"output/validation_clean_scale_{scale:g}x/topology_{mode}_{scale:g}x", f"kp/shallow_water/thesis/topology_clean_{scale:g}x.stl"),
-    ("3. Model analityczny Euve et al.", f"output/validation_scale_{scale:g}x/euve_{mode}_{scale:g}x", None),
-    ("4. Puste Wneki (brak topologii)", f"output/validation_scale_{scale:g}x/empty_cav_{mode}_{scale:g}x", None),
+    ("1. Topologia Pierwotna", f"output/validation_scale_{scale:.1f}x/topology_{mode}_{scale:.1f}x", f"kp/shallow_water/thesis/topology_{scale:.1f}x.stl"),
+    ("2. Topologia Oczyszczona (area >= 50)", f"output/validation_clean_scale_{scale:.1f}x/topology_{mode}_{scale:.1f}x", f"kp/shallow_water/thesis/topology_clean_{scale:.1f}x.stl"),
+    ("3. Model analityczny Euve et al.", f"output/validation_scale_{scale:.1f}x/euve_{mode}_{scale:.1f}x", None),
+    ("4. Puste Wneki (brak topologii)", f"output/validation_scale_{scale:.1f}x/empty_cav_{mode}_{scale:.1f}x", None),
 ]
 
 def iter_of(path):
@@ -96,7 +96,7 @@ if __name__ == "__main__":
         ax.set_ylabel("Y [LU]")
         ims.append(im)
 
-    axes[-1].set_xlabel(f"Wspolrzedna X (okolice absorbera: wneka + 2*L z obu stron, skala {scale:g}x) [LU]")
+    axes[-1].set_xlabel(f"Wspolrzedna X (okolice absorbera: wneka + 2*L z obu stron, skala {scale:.1f}x) [LU]")
     suptitle = fig.suptitle(f"Ewolucja pola falowego ({mode}) | Iteracja: {its[0]}", fontsize=12, fontweight="bold")
     fig.colorbar(ims[0], ax=axes.ravel().tolist(), orientation="vertical", fraction=0.018, pad=0.02, label="eta = Rho - 9.55 [LU]")
 

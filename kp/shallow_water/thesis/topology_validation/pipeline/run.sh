@@ -79,7 +79,7 @@ for model_name in "${!templates[@]}"; do
     mpirun $TCLB_EXEC $temp_xml
 
     python3 $SCRIPT_DIR/diagnostics.py $run_out_dir "packet_${model_name}" $SCALE $RES_DIR
-    rm ${run_out_dir}*.vti
+    # rm ${run_out_dir}*.vti
 done
 
 echo "=== 3. ETAP 2: FALA CIAGLA (${SCALE}x) ==="

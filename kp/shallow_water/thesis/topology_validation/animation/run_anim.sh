@@ -33,13 +33,13 @@ export USE_BOTTLENECK=0
 # Opcjonalnie: bezgłowy tryb renderowania dla Matplotlib, żeby nie szukało serwera X11
 export MPLBACKEND=Agg
 
-SCRIPT_DIR="kp/shallow_water/thesis/topology_validation/newer"
+SCRIPT_DIR="kp/shallow_water/thesis/topology_validation/animation"
 SCALE=1.0
 MODE="packet"  # lub "single"
-OUTPUT_MP4="anim_sync_packet_1.0x.mp4"
+OUTPUT_MP4="kp/shallow_water/thesis/topology_validation/animation/results/anim_sync_packet_1.0x.mp4"
 
 echo "=== URUCHAMIANIE GENEROWANIA ANIMACJI ==="
-python3 ${THESIS_DIR}/make_sync_anim.py ${SCALE} ${MODE} ${OUTPUT_MP4}
+python3 ${SCRIPT_DIR}/make_sync_anim.py ${SCALE} ${MODE} ${OUTPUT_MP4}
 
 echo "=== ZAKOŃCZONO POMYŚLNIE ==="
 date

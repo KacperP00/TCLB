@@ -9,7 +9,7 @@ from matplotlib.animation import FuncAnimation, FFMpegWriter, PillowWriter
 # Argumenty: 1: skala (np. 1.0), 2: tryb ("packet" lub "single"), 3: plik wyjsciowy (.mp4 lub .gif)
 scale = float(sys.argv[1]) if len(sys.argv) > 1 else 1.0
 mode = sys.argv[2] if len(sys.argv) > 2 else "packet"
-out_file = sys.argv[3] if len(sys.argv) > 3 else f"anim_sync_{mode}_{scale:.1f}x.mp4"
+out_file = sys.argv[3] if len(sys.argv) > 3 else f"anim_sync_{mode}_{scale:.1f}x.gif"
 
 H_BASE = 9.55
 VMIN, VMAX = -0.045, 0.045

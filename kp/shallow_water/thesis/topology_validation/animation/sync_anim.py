@@ -12,7 +12,7 @@ mode = sys.argv[2] if len(sys.argv) > 2 else "packet"
 out_file = sys.argv[3] if len(sys.argv) > 3 else f"anim_sync_{mode}_{scale:.1f}x.gif"
 
 H_BASE = 9.55
-VMIN, VMAX = -0.045, 0.045
+VMIN, VMAX = -0.015, 0.015
 X_MIN, X_MAX = int(round(3200 * scale)), int(round(5200 * scale))
 T_START, T_END = int(round(26000 * scale)), int(round(66000 * scale))
 
@@ -106,8 +106,8 @@ if __name__ == "__main__":
         suptitle.set_text(f"Ewolucja pola falowego ({mode}) | Iteracja: {its[idx]}")
         return ims + [suptitle]
 
-    anim = FuncAnimation(fig, update, frames=n_frames, interval=40, blit=False)
-    writer = PillowWriter(fps=25) if out_file.endswith(".gif") else FFMpegWriter(fps=25, bitrate=3000)
+    anim = FuncAnimation(fig, update, frames=n_frames, interval=80, blit=False)
+    writer = PillowWriter(fps=12) if out_file.endswith(".gif") else FFMpegWriter(fps=25, bitrate=3000)
     anim.save(out_file, writer=writer)
     plt.close(fig)
     print(f"Zapisano zsynchronizowana animacje: {out_file}")

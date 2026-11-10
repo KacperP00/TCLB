@@ -35,9 +35,10 @@ export USE_BOTTLENECK=0
 export MPLBACKEND=Agg
 
 SCRIPT_DIR="kp/shallow_water/thesis/topology_validation/animation"
-SCALE=1.0
-MODE="packet"  # lub "single"
-OUTPUT_MP4="kp/shallow_water/thesis/topology_validation/animation/results/anim_sync_packet_1.0x.mp4"
+SCALE=${1:-1.0}
+MODE=${2:-"packet"}
+# MODE="packet"  # lub "single"
+OUTPUT_MP4="kp/shallow_water/thesis/topology_validation/animation/results/anim_sync_${MODE}_${SCALE}x.mp4"
 
 echo "=== URUCHAMIANIE GENEROWANIA ANIMACJI ==="
 python3 ${SCRIPT_DIR}/sync_anim.py ${SCALE} ${MODE} ${OUTPUT_MP4}

@@ -107,7 +107,7 @@ if __name__ == "__main__":
         return ims + [suptitle]
 
     anim = FuncAnimation(fig, update, frames=n_frames, interval=80, blit=False)
-    writer = PillowWriter(fps=12) if out_file.endswith(".mp4") else FFMpegWriter(fps=25, bitrate=3000)
-    anim.save(out_file, writer=writer)
+    writer = FFMpegWriter(fps=12, bitrate=3000, codec="libx264") if out_file.endswith(".mp4") else FFMpegWriter(fps=25, bitrate=3000)
+    anim.save(out_file, writer=writer, dpi=150)
     plt.close(fig)
     print(f"Zapisano zsynchronizowana animacje: {out_file}")

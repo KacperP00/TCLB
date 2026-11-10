@@ -8,7 +8,7 @@
 #SBATCH --ntasks-per-node=1
 #SBATCH --gres=gpu:1
 #SBATCH --mem=30G
-#SBATCH --time=01:00:00
+#SBATCH --time=00:30:00
 #SBATCH --output=kp/shallow_water/thesis/anim_%j.out
 #SBATCH --error=kp/shallow_water/thesis/anim_%j.err
 

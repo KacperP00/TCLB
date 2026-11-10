@@ -24,6 +24,7 @@ module load GCCcore/11.3.0
 module load libtirpc/1.3.2
 module load OpenMPI/4.1.4
 module load Python/3.10.4
+module load FFmpeg
 module load R/4.2.3
 module unload SciPy-bundle/2022.05
 
@@ -36,7 +37,7 @@ export MPLBACKEND=Agg
 SCRIPT_DIR="kp/shallow_water/thesis/topology_validation/animation"
 SCALE=1.0
 MODE="packet"  # lub "single"
-OUTPUT_MP4="kp/shallow_water/thesis/topology_validation/animation/results/anim_sync_packet_1.0x.gif"
+OUTPUT_MP4="kp/shallow_water/thesis/topology_validation/animation/results/anim_sync_packet_1.0x.mp4"
 
 echo "=== URUCHAMIANIE GENEROWANIA ANIMACJI ==="
 python3 ${SCRIPT_DIR}/sync_anim.py ${SCALE} ${MODE} ${OUTPUT_MP4}

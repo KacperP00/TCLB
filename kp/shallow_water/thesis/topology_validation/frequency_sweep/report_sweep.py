@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 # Pobranie skali z argumentu
 scale = float(sys.argv[1]) if len(sys.argv) > 1 else 1.0
-res_dir = f"kp/shallow_water/thesis/wyniki_sweep_{scale:g}x"
+res_dir = f"kp/shallow_water/thesis/wyniki_sweep_{scale:.1f}x"
 
 if not os.path.exists(res_dir):
     sys.exit(f"Brak katalogu {res_dir}")

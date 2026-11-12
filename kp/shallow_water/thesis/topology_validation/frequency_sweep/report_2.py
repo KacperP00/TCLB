@@ -65,7 +65,7 @@ for ax, (col, ylabel) in zip(axes, metrics):
 axes[0].set_title(f"Zestawienie absorpcji (D), odbicia (R) i transmisji (T) – siatka {scale:.1f}x",
                   fontsize=12, fontweight="bold")
 axes[-1].set_xlabel("Dlugosc fali λ [LU]", fontsize=11)
-axes[-1].set_xticks(base_df["Dlugosc_Fali_1.0x"])
+axes[-1].set_xticks(base_df["Dlugosc_Fali_1x"])
 axes[-1].set_xlim(190, 410)
 axes[-1].legend(loc="upper center", bbox_to_anchor=(0.5, -0.22), ncol=3, fontsize=9.5)
 

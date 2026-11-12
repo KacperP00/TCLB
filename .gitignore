@@ -41,3 +41,6 @@ athena_fourth_numberingframes/
 kp/shallow_water/thesis/wyniki*
 *.gif
 *.mp4
+kp/shallow_water/thesis/topology_validation/frequency_sweep/*.csv
+kp/shallow_water/thesis/topology_validation/animation/*.mp4
+kp/shallow_water/thesis/topology_validation/animation/*.gif

@@ -51,7 +51,7 @@ for label, df in all_data.items():
     col_name = f"Absorpcja_{label.replace(' ', '_')}_pct"
     df_master[col_name] = df["D_excess"].values * 100.0
 
-csv_out = f"{res_dir}/MASTER_SWEEP_ABSORPCJI_{scale:g}x.csv"
+csv_out = f"{res_dir}/MASTER_SWEEP_ABSORPCJI_{scale:.1f}x.csv"
 df_master.to_csv(csv_out, index=False)
 print(f"Zapisano dane tabelaryczne: {csv_out}")
 
@@ -60,16 +60,16 @@ plt.figure(figsize=(12, 7))
 for label, df in all_data.items():
     plt.plot(df["Dlugosc_Fali_1x"], df["D_excess"] * 100.0, styles[label], lw=2.5, markersize=6, label=label)
 
-plt.axvline(294.0, color="k", linestyle="--", label="Cel Projektowy (294 LU)")
-plt.title(f"Zestawienie Absorpcji Netto ze Sweepu Harmonicznego (Skala {scale:g}x)")
-plt.xlabel("Ekwiwalentna dlugosc fali na siatce 1.0x [LU]")
+plt.axvline(294.0, color="k", linestyle="--", label="Cel Euve et al. (294 LU)")
+plt.title(f"Zestawienie Absorpcji dla zbioru fal harmonicznych (Skala {scale:.1f}x)")
+plt.xlabel("Dlugosc fali na siatce 1.0x [LU]")
 plt.ylabel("Absorpcja Netto [%]")
 plt.xlim(190, 410)
 plt.ylim(-2, 105)
 plt.legend(loc="lower left")
 plt.grid(True, alpha=0.4)
 
-png_out = f"{res_dir}/MASTER_Wykres_Sweep_{scale:g}x.png"
+png_out = f"{res_dir}/MASTER_Wykres_Sweep_{scale:.1f}x.png"
 plt.savefig(png_out, dpi=300)
 plt.close()
 print(f"Zapisano wykres: {png_out}")

@@ -40,14 +40,14 @@ for label, df in data.items():
     master[f"R_{tag}_pct"] = df["R"].values * 100.0
     master[f"T_{tag}_pct"] = df["T_comp"].values * 100.0
 
-csv_out = f"{res_dir}/MASTER_SWEEP_RT_{scale:g}x.csv"
+csv_out = f"{res_dir}/MASTER_SWEEP_RT_{scale:.1f}x.csv"
 master.to_csv(csv_out, index=False)
 print(f"Zapisano pelna tabele D/R/T: {csv_out}")
 
 # Generowanie 3-panelowego wykresu: Absorpcja D, Odbicie R, Transmisja T
 fig, axes = plt.subplots(3, 1, figsize=(10, 10), sharex=True)
 metrics = [
-    ("D_excess", "Absorpcja D [%]\n(D = 1 − R² − T²)"),
+    ("D_excess", "Absorpcja D [%]"),
     ("R", "Odbicie R [%]"),
     ("T_comp", "Transmisja T [%]"),
 ]
@@ -57,20 +57,20 @@ for ax, (col, ylabel) in zip(axes, metrics):
         if label in data:
             ax.plot(data[label]["Dlugosc_Fali_1x"], data[label][col] * 100.0,
                     style, lw=2.2, markersize=5.5, label=label)
-    ax.axvline(294.0, color="k", linestyle="--", lw=1.1, alpha=0.7, label="Cel projektowy (294 LU)")
+    ax.axvline(294.0, color="k", linestyle="--", lw=1.1, alpha=0.7, label="Cel Euve et al. (294 LU)")
     ax.set_ylabel(ylabel, fontsize=10.5)
     ax.set_ylim(-2, 105)
     ax.grid(True, alpha=0.35)
 
-axes[0].set_title(f"Zestawienie absorpcji (D), odbicia (R) i transmisji (T) – siatka {scale:g}x",
+axes[0].set_title(f"Zestawienie absorpcji (D), odbicia (R) i transmisji (T) – siatka {scale:.1f}x",
                   fontsize=12, fontweight="bold")
 axes[-1].set_xlabel("Dlugosc fali λ [LU]", fontsize=11)
-axes[-1].set_xticks(base_df["Dlugosc_Fali_1x"])
+axes[-1].set_xticks(base_df["Dlugosc_Fali_1.0x"])
 axes[-1].set_xlim(190, 410)
 axes[-1].legend(loc="upper center", bbox_to_anchor=(0.5, -0.22), ncol=3, fontsize=9.5)
 
 plt.tight_layout()
-png_out = f"{res_dir}/MASTER_Wykres_Sweep_DRT_{scale:g}x.png"
+png_out = f"{res_dir}/MASTER_Wykres_Sweep_DRT_{scale:.1f}x.png"
 plt.savefig(png_out, dpi=300, bbox_inches="tight")
 plt.close()
 print(f"Zapisano wykres 3-panelowy: {png_out}")

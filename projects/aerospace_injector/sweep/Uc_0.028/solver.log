@@ -1,0 +1,392 @@
+MPMD: TCLB: local:0/1 work:0/1 ---  connected to:
+[  ]    #### : -------------------------------------------------------------------------
+[  ]    #### : -  CLB version:        v6.6.1-2-gb7135fbd                               -
+[  ]    #### : -        Model:         d2q9_csf_viscstep                               -
+[  ]    #### : -------------------------------------------------------------------------
+[  ]    #### : Setting output path to: config
+[ 0]    ---- : Selecting device 0/1
+[ 0] warning ! No "Units" element in config file
+[  ]    ==== : Mesh size in config file: 1280x64x1
+[  ]    ---- : Global lattice size: 1280x64x1
+[  ]    ==== : Max region size: 81920. Mesh size 81920. Overhead:  0%
+[  ]    ---- : Local lattice size: 1280x64x1
+[  ]    ---- :   Threads  |      Action
+[  ]    ---- :    32x16   | Primal , NoGlobals , BaseIteration
+[  ]    ---- :    32x16   | Tangent , NoGlobals , BaseIteration
+[  ]    ---- :    32x16   | Optimize , NoGlobals , BaseIteration
+[  ]    ---- :    32x16   | SteadyAdjoint , NoGlobals , BaseIteration
+[  ]    ---- :    32x16   | Primal , IntegrateGlobals , BaseIteration
+[  ]    ---- :    32x16   | Tangent , IntegrateGlobals , BaseIteration
+[  ]    ---- :    32x16   | Optimize , IntegrateGlobals , BaseIteration
+[  ]    ---- :    32x16   | SteadyAdjoint , IntegrateGlobals , BaseIteration
+[  ]    ---- :    32x16   | Primal , OnlyObjective , BaseIteration
+[  ]    ---- :    32x16   | Tangent , OnlyObjective , BaseIteration
+[  ]    ---- :    32x16   | Optimize , OnlyObjective , BaseIteration
+[  ]    ---- :    32x16   | SteadyAdjoint , OnlyObjective , BaseIteration
+[  ]    ---- :    32x16   | Primal , NoGlobals , CalcPhi
+[  ]    ---- :    32x16   | Tangent , NoGlobals , CalcPhi
+[  ]    ---- :    32x16   | Optimize , NoGlobals , CalcPhi
+[  ]    ---- :    32x16   | SteadyAdjoint , NoGlobals , CalcPhi
+[  ]    ---- :    32x16   | Primal , IntegrateGlobals , CalcPhi
+[  ]    ---- :    32x16   | Tangent , IntegrateGlobals , CalcPhi
+[  ]    ---- :    32x16   | Optimize , IntegrateGlobals , CalcPhi
+[  ]    ---- :    32x16   | SteadyAdjoint , IntegrateGlobals , CalcPhi
+[  ]    ---- :    32x16   | Primal , OnlyObjective , CalcPhi
+[  ]    ---- :    32x16   | Tangent , OnlyObjective , CalcPhi
+[  ]    ---- :    32x16   | Optimize , OnlyObjective , CalcPhi
+[  ]    ---- :    32x16   | SteadyAdjoint , OnlyObjective , CalcPhi
+[  ]    ---- :    32x16   | Primal , NoGlobals , BaseInit
+[  ]    ---- :    32x16   | Tangent , NoGlobals , BaseInit
+[  ]    ---- :    32x16   | Optimize , NoGlobals , BaseInit
+[  ]    ---- :    32x16   | SteadyAdjoint , NoGlobals , BaseInit
+[  ]    ---- :    32x16   | Primal , IntegrateGlobals , BaseInit
+[  ]    ---- :    32x16   | Tangent , IntegrateGlobals , BaseInit
+[  ]    ---- :    32x16   | Optimize , IntegrateGlobals , BaseInit
+[  ]    ---- :    32x16   | SteadyAdjoint , IntegrateGlobals , BaseInit
+[  ]    ---- :    32x16   | Primal , OnlyObjective , BaseInit
+[  ]    ---- :    32x16   | Tangent , OnlyObjective , BaseInit
+[  ]    ---- :    32x16   | Optimize , OnlyObjective , BaseInit
+[  ]    ---- :    32x16   | SteadyAdjoint , OnlyObjective , BaseInit
+[  ]    ---- :    32x16   | Primal , NoGlobals , CalcWallNormall
+[  ]    ---- :    32x16   | Tangent , NoGlobals , CalcWallNormall
+[  ]    ---- :    32x16   | Optimize , NoGlobals , CalcWallNormall
+[  ]    ---- :    32x16   | SteadyAdjoint , NoGlobals , CalcWallNormall
+[  ]    ---- :    32x16   | Primal , IntegrateGlobals , CalcWallNormall
+[  ]    ---- :    32x16   | Tangent , IntegrateGlobals , CalcWallNormall
+[  ]    ---- :    32x16   | Optimize , IntegrateGlobals , CalcWallNormall
+[  ]    ---- :    32x16   | SteadyAdjoint , IntegrateGlobals , CalcWallNormall
+[  ]    ---- :    32x16   | Primal , OnlyObjective , CalcWallNormall
+[  ]    ---- :    32x16   | Tangent , OnlyObjective , CalcWallNormall
+[  ]    ---- :    32x16   | Optimize , OnlyObjective , CalcWallNormall
+[  ]    ---- :    32x16   | SteadyAdjoint , OnlyObjective , CalcWallNormall
+[  ]    #### : [0] Cumulative allocation of 14611712 b (14.6 MB)
+[  ]    ---- : Creating geom size:81920
+[  ]    #### : Setting output path to: config
+[  ]    #### : Setting output path to: projects/aerospace_injector/sweep/Uc_0.028/output/config
+[  ]    ---- : loading geometry ...
+[  ]    ---- : overwriting all flags
+[  ]    ---- : Setting number of zones to 6
+[  ]    ---- : Setting PhaseField in zone  (-1) to -0.5 (-0.500000)
+[ 0] WARNING ! Zone-specific settings in zone 0 were overwritten from 0.500000 to -0.500000
+[  ]    ---- : Setting PhaseField in zone inlet_jet (3) to 0.5 (0.500000)
+[  ]    ---- : Setting PhaseField in zone fuel_nozzle (4) to 0.5 (0.500000)
+[  ]    ---- : Setting Viscosity to 0.025 (0.025000)
+[  ]    ---- : [0] Settings [viscosity] to 0.025000
+[  ]    ---- : [0] Settings [one over relaxation time] to 1.739130
+[  ]    ---- : Setting Viscosity_l to 0.012 (0.012000)
+[  ]    ---- : [0] Settings [viscosity] to 0.012000
+[  ]    ---- : [0] Settings [one over relaxation time, light phase] to 1.865672
+[  ]    ---- : Setting ViscosityStepWidth to 0.25 (0.250000)
+[  ]    ---- : [0] Settings [ViscosityStepWidth] to 0.250000
+[  ]    ---- : Setting Mobility to 0.010 (0.010000)
+[  ]    ---- : [0] Settings [Mobility] to 0.010000
+[  ]    ---- : Setting IntWidth to 0.333 (0.333000)
+[  ]    ---- : [0] Settings [Viscous step width wrt interface width] to 0.333000
+[  ]    ---- : Setting SurfaceTensionRate to 0.090 (0.090000)
+[  ]    ---- : [0] Settings [SurfaceTensionRate] to 0.090000
+[  ]    ---- : Setting WettingAngle in zone  (-1) to 2.50 (2.500000)
+[  ]    ---- : Setting WallAdhesionDecay in zone  (-1) to 0.7 (0.700000)
+[  ]    ---- : Setting PF_Advection_Switch to 1 (1.000000)
+[  ]    ---- : [0] Settings [Parameter to turn on/off advection of phase field - usefull for initialisation] to 1.000000
+[  ]    ---- : Setting VelocityX in zone  (-1) to 0.0 (0.000000)
+[  ]    ---- : Setting VelocityY in zone  (-1) to 0.0 (0.000000)
+[  ]    ---- : Setting VelocityX in zone inlet_main (1) to 0.028 (0.028000)
+[  ]    ---- : Setting VelocityY in zone inlet_jet (3) to 0.008 (0.008000)
+[  ]    ---- : Setting VelocityY in zone fuel_nozzle (4) to 0.008 (0.008000)
+[  ]    ---- : Setting Pressure in zone outlet (2) to 0.0 (0.000000)
+[  ]    ---- : Initializing Lattice ...
+[  ]      3.0 MLBUps      0.47 GB/s [====================]  0s
+[  ]    ---- : Setting action Solve at 36000.000000 iterations
+[  ]    ---- : Setting callback VTK at 500.000000 iterations
+[  ]    ---- : Adding VTK to the solver hands
+[  ]    ---- : Setting callback Failcheck at 500.000000 iterations
+[  ]    ---- : Adding Failcheck to the solver hands
+[  ]     21.3 MLBUps      3.27 GB/s [=                   ]  0s
+[  ]     21.6 MLBUps      3.32 GB/s [===========         ]  1s
+[  ]    ---- :     21.8 MLBUps      3.36 GB/s [====================]
+[  ]    ---- :      500 it writing vtk
+[  ]     18.8 MLBUps      2.90 GB/s [==========          ]  1s
+[  ]     22.4 MLBUps      3.45 GB/s [=================== ]  1s
+[  ]    ---- :     22.5 MLBUps      3.47 GB/s [====================]
+[  ]    ---- :     1000 it writing vtk
+[  ]     19.2 MLBUps      2.96 GB/s [==========          ]  1s
+[  ]     22.7 MLBUps      3.49 GB/s [=================== ]  1s
+[  ]    ---- :     22.7 MLBUps      3.50 GB/s [====================]
+[  ]    ---- :     1500 it writing vtk
+[  ]     19.3 MLBUps      2.97 GB/s [==========          ]  1s
+[  ]     22.7 MLBUps      3.50 GB/s [=================== ]  1s
+[  ]    ---- :     22.6 MLBUps      3.49 GB/s [====================]
+[  ]    ---- :     2000 it writing vtk
+[  ]     19.3 MLBUps      2.97 GB/s [==========          ]  1s
+[  ]     22.7 MLBUps      3.50 GB/s [=================== ]  1s
+[  ]    ---- :     22.7 MLBUps      3.50 GB/s [====================]
+[  ]    ---- :     2500 it writing vtk
+[  ]     19.3 MLBUps      2.98 GB/s [==========          ]  1s
+[  ]     22.7 MLBUps      3.49 GB/s [=================== ]  1s
+[  ]    ---- :     22.7 MLBUps      3.50 GB/s [====================]
+[  ]    ---- :     3000 it writing vtk
+[  ]     19.3 MLBUps      2.97 GB/s [==========          ]  1s
+[  ]     22.7 MLBUps      3.49 GB/s [=================== ]  1s
+[  ]    ---- :     22.8 MLBUps      3.50 GB/s [====================]
+[  ]    ---- :     3500 it writing vtk
+[  ]     19.3 MLBUps      2.97 GB/s [==========          ]  1s
+[  ]     22.7 MLBUps      3.49 GB/s [=================== ]  1s
+[  ]    ---- :     22.6 MLBUps      3.48 GB/s [====================]
+[  ]    ---- :     4000 it writing vtk
+[  ]     19.2 MLBUps      2.96 GB/s [==========          ]  1s
+[  ]     22.7 MLBUps      3.49 GB/s [=================== ]  1s
+[  ]    ---- :     22.6 MLBUps      3.48 GB/s [====================]
+[  ]    ---- :     4500 it writing vtk
+[  ]     19.3 MLBUps      2.97 GB/s [==========          ]  1s
+[  ]     22.6 MLBUps      3.49 GB/s [=================== ]  1s
+[  ]    ---- :     22.6 MLBUps      3.48 GB/s [====================]
+[  ]    ---- :     5000 it writing vtk
+[  ]     19.3 MLBUps      2.97 GB/s [==========          ]  1s
+[  ]     20.2 MLBUps      3.11 GB/s [=================== ]  2s
+[  ]    ---- :     20.8 MLBUps      3.20 GB/s [====================]
+[  ]    ---- :     5500 it writing vtk
+[  ]     18.8 MLBUps      2.90 GB/s [=========           ]  1s
+[  ]     22.6 MLBUps      3.47 GB/s [==================  ]  1s
+[  ]    ---- :     22.6 MLBUps      3.47 GB/s [====================]
+[  ]    ---- :     6000 it writing vtk
+[  ]     18.4 MLBUps      2.84 GB/s [==========          ]  1s
+[  ]     22.6 MLBUps      3.47 GB/s [=================== ]  1s
+[  ]    ---- :     22.4 MLBUps      3.45 GB/s [====================]
+[  ]    ---- :     6500 it writing vtk
+[  ]     19.0 MLBUps      2.92 GB/s [=========           ]  1s
+[  ]     22.6 MLBUps      3.48 GB/s [=================== ]  1s
+[  ]    ---- :     22.5 MLBUps      3.47 GB/s [====================]
+[  ]    ---- :     7000 it writing vtk
+[  ]     19.2 MLBUps      2.96 GB/s [==========          ]  1s
+[  ]     22.6 MLBUps      3.47 GB/s [=================== ]  1s
+[  ]    ---- :     22.7 MLBUps      3.49 GB/s [====================]
+[  ]    ---- :     7500 it writing vtk
+[  ]     19.2 MLBUps      2.96 GB/s [==========          ]  1s
+[  ]     22.5 MLBUps      3.46 GB/s [=================== ]  1s
+[  ]    ---- :     22.7 MLBUps      3.50 GB/s [====================]
+[  ]    ---- :     8000 it writing vtk
+[  ]     19.2 MLBUps      2.95 GB/s [==========          ]  1s
+[  ]     22.6 MLBUps      3.47 GB/s [=================== ]  1s
+[  ]    ---- :     22.6 MLBUps      3.47 GB/s [====================]
+[  ]    ---- :     8500 it writing vtk
+[  ]     19.2 MLBUps      2.96 GB/s [==========          ]  1s
+[  ]     22.6 MLBUps      3.47 GB/s [=================== ]  1s
+[  ]    ---- :     22.6 MLBUps      3.48 GB/s [====================]
+[  ]    ---- :     9000 it writing vtk
+[  ]     19.2 MLBUps      2.95 GB/s [==========          ]  1s
+[  ]     22.5 MLBUps      3.46 GB/s [=================== ]  1s
+[  ]    ---- :     22.6 MLBUps      3.48 GB/s [====================]
+[  ]    ---- :     9500 it writing vtk
+[  ]     19.2 MLBUps      2.96 GB/s [==========          ]  1s
+[  ]     22.6 MLBUps      3.48 GB/s [=================== ]  1s
+[  ]    ---- :     22.6 MLBUps      3.47 GB/s [====================]
+[  ]    ---- :    10000 it writing vtk
+[  ]     19.2 MLBUps      2.96 GB/s [==========          ]  1s
+[  ]     22.5 MLBUps      3.47 GB/s [=================== ]  1s
+[  ]    ---- :     21.6 MLBUps      3.33 GB/s [====================]
+[  ]    ---- :    10500 it writing vtk
+[  ]     19.1 MLBUps      2.95 GB/s [==========          ]  1s
+[  ]     22.6 MLBUps      3.48 GB/s [=================== ]  1s
+[  ]    ---- :     22.4 MLBUps      3.46 GB/s [====================]
+[  ]    ---- :    11000 it writing vtk
+[  ]     19.2 MLBUps      2.96 GB/s [==========          ]  1s
+[  ]     22.6 MLBUps      3.48 GB/s [=================== ]  1s
+[  ]    ---- :     22.6 MLBUps      3.49 GB/s [====================]
+[  ]    ---- :    11500 it writing vtk
+[  ]     19.1 MLBUps      2.95 GB/s [==========          ]  1s
+[  ]     22.5 MLBUps      3.46 GB/s [=================== ]  1s
+[  ]    ---- :     22.5 MLBUps      3.47 GB/s [====================]
+[  ]    ---- :    12000 it writing vtk
+[  ]     19.2 MLBUps      2.95 GB/s [==========          ]  1s
+[  ]     22.5 MLBUps      3.46 GB/s [=================== ]  1s
+[  ]    ---- :     22.5 MLBUps      3.46 GB/s [====================]
+[  ]    ---- :    12500 it writing vtk
+[  ]     19.2 MLBUps      2.95 GB/s [==========          ]  1s
+[  ]     22.5 MLBUps      3.47 GB/s [=================== ]  1s
+[  ]    ---- :     22.4 MLBUps      3.44 GB/s [====================]
+[  ]    ---- :    13000 it writing vtk
+[  ]     19.1 MLBUps      2.94 GB/s [==========          ]  1s
+[  ]     22.5 MLBUps      3.47 GB/s [=================== ]  1s
+[  ]    ---- :     22.4 MLBUps      3.45 GB/s [====================]
+[  ]    ---- :    13500 it writing vtk
+[  ]     19.2 MLBUps      2.96 GB/s [==========          ]  1s
+[  ]     22.5 MLBUps      3.47 GB/s [=================== ]  1s
+[  ]    ---- :     22.6 MLBUps      3.47 GB/s [====================]
+[  ]    ---- :    14000 it writing vtk
+[  ]     19.1 MLBUps      2.95 GB/s [==========          ]  1s
+[  ]     22.3 MLBUps      3.44 GB/s [=================== ]  1s
+[  ]    ---- :     22.5 MLBUps      3.46 GB/s [====================]
+[  ]    ---- :    14500 it writing vtk
+[  ]     19.2 MLBUps      2.96 GB/s [==========          ]  1s
+[  ]     22.6 MLBUps      3.47 GB/s [=================== ]  1s
+[  ]    ---- :     22.6 MLBUps      3.48 GB/s [====================]
+[  ]    ---- :    15000 it writing vtk
+[  ]     19.2 MLBUps      2.95 GB/s [==========          ]  1s
+[  ]     22.6 MLBUps      3.47 GB/s [=================== ]  1s
+[  ]    ---- :     22.5 MLBUps      3.47 GB/s [====================]
+[  ]    ---- :    15500 it writing vtk
+[  ]     19.0 MLBUps      2.93 GB/s [==========          ]  1s
+[  ]     22.5 MLBUps      3.47 GB/s [=================== ]  1s
+[  ]    ---- :     22.5 MLBUps      3.46 GB/s [====================]
+[  ]    ---- :    16000 it writing vtk
+[  ]     19.1 MLBUps      2.95 GB/s [==========          ]  1s
+[  ]     22.5 MLBUps      3.46 GB/s [=================== ]  1s
+[  ]    ---- :     22.6 MLBUps      3.47 GB/s [====================]
+[  ]    ---- :    16500 it writing vtk
+[  ]     19.2 MLBUps      2.95 GB/s [==========          ]  1s
+[  ]     22.4 MLBUps      3.44 GB/s [=================== ]  1s
+[  ]    ---- :     22.6 MLBUps      3.48 GB/s [====================]
+[  ]    ---- :    17000 it writing vtk
+[  ]     19.2 MLBUps      2.95 GB/s [==========          ]  1s
+[  ]     22.5 MLBUps      3.47 GB/s [=================== ]  1s
+[  ]    ---- :     22.4 MLBUps      3.45 GB/s [====================]
+[  ]    ---- :    17500 it writing vtk
+[  ]     19.2 MLBUps      2.95 GB/s [==========          ]  1s
+[  ]     22.5 MLBUps      3.47 GB/s [=================== ]  1s
+[  ]    ---- :     22.5 MLBUps      3.47 GB/s [====================]
+[  ]    ---- :    18000 it writing vtk
+[  ]     18.9 MLBUps      2.91 GB/s [==========          ]  1s
+[  ]     22.5 MLBUps      3.47 GB/s [=================== ]  1s
+[  ]    ---- :     22.5 MLBUps      3.47 GB/s [====================]
+[  ]    ---- :    18500 it writing vtk
+[  ]     19.1 MLBUps      2.95 GB/s [==========          ]  1s
+[  ]     22.5 MLBUps      3.46 GB/s [=================== ]  1s
+[  ]    ---- :     22.5 MLBUps      3.46 GB/s [====================]
+[  ]    ---- :    19000 it writing vtk
+[  ]     19.1 MLBUps      2.95 GB/s [==========          ]  1s
+[  ]     22.3 MLBUps      3.44 GB/s [=================== ]  1s
+[  ]    ---- :     22.4 MLBUps      3.45 GB/s [====================]
+[  ]    ---- :    19500 it writing vtk
+[  ]     19.1 MLBUps      2.95 GB/s [==========          ]  1s
+[  ]     22.4 MLBUps      3.46 GB/s [=================== ]  1s
+[  ]    ---- :     22.4 MLBUps      3.45 GB/s [====================]
+[  ]    ---- :    20000 it writing vtk
+[  ]     19.1 MLBUps      2.94 GB/s [==========          ]  1s
+[  ]     22.5 MLBUps      3.46 GB/s [=================== ]  1s
+[  ]    ---- :     22.4 MLBUps      3.45 GB/s [====================]
+[  ]    ---- :    20500 it writing vtk
+[  ]     19.0 MLBUps      2.93 GB/s [==========          ]  1s
+[  ]     22.5 MLBUps      3.46 GB/s [=================== ]  1s
+[  ]    ---- :     22.5 MLBUps      3.46 GB/s [====================]
+[  ]    ---- :    21000 it writing vtk
+[  ]     19.1 MLBUps      2.95 GB/s [==========          ]  1s
+[  ]     22.5 MLBUps      3.46 GB/s [=================== ]  1s
+[  ]    ---- :     22.4 MLBUps      3.45 GB/s [====================]
+[  ]    ---- :    21500 it writing vtk
+[  ]     19.1 MLBUps      2.95 GB/s [==========          ]  1s
+[  ]     22.4 MLBUps      3.45 GB/s [=================== ]  1s
+[  ]    ---- :     22.5 MLBUps      3.46 GB/s [====================]
+[  ]    ---- :    22000 it writing vtk
+[  ]     19.1 MLBUps      2.94 GB/s [==========          ]  1s
+[  ]     22.5 MLBUps      3.46 GB/s [=================== ]  1s
+[  ]    ---- :     22.5 MLBUps      3.46 GB/s [====================]
+[  ]    ---- :    22500 it writing vtk
+[  ]     19.1 MLBUps      2.94 GB/s [==========          ]  1s
+[  ]     22.5 MLBUps      3.46 GB/s [=================== ]  1s
+[  ]    ---- :     22.5 MLBUps      3.46 GB/s [====================]
+[  ]    ---- :    23000 it writing vtk
+[  ]     19.0 MLBUps      2.92 GB/s [==========          ]  1s
+[  ]     22.5 MLBUps      3.46 GB/s [=================== ]  1s
+[  ]    ---- :     22.4 MLBUps      3.45 GB/s [====================]
+[  ]    ---- :    23500 it writing vtk
+[  ]     19.1 MLBUps      2.94 GB/s [==========          ]  1s
+[  ]     22.4 MLBUps      3.46 GB/s [=================== ]  1s
+[  ]    ---- :     22.3 MLBUps      3.44 GB/s [====================]
+[  ]    ---- :    24000 it writing vtk
+[  ]     19.1 MLBUps      2.94 GB/s [==========          ]  1s
+[  ]     22.3 MLBUps      3.43 GB/s [=================== ]  1s
+[  ]    ---- :     22.5 MLBUps      3.46 GB/s [====================]
+[  ]    ---- :    24500 it writing vtk
+[  ]     19.0 MLBUps      2.93 GB/s [==========          ]  1s
+[  ]     22.4 MLBUps      3.46 GB/s [=================== ]  1s
+[  ]    ---- :     22.4 MLBUps      3.45 GB/s [====================]
+[  ]    ---- :    25000 it writing vtk
+[  ]     19.1 MLBUps      2.94 GB/s [==========          ]  1s
+[  ]     22.4 MLBUps      3.45 GB/s [=================== ]  1s
+[  ]    ---- :     22.5 MLBUps      3.46 GB/s [====================]
+[  ]    ---- :    25500 it writing vtk
+[  ]     19.0 MLBUps      2.93 GB/s [==========          ]  1s
+[  ]     22.3 MLBUps      3.44 GB/s [=================== ]  1s
+[  ]    ---- :     22.5 MLBUps      3.47 GB/s [====================]
+[  ]    ---- :    26000 it writing vtk
+[  ]     19.0 MLBUps      2.93 GB/s [==========          ]  1s
+[  ]     22.4 MLBUps      3.45 GB/s [=================== ]  1s
+[  ]    ---- :     22.4 MLBUps      3.45 GB/s [====================]
+[  ]    ---- :    26500 it writing vtk
+[  ]     19.1 MLBUps      2.94 GB/s [==========          ]  1s
+[  ]     22.4 MLBUps      3.45 GB/s [=================== ]  1s
+[  ]    ---- :     21.1 MLBUps      3.25 GB/s [====================]
+[  ]    ---- :    27000 it writing vtk
+[  ]     19.0 MLBUps      2.93 GB/s [==========          ]  1s
+[  ]     22.4 MLBUps      3.45 GB/s [=================== ]  1s
+[  ]    ---- :     22.3 MLBUps      3.44 GB/s [====================]
+[  ]    ---- :    27500 it writing vtk
+[  ]     19.1 MLBUps      2.94 GB/s [==========          ]  1s
+[  ]     22.4 MLBUps      3.45 GB/s [=================== ]  1s
+[  ]    ---- :     22.4 MLBUps      3.45 GB/s [====================]
+[  ]    ---- :    28000 it writing vtk
+[  ]     19.0 MLBUps      2.92 GB/s [==========          ]  1s
+[  ]     22.3 MLBUps      3.44 GB/s [=================== ]  1s
+[  ]    ---- :     22.4 MLBUps      3.45 GB/s [====================]
+[  ]    ---- :    28500 it writing vtk
+[  ]     19.1 MLBUps      2.94 GB/s [==========          ]  1s
+[  ]     22.4 MLBUps      3.45 GB/s [=================== ]  1s
+[  ]    ---- :     22.4 MLBUps      3.45 GB/s [====================]
+[  ]    ---- :    29000 it writing vtk
+[  ]     19.1 MLBUps      2.94 GB/s [==========          ]  1s
+[  ]     22.4 MLBUps      3.45 GB/s [=================== ]  1s
+[  ]    ---- :     22.3 MLBUps      3.44 GB/s [====================]
+[  ]    ---- :    29500 it writing vtk
+[  ]     19.0 MLBUps      2.92 GB/s [==========          ]  1s
+[  ]     22.4 MLBUps      3.45 GB/s [=================== ]  1s
+[  ]    ---- :     22.5 MLBUps      3.46 GB/s [====================]
+[  ]    ---- :    30000 it writing vtk
+[  ]     19.0 MLBUps      2.93 GB/s [==========          ]  1s
+[  ]     22.4 MLBUps      3.45 GB/s [=================== ]  1s
+[  ]    ---- :     22.4 MLBUps      3.45 GB/s [====================]
+[  ]    ---- :    30500 it writing vtk
+[  ]     19.1 MLBUps      2.93 GB/s [==========          ]  1s
+[  ]     22.3 MLBUps      3.43 GB/s [=================== ]  1s
+[  ]    ---- :     22.4 MLBUps      3.45 GB/s [====================]
+[  ]    ---- :    31000 it writing vtk
+[  ]     19.0 MLBUps      2.93 GB/s [==========          ]  1s
+[  ]     22.4 MLBUps      3.44 GB/s [=================== ]  1s
+[  ]    ---- :     22.4 MLBUps      3.44 GB/s [====================]
+[  ]    ---- :    31500 it writing vtk
+[  ]     19.1 MLBUps      2.93 GB/s [==========          ]  1s
+[  ]     22.3 MLBUps      3.44 GB/s [=================== ]  1s
+[  ]    ---- :     22.3 MLBUps      3.43 GB/s [====================]
+[  ]    ---- :    32000 it writing vtk
+[  ]     18.9 MLBUps      2.91 GB/s [==========          ]  1s
+[  ]     22.3 MLBUps      3.44 GB/s [=================== ]  1s
+[  ]    ---- :     22.3 MLBUps      3.44 GB/s [====================]
+[  ]    ---- :    32500 it writing vtk
+[  ]     19.0 MLBUps      2.93 GB/s [==========          ]  1s
+[  ]     22.4 MLBUps      3.44 GB/s [=================== ]  1s
+[  ]    ---- :     22.4 MLBUps      3.44 GB/s [====================]
+[  ]    ---- :    33000 it writing vtk
+[  ]     19.0 MLBUps      2.92 GB/s [==========          ]  1s
+[  ]     22.2 MLBUps      3.41 GB/s [=================== ]  1s
+[  ]    ---- :     22.3 MLBUps      3.43 GB/s [====================]
+[  ]    ---- :    33500 it writing vtk
+[  ]     19.0 MLBUps      2.93 GB/s [==========          ]  1s
+[  ]     22.3 MLBUps      3.44 GB/s [=================== ]  1s
+[  ]    ---- :     22.4 MLBUps      3.45 GB/s [====================]
+[  ]    ---- :    34000 it writing vtk
+[  ]     19.0 MLBUps      2.92 GB/s [==========          ]  1s
+[  ]     22.4 MLBUps      3.44 GB/s [=================== ]  1s
+[  ]    ---- :     22.3 MLBUps      3.44 GB/s [====================]
+[  ]    ---- :    34500 it writing vtk
+[  ]     18.8 MLBUps      2.89 GB/s [==========          ]  1s
+[  ]     22.4 MLBUps      3.44 GB/s [=================== ]  1s
+[  ]    ---- :     22.3 MLBUps      3.43 GB/s [====================]
+[  ]    ---- :    35000 it writing vtk
+[  ]     19.0 MLBUps      2.93 GB/s [==========          ]  1s
+[  ]     22.3 MLBUps      3.44 GB/s [=================== ]  1s
+[  ]    ---- :     22.4 MLBUps      3.45 GB/s [====================]
+[  ]    ---- :    35500 it writing vtk
+[  ]     19.0 MLBUps      2.93 GB/s [==========          ]  1s
+[  ]     20.2 MLBUps      3.12 GB/s [=================== ]  2s
+[  ]    ---- :     18.8 MLBUps      2.89 GB/s [====================]
+[  ]    ---- :    36000 it writing vtk
+[  ]    ---- : Total duration: 143.348216 s = 2.389137 min = 0.039819 h

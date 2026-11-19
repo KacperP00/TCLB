@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <CLBConfig version="2.0" output="projects/aerospace_injector/output/" permissive="true">
-    <Geometry nx="768" ny="64" predef="none" model="MRT">
+    <Geometry nx="1280" ny="64" predef="none" model="MRT">
         <!-- Domena kolizji MRT -->
         <MRT>
             <Box/>
@@ -46,8 +46,8 @@
         <Param name="ViscosityStepWidth" value="0.25"/>
 
         <!-- Powrot do stabilnego IntWidth=0.333 i silniejszego odpychania przy scianie -->
-        <Param name="Mobility" value="0.010"/>
         <Param name="IntWidth" value="0.333"/>
+        <Param name="Mobility" value="0.010"/>
         <Param name="SurfaceTensionRate" value="0.090"/>
         <Param name="WettingAngle" value="2.50"/>
         <Param name="WallAdhesionDecay" value="0.7"/>

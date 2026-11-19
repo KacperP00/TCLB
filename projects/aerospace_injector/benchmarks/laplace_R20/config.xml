@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<CLBConfig version="2.0" output="projects/aerospace_injector/benchmarks/laplace_R20/output/" permissive="true">
+    <Geometry nx="160" ny="160" predef="none" model="MRT">
+        <MRT><Box/></MRT>
+        <None name="drop">
+            <OffgridSphere x="80.0" y="80.0" z="0.5" R="20.0"/>
+        </None>
+    </Geometry>
+    <Model>
+        <Param name="PhaseField" value="-0.5"/>
+        <Param name="PhaseField" value="0.5" zone="drop"/>
+        <Param name="Viscosity" value="0.166667"/>
+        <Param name="Viscosity_l" value="0.166667"/>
+        <Param name="ViscosityStepWidth" value="0.25"/>
+        <Param name="Mobility" value="0.010"/>
+        <Param name="IntWidth" value="0.333"/>
+        <Param name="SurfaceTensionRate" value="0.0"/>
+        <Param name="PF_Advection_Switch" value="0"/>
+        <Param name="Pressure" value="0.0"/>
+    </Model>
+    <Solve Iterations="500"/>
+    <Param name="SurfaceTensionRate" value="0.090"/>
+    <Param name="PF_Advection_Switch" value="1"/>
+    <Solve Iterations="15000">
+        <VTK Iterations="15000"/>
+        <Failcheck Iterations="3000"/>
+    </Solve>
+</CLBConfig>

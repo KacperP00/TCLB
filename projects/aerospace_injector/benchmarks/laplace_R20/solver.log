@@ -1,0 +1,139 @@
+MPMD: TCLB: local:0/1 work:0/1 ---  connected to:
+[  ]    #### : -------------------------------------------------------------------------
+[  ]    #### : -  CLB version:        v6.6.1-2-gb7135fbd                               -
+[  ]    #### : -        Model:         d2q9_csf_viscstep                               -
+[  ]    #### : -------------------------------------------------------------------------
+[  ]    #### : Setting output path to: config
+[ 0]    ---- : Selecting device 0/1
+[ 0] warning ! No "Units" element in config file
+[  ]    ==== : Mesh size in config file: 160x160x1
+[  ]    ---- : Global lattice size: 160x160x1
+[  ]    ==== : Max region size: 25600. Mesh size 25600. Overhead:  0%
+[  ]    ---- : Local lattice size: 160x160x1
+[  ]    ---- :   Threads  |      Action
+[  ]    ---- :    32x16   | Primal , NoGlobals , BaseIteration
+[  ]    ---- :    32x16   | Tangent , NoGlobals , BaseIteration
+[  ]    ---- :    32x16   | Optimize , NoGlobals , BaseIteration
+[  ]    ---- :    32x16   | SteadyAdjoint , NoGlobals , BaseIteration
+[  ]    ---- :    32x16   | Primal , IntegrateGlobals , BaseIteration
+[  ]    ---- :    32x16   | Tangent , IntegrateGlobals , BaseIteration
+[  ]    ---- :    32x16   | Optimize , IntegrateGlobals , BaseIteration
+[  ]    ---- :    32x16   | SteadyAdjoint , IntegrateGlobals , BaseIteration
+[  ]    ---- :    32x16   | Primal , OnlyObjective , BaseIteration
+[  ]    ---- :    32x16   | Tangent , OnlyObjective , BaseIteration
+[  ]    ---- :    32x16   | Optimize , OnlyObjective , BaseIteration
+[  ]    ---- :    32x16   | SteadyAdjoint , OnlyObjective , BaseIteration
+[  ]    ---- :    32x16   | Primal , NoGlobals , CalcPhi
+[  ]    ---- :    32x16   | Tangent , NoGlobals , CalcPhi
+[  ]    ---- :    32x16   | Optimize , NoGlobals , CalcPhi
+[  ]    ---- :    32x16   | SteadyAdjoint , NoGlobals , CalcPhi
+[  ]    ---- :    32x16   | Primal , IntegrateGlobals , CalcPhi
+[  ]    ---- :    32x16   | Tangent , IntegrateGlobals , CalcPhi
+[  ]    ---- :    32x16   | Optimize , IntegrateGlobals , CalcPhi
+[  ]    ---- :    32x16   | SteadyAdjoint , IntegrateGlobals , CalcPhi
+[  ]    ---- :    32x16   | Primal , OnlyObjective , CalcPhi
+[  ]    ---- :    32x16   | Tangent , OnlyObjective , CalcPhi
+[  ]    ---- :    32x16   | Optimize , OnlyObjective , CalcPhi
+[  ]    ---- :    32x16   | SteadyAdjoint , OnlyObjective , CalcPhi
+[  ]    ---- :    32x16   | Primal , NoGlobals , BaseInit
+[  ]    ---- :    32x16   | Tangent , NoGlobals , BaseInit
+[  ]    ---- :    32x16   | Optimize , NoGlobals , BaseInit
+[  ]    ---- :    32x16   | SteadyAdjoint , NoGlobals , BaseInit
+[  ]    ---- :    32x16   | Primal , IntegrateGlobals , BaseInit
+[  ]    ---- :    32x16   | Tangent , IntegrateGlobals , BaseInit
+[  ]    ---- :    32x16   | Optimize , IntegrateGlobals , BaseInit
+[  ]    ---- :    32x16   | SteadyAdjoint , IntegrateGlobals , BaseInit
+[  ]    ---- :    32x16   | Primal , OnlyObjective , BaseInit
+[  ]    ---- :    32x16   | Tangent , OnlyObjective , BaseInit
+[  ]    ---- :    32x16   | Optimize , OnlyObjective , BaseInit
+[  ]    ---- :    32x16   | SteadyAdjoint , OnlyObjective , BaseInit
+[  ]    ---- :    32x16   | Primal , NoGlobals , CalcWallNormall
+[  ]    ---- :    32x16   | Tangent , NoGlobals , CalcWallNormall
+[  ]    ---- :    32x16   | Optimize , NoGlobals , CalcWallNormall
+[  ]    ---- :    32x16   | SteadyAdjoint , NoGlobals , CalcWallNormall
+[  ]    ---- :    32x16   | Primal , IntegrateGlobals , CalcWallNormall
+[  ]    ---- :    32x16   | Tangent , IntegrateGlobals , CalcWallNormall
+[  ]    ---- :    32x16   | Optimize , IntegrateGlobals , CalcWallNormall
+[  ]    ---- :    32x16   | SteadyAdjoint , IntegrateGlobals , CalcWallNormall
+[  ]    ---- :    32x16   | Primal , OnlyObjective , CalcWallNormall
+[  ]    ---- :    32x16   | Tangent , OnlyObjective , CalcWallNormall
+[  ]    ---- :    32x16   | Optimize , OnlyObjective , CalcWallNormall
+[  ]    ---- :    32x16   | SteadyAdjoint , OnlyObjective , CalcWallNormall
+[  ]    #### : [0] Cumulative allocation of 4551936 b (4.6 MB)
+[  ]    ---- : Creating geom size:25600
+[  ]    #### : Setting output path to: config
+[  ]    #### : Setting output path to: projects/aerospace_injector/benchmarks/laplace_R20/output/config
+[  ]    ---- : loading geometry ...
+[  ]    ---- : overwriting all flags
+[  ]    ---- : Setting number of zones to 2
+[  ]    ---- : Setting PhaseField in zone  (-1) to -0.5 (-0.500000)
+[ 0] WARNING ! Zone-specific settings in zone 0 were overwritten from 0.500000 to -0.500000
+[  ]    ---- : Setting PhaseField in zone drop (1) to 0.5 (0.500000)
+[  ]    ---- : Setting Viscosity to 0.166667 (0.166667)
+[  ]    ---- : [0] Settings [viscosity] to 0.166667
+[  ]    ---- : [0] Settings [one over relaxation time] to 0.999999
+[  ]    ---- : Setting Viscosity_l to 0.166667 (0.166667)
+[  ]    ---- : [0] Settings [viscosity] to 0.166667
+[  ]    ---- : [0] Settings [one over relaxation time, light phase] to 0.999999
+[  ]    ---- : Setting ViscosityStepWidth to 0.25 (0.250000)
+[  ]    ---- : [0] Settings [ViscosityStepWidth] to 0.250000
+[  ]    ---- : Setting Mobility to 0.010 (0.010000)
+[  ]    ---- : [0] Settings [Mobility] to 0.010000
+[  ]    ---- : Setting IntWidth to 0.333 (0.333000)
+[  ]    ---- : [0] Settings [Viscous step width wrt interface width] to 0.333000
+[  ]    ---- : Setting SurfaceTensionRate to 0.0 (0.000000)
+[  ]    ---- : [0] Settings [SurfaceTensionRate] to 0.000000
+[  ]    ---- : Setting PF_Advection_Switch to 0 (0.000000)
+[  ]    ---- : [0] Settings [Parameter to turn on/off advection of phase field - usefull for initialisation] to 0.000000
+[  ]    ---- : Setting Pressure in zone  (-1) to 0.0 (0.000000)
+[  ]    ---- : Initializing Lattice ...
+[  ]      2.2 MLBUps      0.34 GB/s [====================]  0s
+[  ]    ---- : Setting action Solve at 500.000000 iterations
+[  ]     12.0 MLBUps      1.84 GB/s [===                 ]  0s
+[  ]    ---- :     11.9 MLBUps      1.83 GB/s [====================]
+[  ]    ---- : Setting SurfaceTensionRate to 0.090 (0.090000)
+[  ]    ---- : [0] Settings [SurfaceTensionRate] to 0.090000
+[  ]    ---- : Setting PF_Advection_Switch to 1 (1.000000)
+[  ]    ---- : [0] Settings [Parameter to turn on/off advection of phase field - usefull for initialisation] to 1.000000
+[  ]    ---- : Setting action Solve at 15000.000000 iterations
+[  ]    ---- : Setting callback VTK at 15000.000000 iterations
+[  ]    ---- : Adding VTK to the solver hands
+[  ]    ---- : Setting callback Failcheck at 3000.000000 iterations
+[  ]    ---- : Adding Failcheck to the solver hands
+[  ]     12.7 MLBUps      1.96 GB/s [===                 ]  0s
+[  ]     12.7 MLBUps      1.96 GB/s [======              ]  1s
+[  ]     12.7 MLBUps      1.95 GB/s [=========           ]  2s
+[  ]     12.7 MLBUps      1.96 GB/s [=============       ]  3s
+[  ]     12.8 MLBUps      1.96 GB/s [================    ]  4s
+[  ]     12.7 MLBUps      1.96 GB/s [=================== ]  5s
+[  ]    ---- :     12.8 MLBUps      1.96 GB/s [====================]
+[  ]     12.6 MLBUps      1.95 GB/s [===                 ]  1s
+[  ]     12.8 MLBUps      1.96 GB/s [======              ]  1s
+[  ]     12.7 MLBUps      1.96 GB/s [=========           ]  2s
+[  ]     12.7 MLBUps      1.96 GB/s [=============       ]  3s
+[  ]     12.7 MLBUps      1.96 GB/s [================    ]  4s
+[  ]     12.6 MLBUps      1.95 GB/s [=================== ]  6s
+[  ]    ---- :     11.9 MLBUps      1.84 GB/s [====================]
+[  ]     12.7 MLBUps      1.95 GB/s [===                 ]  1s
+[  ]     12.7 MLBUps      1.95 GB/s [======              ]  2s
+[  ]     12.6 MLBUps      1.95 GB/s [=========           ]  3s
+[  ]     12.7 MLBUps      1.95 GB/s [=============       ]  4s
+[  ]     12.6 MLBUps      1.94 GB/s [================    ]  5s
+[  ]     12.6 MLBUps      1.95 GB/s [=================== ]  6s
+[  ]    ---- :     12.7 MLBUps      1.95 GB/s [====================]
+[  ]     12.7 MLBUps      1.95 GB/s [===                 ]  0s
+[  ]     12.6 MLBUps      1.95 GB/s [======              ]  2s
+[  ]     12.6 MLBUps      1.95 GB/s [=========           ]  3s
+[  ]     12.6 MLBUps      1.94 GB/s [=============       ]  4s
+[  ]     12.6 MLBUps      1.95 GB/s [================    ]  5s
+[  ]     12.6 MLBUps      1.95 GB/s [=================== ]  6s
+[  ]    ---- :     12.6 MLBUps      1.94 GB/s [====================]
+[  ]     12.6 MLBUps      1.94 GB/s [===                 ]  1s
+[  ]     12.6 MLBUps      1.94 GB/s [======              ]  2s
+[  ]     12.5 MLBUps      1.93 GB/s [=========           ]  3s
+[  ]     12.6 MLBUps      1.94 GB/s [=============       ]  4s
+[  ]     12.6 MLBUps      1.94 GB/s [================    ]  5s
+[  ]     12.6 MLBUps      1.94 GB/s [=================== ]  6s
+[  ]    ---- :     12.5 MLBUps      1.93 GB/s [====================]
+[  ]    ---- :    15500 it writing vtk
+[  ]    ---- : Total duration: 31.573452 s = 0.526224 min = 0.008770 h

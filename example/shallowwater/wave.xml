@@ -22,6 +22,10 @@
 		<Obj1>
 			<Sphere dx="-30" dy="-60" nx="10" ny="10"/>
 		</Obj1>
+		<Obj2>
+                        <Sphere dx="30" dy="-60" nx="10" ny="10"/>
+        </Obj2>
+
 	</Geometry>
 	<Model>
 		<Param name="Gravity" value=".1"/>

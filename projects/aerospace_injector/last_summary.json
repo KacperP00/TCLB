@@ -1,0 +1,15 @@
+{
+  "first_nan_iter": 28000,
+  "n_breakups": 2,
+  "steady_drops_measured": 1,
+  "mean_period_it": 9000.0,
+  "mean_lb_max_LU": 186.5,
+  "D10_steady_LU": 34.68,
+  "D21_steady_LU": 34.68,
+  "D21_over_H": 0.913,
+  "L_slug_over_H": 0.928,
+  "AR_mean": 1.05,
+  "D_std_pct": 0.0,
+  "mean_drift_240LU_pct": -6.88,
+  "mean_U_drop": 0.0342
+}

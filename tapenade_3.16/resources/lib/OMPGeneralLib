@@ -1,0 +1,4 @@
+function omp_get_num_threads:
+  intrinsic:
+  shape: (result)
+  type:(integer())

@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<CLBConfig version="2.0" output="projects/aerospace_injector/output/" permissive="true">
+    <Geometry nx="768" ny="64" predef="none" model="MRT">
+        <!-- Domena kolizji MRT -->
+        <MRT>
+            <Box/>
+        </MRT>
+
+        <!-- Wlot fazy ciaglej w kanale glownym (x=0, y=25..62, H=38 LU) -->
+        <WVelocity name="inlet_main">
+            <Box nx="1" dy="25" fy="-2"/>
+        </WVelocity>
+
+        <!-- Wylot cisnieniowy (x=767, y=25..62) -->
+        <EPressure name="outlet">
+            <Box dx="-1" nx="1" dy="25" fy="-2"/>
+        </EPressure>
+
+        <!-- Powrot do sprawdzonej dyszy D=32 LU (x=60..91, y=0) -->
+        <SVelocity name="inlet_jet">
+            <Box dx="60" nx="32" dy="0" ny="1"/>
+        </SVelocity>
+
+        <!-- Poczatkowe wypelnienie pionowej dyszy paliwem (y=1..24) -->
+        <None name="fuel_nozzle">
+            <Box dx="60" nx="32" dy="1" ny="24"/>
+        </None>
+
+        <!-- Sciany T-Junction bez nakladania na strefe inlet_jet -->
+        <Wall name="walls" mask="ALL">
+            <Box dy="-1" ny="1"/>
+            <Box dx="0" nx="60" dy="0" ny="25"/>
+            <Box dx="92" dy="0" ny="25"/>
+        </Wall>
+    </Geometry>
+
+    <Model>
+        <!-- Parametry pola fazowego: -0.5 faza ciagla, 0.5 paliwo -->
+        <Param name="PhaseField" value="-0.5"/>
+        <Param name="PhaseField" value="0.5" zone="inlet_jet"/>
+        <Param name="PhaseField" value="0.5" zone="fuel_nozzle"/>
+
+        <!-- Lepkosci kinematyczne (nizsze Ca przy wyzszej predkosci) -->
+        <Param name="Viscosity" value="0.025"/>
+        <Param name="Viscosity_l" value="0.012"/>
+        <Param name="ViscosityStepWidth" value="0.25"/>
+
+        <!-- Powrot do stabilnego IntWidth=0.333 i silniejszego odpychania przy scianie -->
+        <Param name="Mobility" value="0.010"/>
+        <Param name="IntWidth" value="0.333"/>
+        <Param name="SurfaceTensionRate" value="0.090"/>
+        <Param name="WettingAngle" value="2.50"/>
+        <Param name="WallAdhesionDecay" value="0.7"/>
+        <Param name="PF_Advection_Switch" value="1"/>
+
+        <!-- Wymuszenia predkosci (Ca = 0.0078, Qd/Qc = 0.24) -->
+        <Param name="VelocityX" value="0.0"/>
+        <Param name="VelocityY" value="0.0"/>
+        <Param name="VelocityX" value="0.028" zone="inlet_main"/>
+        <Param name="VelocityY" value="0.008" zone="inlet_jet"/>
+        <Param name="VelocityY" value="0.008" zone="fuel_nozzle"/>
+        <Param name="Pressure" value="0.0" zone="outlet"/>
+    </Model>
+
+    <Solve Iterations="36000">
+        <VTK Iterations="500"/>
+        <Failcheck Iterations="500"/>
+    </Solve>
+</CLBConfig>

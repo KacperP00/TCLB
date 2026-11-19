@@ -1,0 +1,75 @@
+function sum:
+  intrinsic:
+  shape: (param 1, result)
+  type: (arrayType(metavar real,dimColons()),
+         metavar real)
+  derivative : binary(call(none(), ident sum, expressions(metavar X)),
+       none(),
+       expressions(binary(metavar X, none(), realCst 1.0)))
+
+function exp:
+  intrinsic:
+  shape: (param 1, result)
+  type: (metavar float, modifiedType(modifiers(ident double), float()))
+  derivative : binary(call(none(), ident exp, expressions(metavar X)),
+       none(),
+       expressions(binary(metavar X, none(), call(none(), ident exp, expressions(metavar X)))))
+
+function pow:
+  intrinsic:
+  shape: (param 1, param 2, result)
+  type: (metavar float, metavar float, modifiedType(modifiers(ident double), float()))
+  derivative : binary(call(none(), ident pow, expressions(metavar X, metavar Y)),
+                      none(),
+                      expressions(binary(metavar X,none(),mul(metavar Y, call(none(), ident pow, expressions(metavar X, sub(metavar Y, intCst 1))))),
+                                  binary(metavar Y,none(),mul(call(none(), ident log, expressions(metavar X)), call(none(), ident pow, expressions(metavar X, metavar Y))))))
+
+function sin:
+  intrinsic:
+  shape: (param 1, result)
+  type: (metavar float, modifiedType(modifiers(ident double), float()))
+  derivative : binary(call(none(), ident sin, expressions(metavar X)),
+                      none(),
+                      expressions(binary(metavar X, none(), call(none(), ident cos, expressions(metavar X)))))
+
+function cos:
+  intrinsic:
+  shape: (param 1, result)
+  type: (metavar float, modifiedType(modifiers(ident double), float()))
+  derivative : binary(call(none(), ident cos, expressions(metavar X)),
+       none(),
+       expressions(binary(metavar X, none(), minus(call(none(), ident sin, expressions(metavar X))))))
+
+function tan:
+  intrinsic:
+  shape: (param 1, result)
+  type: (metavar float, modifiedType(modifiers(ident double), float()))
+  derivative : binary(call(none(), ident tan, expressions(metavar X)),
+       none(),
+       expressions(binary(metavar X, none(),
+                          add(realCst 1.0, power(call(none(), ident tan, expressions(metavar X)), intCst 2)))))
+
+function zeros:
+  intrinsic:
+  shape: (param 1, param 2, result)
+  type: (metavar integer, metavar integer, arrayType(metavar float,dimColons()) )
+  derivative : binary(call(none(), ident zeros, expressions(metavar X, metavar Y)),
+       none(),
+       expressions())
+
+function range:
+  intrinsic:
+  shape: (param 1, param 2, result)
+  type: (metavar integer, metavar integer, arrayType(metavar integer,dimColons()) )
+  derivative : binary(call(none(), ident zeros, expressions(metavar X, metavar Y)),
+       none(),
+       expressions())
+
+function println:
+  intrinsic:
+  shape: (param 1, result)
+  type: (metavar tuple, void())
+  derivative : binary(call(none(), ident zeros, expressions(metavar X, metavar Y)),
+       none(),
+       expressions())
+

@@ -1,0 +1,7 @@
+
+      subroutine ADMPI_FORTRANSETUPBINDINGS()
+      include "adMPIf.h"
+      call ADMPI_SENDFORTRANBINDINGS(MPI_BOTTOM, MPI_IN_PLACE,
+     +     MPI_STATUS_IGNORE, MPI_STATUSES_IGNORE,
+     +     MPI_ERRCODES_IGNORE, MPI_ARGV_NULL, MPI_ARGVS_NULL) ;
+      end subroutine

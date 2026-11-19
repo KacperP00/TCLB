@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<CLBConfig version="2.0" output="projects/aerospace_injector/output/" permissive="true">
+    <Geometry nx="400" ny="200">
+        <!-- Domena kolizji BGK wymagana przez model d2q9_pp_MCMP -->
+        <BGK>
+            <Box/>
+        </BGK>
+
+        <!-- Wlot strumienia nosnego na calej lewej granicy -->
+        <WVelocity name="inlet_carrier">
+            <Box nx="1" dy="1" fy="-1"/>
+        </WVelocity>
+
+        <!-- Nadpisanie srodkowej czesci lewej granicy jako dyszy paliwowej -->
+        <WVelocity name="inlet_fuel">
+            <Box nx="1" dy="80" ny="40"/>
+        </WVelocity>
+
+        <!-- Wylot cisnieniowy na prawej granicy -->
+        <EPressure name="outlet">
+            <Box dx="-1" nx="1" dy="1" fy="-1"/>
+        </EPressure>
+
+        <!-- Sciany boczne kanalu -->
+        <Wall mask="ALL" name="walls">
+            <Box dy="0" ny="1"/>
+            <Box dy="-1" ny="1"/>
+        </Wall>
+    </Geometry>
+
+    <Model>
+        <!-- Inicjalizacja gestosci w domenie i na wlotach -->
+        <Param name="Density" value="0.05"/>
+        <Param name="Density_dry" value="1.0"/>
+        <Param name="Density" value="1.0" zone="inlet_fuel"/>
+        <Param name="Density_dry" value="0.05" zone="inlet_fuel"/>
+
+        <!-- Lepkosci kinematyczne obu faz -->
+        <Param name="nu" value="0.05"/>
+        <Param name="nu_g" value="0.05"/>
+
+        <!-- Sila oddzialywania miedzyfazowego Shan-Chen -->
+        <Param name="Gc" value="1.6"/>
+        <Param name="Gad1" value="0.0"/>
+        <Param name="Gad2" value="0.0"/>
+
+        <!-- Wymuszenia predkosci i cisnienia -->
+        <Param name="Velocity_g" value="0.08" zone="inlet_carrier"/>
+        <Param name="Velocity_f" value="0.03" zone="inlet_fuel"/>
+        <Param name="Pressure_f" value="1.0" zone="outlet"/>
+        <Param name="Pressure_g" value="1.0" zone="outlet"/>
+    </Model>
+
+    <Solve Iterations="40000">
+        <VTK Iterations="1000"/>
+    </Solve>
+</CLBConfig>

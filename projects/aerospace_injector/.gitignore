@@ -1,0 +1,8 @@
+output/
+**/output/
+*.vti
+*.pvti
+*.log
+*.aux
+*.toc
+*.out

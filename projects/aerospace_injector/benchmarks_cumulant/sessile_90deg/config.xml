@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<CLBConfig version="2.0" output="projects/aerospace_injector/benchmarks_cumulant/sessile_90deg/output/" permissive="true">
+    <Geometry nx="192" ny="96" predef="none" model="MRT">
+        <MRT><Box/></MRT>
+        <None name="drop">
+            <OffgridSphere x="96.0" y="1.0" z="0.5" R="30.0"/>
+        </None>
+        <Wall name="walls" mask="ALL">
+            <Box dy="0" ny="1"/>
+            <Box dy="-1" ny="1"/>
+        </Wall>
+    </Geometry>
+    <Model>
+        <Param name="PhaseField" value="-0.5"/>
+        <Param name="PhaseField" value="0.5" zone="drop"/>
+        <Param name="Viscosity" value="0.025"/>
+        <Param name="Viscosity_l" value="0.012"/>
+        <Param name="ViscosityStepWidth" value="0.25"/>
+        <Param name="nubuffer" value="0.025"/>
+        <Param name="Mobility" value="0.010"/>
+        <Param name="IntWidth" value="0.333"/>
+        <Param name="SurfaceTensionRate" value="0.0"/>
+        <Param name="WettingAngle" value="1.5708"/>
+        <Param name="WallAdhesionDecay" value="0.7"/>
+        <Param name="PF_Advection_Switch" value="0"/>
+        <Param name="Pressure" value="0.0"/>
+    </Model>
+    <Solve Iterations="500"/>
+    <Param name="SurfaceTensionRate" value="0.090"/>
+    <Param name="PF_Advection_Switch" value="1"/>
+    <Solve Iterations="12000">
+        <VTK Iterations="12000"/>
+        <Failcheck Iterations="1000"/>
+    </Solve>
+</CLBConfig>

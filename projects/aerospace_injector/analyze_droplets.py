@@ -13,13 +13,13 @@ MIN_DROP_CELLS = 50
 
 
 def extract_iter(path):
-  # Odczyt numeru iteracji z nazwy pliku VTI
+  # Parse iteration number from VTI filename
   m = re.search(r"_(\d+)\.vti$", path)
   return int(m.group(1)) if m else 0
 
 
 def build_wall_mask(ny, nx):
-  # Maska scian geometrii T-Junction (H=38, D=32)
+  # Construct boolean wall mask for T-junction geometry (H=38, D=32)
   mask = np.zeros((ny, nx), dtype=bool)
   mask[-1, :] = True
   mask[:25, :60] = True
@@ -28,7 +28,7 @@ def build_wall_mask(ny, nx):
 
 
 def scan_frames(files):
-  # Jednokrotny odczyt klatek VTI i ekstrakcja strugi oraz kropel
+  # Read VTI series and extract jet breakup length and detached droplets
   valid_files = []
   frame_data = []
   breakup_events = []
@@ -45,12 +45,12 @@ def scan_frames(files):
     if nan_count > 0:
       if first_nan_iter is None:
         first_nan_iter = it
-      print(f"iter {it:6d} | NaN: {nan_count} (pominieto klatke)")
+      print(f"iter {it:6d} | NaN: {nan_count} (frame skipped)")
       continue
 
     valid_files.append(f)
 
-    # Maskowanie scian przed progowaniem na granicy faz phi = 0.0
+    # Mask solid walls before thresholding at physical interface phi = 0.0
     pf_2d = pf.reshape((ny, nx)).copy()
     pf_2d[build_wall_mask(ny, nx)] = -0.5
     mesh.cell_data["PF_fluid"] = pf_2d.ravel()
@@ -76,7 +76,7 @@ def scan_frames(files):
           ar = slug_len / max(ymax - ymin, 1e-6)
           free_drops.append((cx, cy, d_eq, ar, slug_len))
 
-    # Detekcja oderwania kropli ze spadku dlugosci strugi
+    # Detect pinch-off from sudden retraction of attached jet length
     if prev_lb - lb > 30.0:
       breakup_events.append((it, prev_lb))
     prev_lb = lb
@@ -86,7 +86,7 @@ def scan_frames(files):
 
 
 def track_on_probes(frame_data, probe_1_x, probe_2_x):
-  # Sledzenie trajektorii kropel i interpolacja przejsc przez bramki P1 i P2
+  # Track droplets across frames and interpolate optical probe crossings
   tracks = {}
   next_id = 1
 
@@ -158,7 +158,7 @@ def track_on_probes(frame_data, probe_1_x, probe_2_x):
 
 
 def main():
-  parser = argparse.ArgumentParser(description="Analiza kropel z plikow VTI TCLB")
+  parser = argparse.ArgumentParser(description="Droplet analysis from TCLB VTI output")
   parser.add_argument("--input-dir", default="projects/aerospace_injector/output")
   parser.add_argument("--out-json", default="projects/aerospace_injector/last_summary.json")
   parser.add_argument("--plot-dir", default="projects/aerospace_injector")
@@ -175,12 +175,12 @@ def main():
   files = sorted(glob.glob(os.path.join(args.input_dir, "*_VTK_P00_*.vti")))
   valid_files, frame_data, breakup_events, first_nan_iter = scan_frames(files)
 
-  # Wyznaczenie dlugosci rozpadu w stanie ustalonym
+  # Steady-state breakup length (excluding startup pinch-off when n >= 2)
   lb_vals = [e[1] for e in breakup_events]
   lb_steady = lb_vals[1:] if len(lb_vals) >= 2 else lb_vals
   mean_lb_steady = float(np.mean(lb_steady)) if lb_steady else 0.0
 
-  # Automatyczne lub reczne ustawienie bramek pomiarowych
+  # Set relative or fixed optical probe coordinates
   if args.auto_probes and mean_lb_steady > 0.0:
     probe_1_x = round(NOZZLE_RIGHT_X + mean_lb_steady + args.probe_offset)
     probe_2_x = probe_1_x + args.probe_dist
@@ -197,8 +197,8 @@ def main():
   )
 
   print(
-      f"\n=== POMIAR NA BRAMKACH OPTYCZNYCH (x1={probe_1_x:.0f},"
-      f" x2={probe_2_x:.0f}, auto={args.auto_probes}) ==="
+      f"\n=== OPTICAL PROBE MEASUREMENTS (P1={probe_1_x:.0f},"
+      f" P2={probe_2_x:.0f}, auto={args.auto_probes}) ==="
   )
   p1_all, p1_steady = [], []
   drifts_all, drifts_steady = [], []
@@ -207,7 +207,7 @@ def main():
   for order_idx, (tid, tr) in enumerate(crossed_p1, 1):
     p1, p2 = tr["p1"], tr["p2"]
     is_startup = order_idx == 1
-    tag = " [ROZRUCH]" if is_startup else ""
+    tag = " [STARTUP]" if is_startup else ""
 
     p1_all.append(p1)
     if not is_startup:
@@ -223,16 +223,16 @@ def main():
         drifts_steady.append(drift_pct)
         vels_steady.append(vel)
       print(
-          f"  Kropla #{order_idx}{tag}: P1(it={p1['iter']:6.0f},"
+          f"  Droplet #{order_idx}{tag}: P1(it={p1['iter']:6.0f},"
           f" D={p1['d_eq']:5.2f} LU, AR={p1['ar']:.2f}) ->"
           f" P2(D={p2['d_eq']:5.2f} LU, AR={p2['ar']:.2f}) |"
-          f" dryf={drift_pct:+.2f}% ({drift_per_100:+.2f}%/100LU) |"
+          f" drift={drift_pct:+.2f}% ({drift_per_100:+.2f}%/100LU) |"
           f" U={vel:.4f} LU/it"
       )
     else:
       print(
-          f"  Kropla #{order_idx}{tag}: P1(it={p1['iter']:6.0f},"
-          f" D={p1['d_eq']:5.2f} LU, AR={p1['ar']:.2f}) -> [w locie do P2,"
+          f"  Droplet #{order_idx}{tag}: P1(it={p1['iter']:6.0f},"
+          f" D={p1['d_eq']:5.2f} LU, AR={p1['ar']:.2f}) -> [in flight to P2,"
           f" x_last={tr['cx']:.1f} LU]"
       )
 
@@ -240,7 +240,7 @@ def main():
   eval_drifts = drifts_steady if drifts_steady else drifts_all
   eval_vels = vels_steady if vels_steady else vels_all
 
-  # Jawna flaga okreslajaca, czy okres policzono wylacznie z kropel ustalonych
+  # Compute shedding period and mark whether it uses steady-state droplets only
   p1_iters_steady = [p["iter"] for p in p1_steady]
   p1_iters_all = [p["iter"] for p in p1_all]
   if len(p1_iters_steady) >= 2:
@@ -304,7 +304,7 @@ def main():
       "last_valid_vti": valid_files[-1] if valid_files else "",
   }
 
-  print("\n=== RAPORT STANU USTALONEGO ===")
+  print("\n=== STEADY-STATE SUMMARY ===")
   for k, v in summary.items():
     print(f"  {k}: {v}")
 
@@ -336,27 +336,37 @@ def main():
       ax.contour(pf_masked, levels=[0.0], colors="black", linewidths=0.8)
       ax.axvline(probe_1_x, color="lime", linestyle="--", linewidth=1.1)
       ax.axvline(probe_2_x, color="yellow", linestyle="--", linewidth=1.1)
-      ax.set_title(f"{os.path.basename(f)} (P1:{probe_1_x:.0f}, P2:{probe_2_x:.0f})")
-      plt.colorbar(im, ax=ax, label="PhaseField")
+      it_val = extract_iter(f)
+      ax.set_title(
+          f"Iteration {it_val} | U_c = {args.uc:.3f} (P1: x={probe_1_x:.0f},"
+          f" P2: x={probe_2_x:.0f})"
+      )
+      ax.set_ylabel("y [LU]")
+      plt.colorbar(im, ax=ax, label="Phase Field $\\phi$ [-]")
 
+    axes[-1].set_xlabel("x [LU]")
     plt.tight_layout()
-    plt.savefig(os.path.join(args.plot_dir, "diagnostyka.png"), dpi=150)
+    plt.savefig(os.path.join(args.plot_dir, "diagnostics.png"), dpi=180)
     plt.close()
 
     if frame_data:
       iters = [fd[0] for fd in frame_data]
       lb_series = [fd[1] for fd in frame_data]
-      plt.figure(figsize=(10, 4))
-      plt.plot(iters, lb_series, "-o", markersize=3, label="Dlugosc strugi Lb [LU]")
-      for ev_it, _ in breakup_events:
-        plt.axvline(ev_it, color="red", linestyle=":", alpha=0.7)
-      plt.xlabel("Iteracja [LU]")
-      plt.ylabel("Lb [LU]")
-      plt.title(f"Cykl rozpadu strugi dla U_c={args.uc}")
+      plt.figure(figsize=(10, 4.0))
+      plt.plot(
+          iters, lb_series, "-o", markersize=3, linewidth=1.5,
+          color="#1f77b4", label="Attached jet length $L_b$ [LU]"
+      )
+      for i, (ev_it, _) in enumerate(breakup_events):
+        lbl = "Pinch-off event" if i == 0 else None
+        plt.axvline(ev_it, color="#d62728", linestyle=":", linewidth=1.2, alpha=0.8, label=lbl)
+      plt.xlabel("Iteration [LU]")
+      plt.ylabel("Jet Breakup Length $L_b$ [LU]")
+      plt.title(f"Periodic Jet Formation and Breakup Cycle ($U_c = {args.uc:.3f}$)")
       plt.grid(True, alpha=0.3)
       plt.legend()
       plt.tight_layout()
-      plt.savefig(os.path.join(args.plot_dir, "telemetria.png"), dpi=150)
+      plt.savefig(os.path.join(args.plot_dir, "breakup_telemetry.png"), dpi=180)
       plt.close()
 
 

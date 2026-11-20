@@ -5,7 +5,7 @@ SOLVER="CLB/d2q9_csf_viscstep/main"
 BASE_DIR="projects/aerospace_injector/sweep"
 ANALYZER="projects/aerospace_injector/analyze_droplets.py"
 
-# Pary: predkosc wlotowa fazy ciaglej oraz bezpieczna liczba iteracji
+# Parametric sweep cases: continuous-phase inlet velocity and safe iteration count
 CASES=(
   "0.018 54000"
   "0.023 42000"
@@ -47,6 +47,7 @@ for entry in "${CASES[@]}"; do
         <Param name="Viscosity" value="0.025"/>
         <Param name="Viscosity_l" value="0.012"/>
         <Param name="ViscosityStepWidth" value="0.25"/>
+        <Param name="nubuffer" value="0.025"/>
         <Param name="Mobility" value="0.010"/>
         <Param name="IntWidth" value="0.333"/>
         <Param name="SurfaceTensionRate" value="0.090"/>
@@ -68,7 +69,7 @@ for entry in "${CASES[@]}"; do
 EOF
 
   echo "============================================================"
-  echo "Uruchamianie przypadku: U_c=${UC}, Iterations=${ITERS}"
+  echo "Running case: U_c=${UC}, Iterations=${ITERS}"
   echo "============================================================"
 
   "$SOLVER" "$CFG" > "${CASE_DIR}/solver.log" 2>&1

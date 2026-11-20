@@ -1,0 +1,102 @@
+{
+  "operator": "Cumulant",
+  "young_laplace": {
+    "sigma_nominal": 0.09,
+    "sigma_zero": 0.08798,
+    "sigma_zero_err_pct": -2.25,
+    "R2_zero": 0.998268,
+    "sigma_free": 0.09102,
+    "intercept_dP": -0.000152,
+    "sigma_free_err_pct": 1.14,
+    "R2_free": 0.99954,
+    "max_u_spur": 0.005599,
+    "cases": [
+      {
+        "R_init": 15,
+        "R_eq": 14.852,
+        "inv_R": 0.06733,
+        "dP": 0.005962,
+        "sigma_i": 0.08856,
+        "rho_in": 1.017377,
+        "rho_out": 0.99949,
+        "std_in": 8e-06,
+        "std_out": 1.4e-05,
+        "u_spur": 0.000897
+      },
+      {
+        "R_init": 20,
+        "R_eq": 19.883,
+        "inv_R": 0.050294,
+        "dP": 0.004464,
+        "sigma_i": 0.08877,
+        "rho_in": 1.012727,
+        "rho_out": 0.999334,
+        "std_in": 8e-06,
+        "std_out": 2.8e-05,
+        "u_spur": 0.000666
+      },
+      {
+        "R_init": 30,
+        "R_eq": 29.918,
+        "inv_R": 0.033425,
+        "dP": 0.002846,
+        "sigma_i": 0.08516,
+        "rho_in": 1.007545,
+        "rho_out": 0.999006,
+        "std_in": 0.001606,
+        "std_out": 4.9e-05,
+        "u_spur": 0.004363
+      },
+      {
+        "R_init": 40,
+        "R_eq": 39.878,
+        "inv_R": 0.025076,
+        "dP": 0.00215,
+        "sigma_i": 0.08575,
+        "rho_in": 1.00512,
+        "rho_out": 0.998669,
+        "std_in": 0.001267,
+        "std_out": 6.9e-05,
+        "u_spur": 0.005599
+      }
+    ]
+  },
+  "sessile_drop": [
+    {
+      "theta_set_deg": 60.0,
+      "theta_num_deg": 59.01,
+      "err_deg": -0.99,
+      "R_fit": 48.72,
+      "rms_fit_LU": 0.008,
+      "u_spur": 0.005033
+    },
+    {
+      "theta_set_deg": 90.0,
+      "theta_num_deg": 89.2,
+      "err_deg": -0.8,
+      "R_fit": 30.07,
+      "rms_fit_LU": 0.014,
+      "u_spur": 0.003888
+    },
+    {
+      "theta_set_deg": 143.24,
+      "theta_num_deg": 139.44,
+      "err_deg": -3.8,
+      "R_fit": 21.8,
+      "rms_fit_LU": 0.011,
+      "u_spur": 0.003692
+    }
+  ],
+  "poiseuille": {
+    "H_LU": 38,
+    "x_sample": 250,
+    "U_mean_target": 0.028,
+    "U_mean_sim": 0.028216,
+    "flux_shift_pct": 0.771,
+    "L2_abs_err_pct": 0.73,
+    "L2_shape_err_pct": 0.06,
+    "Linf_shape_err_pct": 0.08,
+    "nu_eff": 0.02515,
+    "nu_err_pct": 0.59
+  }
+}

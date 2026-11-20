@@ -1,12 +1,13 @@
 #!/bin/bash
 set -euo pipefail
 
-SOLVER="CLB/d2q9_csf_viscstep/main"
-BM_DIR="projects/aerospace_injector/benchmarks"
+SOLVER="${1:-CLB/d2q9_csf_viscstep/main}"
+BM_DIR="${2:-projects/aerospace_injector/benchmarks}"
+LABEL="${3:-MRT}"
 
 mkdir -p "$BM_DIR"
 
-# 1. Benchmark Younga-Laplace'a (160x160, nu=1/6 dla wytlumienia fal akustycznych)
+# 1. Young-Laplace static droplet benchmark (160x160, nu=1/6 for acoustic damping)
 for R in 15 20 30 40; do
   CASE_DIR="${BM_DIR}/laplace_R${R}"
   OUT_DIR="${CASE_DIR}/output"
@@ -29,6 +30,7 @@ for R in 15 20 30 40; do
         <Param name="Viscosity" value="0.166667"/>
         <Param name="Viscosity_l" value="0.166667"/>
         <Param name="ViscosityStepWidth" value="0.25"/>
+        <Param name="nubuffer" value="0.166667"/>
         <Param name="Mobility" value="0.010"/>
         <Param name="IntWidth" value="0.333"/>
         <Param name="SurfaceTensionRate" value="0.0"/>
@@ -45,11 +47,11 @@ for R in 15 20 30 40; do
 </CLBConfig>
 EOF
 
-  echo "[Benchmark 1/3] Young-Laplace R=${R} LU (nu=1/6, 15000 it)..."
+  echo "[${LABEL} | Benchmark 1/3] Young-Laplace R=${R} LU (nu=1/6, 15000 it)..."
   "$SOLVER" "$CFG" > "${CASE_DIR}/solver.log" 2>&1
 done
 
-# 2. Benchmark kata zwilzania (Sessile Drop: 60, 90, 143.2 deg, WallAdhesionDecay=0.7)
+# 2. Sessile drop contact angle benchmark (60, 90, 143.2 deg, WallAdhesionDecay=0.7)
 for pair in "60 1.0472" "90 1.5708" "143 2.5000"; do
   read -r DEG RAD <<< "$pair"
   CASE_DIR="${BM_DIR}/sessile_${DEG}deg"
@@ -77,6 +79,7 @@ for pair in "60 1.0472" "90 1.5708" "143 2.5000"; do
         <Param name="Viscosity" value="0.025"/>
         <Param name="Viscosity_l" value="0.012"/>
         <Param name="ViscosityStepWidth" value="0.25"/>
+        <Param name="nubuffer" value="0.025"/>
         <Param name="Mobility" value="0.010"/>
         <Param name="IntWidth" value="0.333"/>
         <Param name="SurfaceTensionRate" value="0.0"/>
@@ -95,11 +98,11 @@ for pair in "60 1.0472" "90 1.5708" "143 2.5000"; do
 </CLBConfig>
 EOF
 
-  echo "[Benchmark 2/3] Sessile Drop theta=${DEG} deg..."
+  echo "[${LABEL} | Benchmark 2/3] Sessile Drop theta=${DEG} deg..."
   "$SOLVER" "$CFG" > "${CASE_DIR}/solver.log" 2>&1
 done
 
-# 3. Benchmark profilu Poiseuille'a (320x40, H=38, z inicjalizacja predkosci)
+# 3. 2D Poiseuille channel flow benchmark (320x40, H=38, pre-initialized velocity)
 CASE_DIR="${BM_DIR}/poiseuille"
 OUT_DIR="${CASE_DIR}/output"
 CFG="${CASE_DIR}/config.xml"
@@ -124,6 +127,7 @@ cat > "$CFG" <<EOF
         <Param name="Viscosity" value="0.025"/>
         <Param name="Viscosity_l" value="0.012"/>
         <Param name="ViscosityStepWidth" value="0.25"/>
+        <Param name="nubuffer" value="0.025"/>
         <Param name="Mobility" value="0.010"/>
         <Param name="IntWidth" value="0.333"/>
         <Param name="SurfaceTensionRate" value="0.0"/>
@@ -140,7 +144,7 @@ cat > "$CFG" <<EOF
 </CLBConfig>
 EOF
 
-echo "[Benchmark 3/3] 2D Poiseuille Channel (320x40, 25000 it)..."
+echo "[${LABEL} | Benchmark 3/3] 2D Poiseuille Channel (320x40, 25000 it)..."
 "$SOLVER" "$CFG" > "${CASE_DIR}/solver.log" 2>&1
 
-python3 projects/aerospace_injector/analyze_benchmarks.py
+python3 projects/aerospace_injector/analyze_benchmarks.py --bm-dir "$BM_DIR" --label "$LABEL"

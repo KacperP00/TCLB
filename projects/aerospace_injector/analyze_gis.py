@@ -20,13 +20,13 @@ MIN_DROP_CELLS = 110
 
 
 def extract_iter(path):
-  # Odczyt numeru iteracji z nazwy pliku VTI
+  # Parse iteration number from VTI filename
   m = re.search(r"_(\d+)\.vti$", path)
   return int(m.group(1)) if m else 0
 
 
 def build_wall_mask_g2(ny, nx):
-  # Maska scian geometrii 1920x96 (H=57, D=48)
+  # Construct boolean wall mask for fine mesh 1920x96 (H=57, D=48)
   mask = np.zeros((ny, nx), dtype=bool)
   mask[-1, :] = True
   mask[:38, :90] = True
@@ -55,7 +55,7 @@ for f in files:
 
   valid_files.append(f)
 
-  # Maskowanie scian przed progowaniem na granicy faz phi = 0.0
+  # Mask walls before thresholding at phi = 0.0
   pf_2d = pf.reshape((ny, nx)).copy()
   pf_2d[build_wall_mask_g2(ny, nx)] = -0.5
   mesh.cell_data["PF_fluid"] = pf_2d.ravel()
@@ -85,7 +85,7 @@ for f in files:
     breakup_events.append((it, prev_lb))
   prev_lb = lb
 
-  # Sledzenie trajektorii kropel
+  # Track droplets and interpolate crossings on scaled probes
   used = set()
   for cx, cy, d_eq, ar, slug_len in sorted(free_drops, key=lambda x: -x[0]):
     best_id, best_dx = None, 1e9
@@ -134,10 +134,10 @@ crossed = sorted(
 )
 
 p1_all, p1_steady, drifts_steady = [], [], []
-print(f"\n=== GIS SIATKA GESTA 1920x96 (P1={PROBE_1_X:.0f}, P2={PROBE_2_X:.0f}) ===")
+print(f"\n=== GIS FINE MESH 1920x96 (P1={PROBE_1_X:.0f}, P2={PROBE_2_X:.0f}) ===")
 for idx, (tid, tr) in enumerate(crossed, 1):
   p1, p2 = tr["p1"], tr["p2"]
-  tag = " [ROZRUCH]" if idx == 1 else ""
+  tag = " [STARTUP]" if idx == 1 else ""
   p1_all.append(p1)
   if idx >= 2:
     p1_steady.append(p1)
@@ -147,14 +147,14 @@ for idx, (tid, tr) in enumerate(crossed, 1):
     if idx >= 2:
       drifts_steady.append(drift_per_10H)
     print(
-        f"  Kropla #{idx}{tag}: P1(it={p1['iter']:6.0f}, D={p1['d_eq']:5.2f} LU,"
+        f"  Droplet #{idx}{tag}: P1(it={p1['iter']:6.0f}, D={p1['d_eq']:5.2f} LU,"
         f" AR={p1['ar']:.2f}) -> P2(D={p2['d_eq']:5.2f} LU) |"
-        f" dryf={drift_pct:+.2f}% ({drift_per_10H:+.2f}%/10H)"
+        f" drift={drift_pct:+.2f}% ({drift_per_10H:+.2f}%/10H)"
     )
   else:
     print(
-        f"  Kropla #{idx}{tag}: P1(it={p1['iter']:6.0f}, D={p1['d_eq']:5.2f} LU,"
-        f" AR={p1['ar']:.2f}) -> [w locie do P2]"
+        f"  Droplet #{idx}{tag}: P1(it={p1['iter']:6.0f}, D={p1['d_eq']:5.2f} LU,"
+        f" AR={p1['ar']:.2f}) -> [in flight to P2]"
     )
 
 eval_set = p1_steady if p1_steady else p1_all
@@ -192,10 +192,10 @@ if os.path.exists(G1_JSON):
   drift_10H_g1 = g1["steady_drift_per_100LU_pct"] * 3.8
   r2_m1 = REFINEMENT_RATIO**2 - 1.0
 
-  print("\n=== TABELA WERYFIKACJI SIATKOWEJ (GIS: Re=42.56, Ca=0.00778, r=1.5) ===")
+  print("\n=== GRID INDEPENDENCE STUDY (Re=42.56, Ca=0.00778, r=1.5) ===")
   print(
-      f"{'Metryka':>16s} | {'G1 (1280x64)':>12s} | {'G2 (1920x96)':>12s} |"
-      f" {'Zmiana [%]':>10s} | {'Rich(p=2)':>9s} | {'GCI_fine':>8s}"
+      f"{'Metric':>16s} | {'G1 (1280x64)':>12s} | {'G2 (1920x96)':>12s} |"
+      f" {'Rel Diff':>10s} | {'Rich(p=2)':>9s} | {'GCI_fine':>8s}"
   )
   print("-" * 80)
   for name, v1, v2 in [
@@ -212,16 +212,54 @@ if os.path.exists(G1_JSON):
         f" {rich:9.4f} | {gci:7.2f}%"
     )
 
-  # Poprawna zmiana wzgledna bledu (redukcja dryfu wzgledem siatki bazowej G1)
   drift_red = 100.0 * (abs(g2["drift_per_10H_pct"]) - abs(drift_10H_g1)) / abs(drift_10H_g1)
   p_drift = np.log(abs(drift_10H_g1) / max(abs(g2["drift_per_10H_pct"]), 1e-6)) / np.log(REFINEMENT_RATIO)
   print("-" * 80)
   print(
-      f"{'Dryf [%/10H]':>16s} | {drift_10H_g1:12.2f} |"
+      f"{'Drift [%/10H]':>16s} | {drift_10H_g1:12.2f} |"
       f" {g2['drift_per_10H_pct']:12.2f} | {drift_red:+9.2f}% |"
       f" {'p=' + f'{p_drift:.2f}':>9s} | {'---':>8s}"
   )
   print(
-      f"{'Rozrzut D [%]':>16s} | {g1['D_std_pct']:12.2f} |"
+      f"{'Drop Std [%]':>16s} | {g1['D_std_pct']:12.2f} |"
       f" {g2['D_std_pct']:12.2f} | {'---':>10s} | {'---':>9s} | {'---':>8s}"
   )
+
+  # Visual comparison figure: G1 vs G2 topology
+  if valid_files and os.path.exists(g1.get("last_valid_vti", "")):
+    fig, axes = plt.subplots(2, 1, figsize=(13, 4.5))
+    cmap = plt.cm.coolwarm.copy()
+    cmap.set_bad(color="#2b2b2b")
+
+    m1 = pv.read(g1["last_valid_vti"])
+    ny1, nx1 = m1.dimensions[1] - 1, m1.dimensions[0] - 1
+    mask1 = np.zeros((ny1, nx1), dtype=bool)
+    mask1[-1, :] = True; mask1[:25, :60] = True; mask1[:25, 92:] = True
+    pf1 = np.ma.masked_where(mask1, m1["PhaseField"].reshape((ny1, nx1)))
+    axes[0].imshow(pf1, origin="lower", cmap=cmap, vmin=-0.5, vmax=0.5)
+    axes[0].contour(pf1, levels=[0.0], colors="black", linewidths=0.7)
+    axes[0].set_title(
+        f"Baseline Grid G1: 1280x64 ($H=38$, $Cn=0.079$) |"
+        f" $D_{{21}}/H = {g1['D21_over_H']:.3f}$ | $St = {g1['Strouhal']:.4f}$ |"
+        f" Drift = {drift_10H_g1:.2f}%/10H"
+    )
+    axes[0].set_yticks([])
+
+    m2 = pv.read(valid_files[-1])
+    ny2, nx2 = m2.dimensions[1] - 1, m2.dimensions[0] - 1
+    pf2 = np.ma.masked_where(build_wall_mask_g2(ny2, nx2), m2["PhaseField"].reshape((ny2, nx2)))
+    axes[1].imshow(pf2, origin="lower", cmap=cmap, vmin=-0.5, vmax=0.5)
+    axes[1].contour(pf2, levels=[0.0], colors="black", linewidths=0.7)
+    axes[1].set_title(
+        f"Refined Grid G2: 1920x96 ($H=57$, $r=1.5\\times$, $Cn=0.053$) |"
+        f" $D_{{21}}/H = {g2['D21_over_H']:.3f}$ | $St = {g2['Strouhal']:.4f}$ |"
+        f" Drift = {g2['drift_per_10H_pct']:.2f}%/10H ({drift_red:.1f}%)"
+    )
+    axes[1].set_yticks([])
+    axes[1].set_xlabel("Axial Lattice Coordinate $x$ [LU]")
+
+    plt.tight_layout()
+    out_png = os.path.join(GIS_DIR, "gis_comparison.png")
+    plt.savefig(out_png, dpi=180)
+    plt.close()
+    print(f"\nSaved visual GIS comparison: {out_png}")

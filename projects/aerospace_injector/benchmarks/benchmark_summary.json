@@ -1,10 +1,14 @@
 {
+  "operator": "MRT",
   "young_laplace": {
     "sigma_nominal": 0.09,
-    "sigma_num": 0.08583,
+    "sigma_zero": 0.08857,
+    "sigma_zero_err_pct": -1.59,
+    "R2_zero": 0.998833,
+    "sigma_free": 0.08583,
     "intercept_dP": 0.000137,
-    "sigma_err_pct": -4.64,
-    "R2": 0.999992,
+    "sigma_free_err_pct": -4.64,
+    "R2_free": 0.999992,
     "max_u_spur": 0.004767,
     "cases": [
       {
@@ -12,6 +16,7 @@
         "R_eq": 14.884,
         "inv_R": 0.067185,
         "dP": 0.005907,
+        "sigma_i": 0.08793,
         "rho_in": 1.017267,
         "rho_out": 0.999545,
         "std_in": 9e-06,
@@ -23,6 +28,7 @@
         "R_eq": 19.899,
         "inv_R": 0.050253,
         "dP": 0.004444,
+        "sigma_i": 0.08844,
         "rho_in": 1.012703,
         "rho_out": 0.99937,
         "std_in": 2.4e-05,
@@ -34,6 +40,7 @@
         "R_eq": 29.827,
         "inv_R": 0.033526,
         "dP": 0.003014,
+        "sigma_i": 0.0899,
         "rho_in": 1.008057,
         "rho_out": 0.999014,
         "std_in": 2.8e-05,
@@ -45,6 +52,7 @@
         "R_eq": 39.842,
         "inv_R": 0.025099,
         "dP": 0.002294,
+        "sigma_i": 0.09141,
         "rho_in": 1.005544,
         "rho_out": 0.998661,
         "std_in": 2.5e-05,
@@ -87,6 +95,8 @@
     "flux_shift_pct": 0.781,
     "L2_abs_err_pct": 0.74,
     "L2_shape_err_pct": 0.061,
-    "Linf_shape_err_pct": 0.081
+    "Linf_shape_err_pct": 0.081,
+    "nu_eff": 0.02518,
+    "nu_err_pct": 0.7
   }
 }

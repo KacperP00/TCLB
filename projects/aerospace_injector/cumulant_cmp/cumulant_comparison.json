@@ -1,0 +1,265 @@
+{
+  "benchmarks_mrt": {
+    "operator": "MRT",
+    "young_laplace": {
+      "sigma_nominal": 0.09,
+      "sigma_zero": 0.08857,
+      "sigma_zero_err_pct": -1.59,
+      "R2_zero": 0.998833,
+      "sigma_free": 0.08583,
+      "intercept_dP": 0.000137,
+      "sigma_free_err_pct": -4.64,
+      "R2_free": 0.999992,
+      "max_u_spur": 0.004767,
+      "cases": [
+        {
+          "R_init": 15,
+          "R_eq": 14.884,
+          "inv_R": 0.067185,
+          "dP": 0.005907,
+          "sigma_i": 0.08793,
+          "rho_in": 1.017267,
+          "rho_out": 0.999545,
+          "std_in": 9e-06,
+          "std_out": 1e-05,
+          "u_spur": 0.000872
+        },
+        {
+          "R_init": 20,
+          "R_eq": 19.899,
+          "inv_R": 0.050253,
+          "dP": 0.004444,
+          "sigma_i": 0.08844,
+          "rho_in": 1.012703,
+          "rho_out": 0.99937,
+          "std_in": 2.4e-05,
+          "std_out": 2.1e-05,
+          "u_spur": 0.001938
+        },
+        {
+          "R_init": 30,
+          "R_eq": 29.827,
+          "inv_R": 0.033526,
+          "dP": 0.003014,
+          "sigma_i": 0.0899,
+          "rho_in": 1.008057,
+          "rho_out": 0.999014,
+          "std_in": 2.8e-05,
+          "std_out": 4.6e-05,
+          "u_spur": 0.004767
+        },
+        {
+          "R_init": 40,
+          "R_eq": 39.842,
+          "inv_R": 0.025099,
+          "dP": 0.002294,
+          "sigma_i": 0.09141,
+          "rho_in": 1.005544,
+          "rho_out": 0.998661,
+          "std_in": 2.5e-05,
+          "std_out": 7.6e-05,
+          "u_spur": 0.004377
+        }
+      ]
+    },
+    "sessile_drop": [
+      {
+        "theta_set_deg": 60.0,
+        "theta_num_deg": 59.08,
+        "err_deg": -0.92,
+        "R_fit": 48.65,
+        "rms_fit_LU": 0.007,
+        "u_spur": 0.004399
+      },
+      {
+        "theta_set_deg": 90.0,
+        "theta_num_deg": 89.26,
+        "err_deg": -0.74,
+        "R_fit": 30.06,
+        "rms_fit_LU": 0.012,
+        "u_spur": 0.003905
+      },
+      {
+        "theta_set_deg": 143.24,
+        "theta_num_deg": 139.67,
+        "err_deg": -3.57,
+        "R_fit": 21.78,
+        "rms_fit_LU": 0.013,
+        "u_spur": 0.002322
+      }
+    ],
+    "poiseuille": {
+      "H_LU": 38,
+      "x_sample": 250,
+      "U_mean_target": 0.028,
+      "U_mean_sim": 0.028219,
+      "flux_shift_pct": 0.781,
+      "L2_abs_err_pct": 0.74,
+      "L2_shape_err_pct": 0.061,
+      "Linf_shape_err_pct": 0.081,
+      "nu_eff": 0.02518,
+      "nu_err_pct": 0.7
+    }
+  },
+  "benchmarks_cumulant": {
+    "operator": "Cumulant",
+    "young_laplace": {
+      "sigma_nominal": 0.09,
+      "sigma_zero": 0.08798,
+      "sigma_zero_err_pct": -2.25,
+      "R2_zero": 0.998268,
+      "sigma_free": 0.09102,
+      "intercept_dP": -0.000152,
+      "sigma_free_err_pct": 1.14,
+      "R2_free": 0.99954,
+      "max_u_spur": 0.005599,
+      "cases": [
+        {
+          "R_init": 15,
+          "R_eq": 14.852,
+          "inv_R": 0.06733,
+          "dP": 0.005962,
+          "sigma_i": 0.08856,
+          "rho_in": 1.017377,
+          "rho_out": 0.99949,
+          "std_in": 8e-06,
+          "std_out": 1.4e-05,
+          "u_spur": 0.000897
+        },
+        {
+          "R_init": 20,
+          "R_eq": 19.883,
+          "inv_R": 0.050294,
+          "dP": 0.004464,
+          "sigma_i": 0.08877,
+          "rho_in": 1.012727,
+          "rho_out": 0.999334,
+          "std_in": 8e-06,
+          "std_out": 2.8e-05,
+          "u_spur": 0.000666
+        },
+        {
+          "R_init": 30,
+          "R_eq": 29.918,
+          "inv_R": 0.033425,
+          "dP": 0.002846,
+          "sigma_i": 0.08516,
+          "rho_in": 1.007545,
+          "rho_out": 0.999006,
+          "std_in": 0.001606,
+          "std_out": 4.9e-05,
+          "u_spur": 0.004363
+        },
+        {
+          "R_init": 40,
+          "R_eq": 39.878,
+          "inv_R": 0.025076,
+          "dP": 0.00215,
+          "sigma_i": 0.08575,
+          "rho_in": 1.00512,
+          "rho_out": 0.998669,
+          "std_in": 0.001267,
+          "std_out": 6.9e-05,
+          "u_spur": 0.005599
+        }
+      ]
+    },
+    "sessile_drop": [
+      {
+        "theta_set_deg": 60.0,
+        "theta_num_deg": 59.01,
+        "err_deg": -0.99,
+        "R_fit": 48.72,
+        "rms_fit_LU": 0.008,
+        "u_spur": 0.005033
+      },
+      {
+        "theta_set_deg": 90.0,
+        "theta_num_deg": 89.2,
+        "err_deg": -0.8,
+        "R_fit": 30.07,
+        "rms_fit_LU": 0.014,
+        "u_spur": 0.003888
+      },
+      {
+        "theta_set_deg": 143.24,
+        "theta_num_deg": 139.44,
+        "err_deg": -3.8,
+        "R_fit": 21.8,
+        "rms_fit_LU": 0.011,
+        "u_spur": 0.003692
+      }
+    ],
+    "poiseuille": {
+      "H_LU": 38,
+      "x_sample": 250,
+      "U_mean_target": 0.028,
+      "U_mean_sim": 0.028216,
+      "flux_shift_pct": 0.771,
+      "L2_abs_err_pct": 0.73,
+      "L2_shape_err_pct": 0.06,
+      "Linf_shape_err_pct": 0.08,
+      "nu_eff": 0.02515,
+      "nu_err_pct": 0.59
+    }
+  },
+  "injector_mrt": {
+    "U_c": 0.028,
+    "sigma_used": 0.09,
+    "Ca": 0.00778,
+    "We": 0.331,
+    "Re_c": 42.56,
+    "first_nan_iter": null,
+    "probe_1_x": 444,
+    "probe_2_x": 644.0,
+    "n_breakups": 3,
+    "steady_drops_measured": 2,
+    "period_is_steady": true,
+    "period_P1_it": 8134.2,
+    "Strouhal": 0.1668,
+    "mean_lb_steady_LU": 242.0,
+    "Lb_over_H": 6.368,
+    "D10_steady_LU": 35.0,
+    "D21_steady_LU": 35.02,
+    "D21_over_H": 0.922,
+    "L_slug_over_H": 0.921,
+    "AR_mean": 1.01,
+    "D_std_pct": 2.55,
+    "steady_drift_per_100LU_pct": -1.6,
+    "mean_U_drop": 0.0363,
+    "last_valid_vti": "projects/aerospace_injector/sweep/Uc_0.028/output/config_VTK_P00_00036000.vti"
+  },
+  "injector_cumulant": {
+    "U_c": 0.028,
+    "sigma_used": 0.09,
+    "Ca": 0.00778,
+    "We": 0.331,
+    "Re_c": 42.56,
+    "first_nan_iter": null,
+    "probe_1_x": 426,
+    "probe_2_x": 626.0,
+    "n_breakups": 3,
+    "steady_drops_measured": 2,
+    "period_is_steady": true,
+    "period_P1_it": 7023.8,
+    "Strouhal": 0.1932,
+    "mean_lb_steady_LU": 223.5,
+    "Lb_over_H": 5.882,
+    "D10_steady_LU": 41.67,
+    "D21_steady_LU": 41.68,
+    "D21_over_H": 1.097,
+    "L_slug_over_H": 1.168,
+    "AR_mean": 1.18,
+    "D_std_pct": 0.88,
+    "steady_drift_per_100LU_pct": 0.15,
+    "mean_U_drop": 0.04,
+    "last_valid_vti": "projects/aerospace_injector/cumulant_cmp/Uc_0.028/output/config_VTK_P00_00036000.vti"
+  },
+  "cumulant_low_nu_laplace_R40": {
+    "R_eq": 39.83,
+    "dP": 0.002316,
+    "sigma_eff": 0.09226,
+    "std_in": 2.1e-05,
+    "max_u_spur": 0.005685
+  }
+}

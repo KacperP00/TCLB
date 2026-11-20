@@ -1,12 +1,12 @@
-# Multiphase LBM Simulation & V&V Analysis of a T-Junction Micro-Injector
+# Multiphase LBM Simulation & V&V Analysis of Droplet Formation in a 2D T-Junction
 
-High-fidelity 2D multiphase Computational Fluid Dynamics (CFD) study of droplet generation in a cross-flowing T-junction micro-injector using the GPU-accelerated Lattice Boltzmann solver **TCLB** (`d2q9_csf_viscstep` and `d2q9_csf_viscstep_cumulant`).
+Verified 2D multiphase Computational Fluid Dynamics (CFD) study of cross-flow droplet generation in a T-junction channel using the GPU-accelerated Lattice Boltzmann solver **TCLB** (`d2q9_csf_viscstep` and `d2q9_csf_viscstep_cumulant`).
 
-The workflow follows **ASME V&V 20** practices: component verification benchmarks (Young-Laplace, Sessile Drop, Poiseuille), an automated five-point parametric sweep with dual-probe optical tracking, a constant-$\sigma$ Grid Independence Study (GIS) with GCI quantification, and a quantitative comparison of **MRT vs. Cumulant** collision operators.
+The workflow follows a structured CFD Verification and Validation (V&V) methodology: independent component verification benchmarks (Young-Laplace, Sessile Drop, Poiseuille), an automated five-point parametric sweep with adaptive dual-probe optical tracking, a constant-$\sigma$ Grid Independence Study (GIS) with GCI quantification, and a controlled comparison of **MRT vs. Cumulant** collision operators.
+
+> **Physical Scope:** This study models a laminar, matched-density ($\rho_d/\rho_c = 1$, $\nu_d/\nu_c = 0.48$, $Re_c \in [27.4, 63.8]$) 2D T-junction representative of liquid–liquid microfluidic droplet generators and serves as a verified solver testbench for multiphase LBM collision operators.
 
 ![Parametric Sweep Montage](sweep/sweep_montage.png)
-
----
 
 ## Key Engineering Results
 

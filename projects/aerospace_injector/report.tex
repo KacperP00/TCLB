@@ -23,8 +23,8 @@
     urlcolor=blue!60!black
 }
 
-\title{\textbf{High-Fidelity Multiphase Lattice Boltzmann Simulation and V\&V Analysis of a T-Junction Micro-Injector}}
-\author{Computational Fluid Dynamics Portfolio Report \\ \small Solver: TCLB (\texttt{d2q9\_csf\_viscstep} / \texttt{d2q9\_csf\_viscstep\_cumulant})}
+\title{\textbf{Multiphase Lattice Boltzmann Simulation and V\&V Analysis of Droplet Formation in a 2D T-Junction}}
+\author{Computational Fluid Dynamics Technical Report \\ \small Solver: TCLB (\texttt{d2q9\_csf\_viscstep} / \texttt{d2q9\_csf\_viscstep\_cumulant})}
 \date{\today}
 
 \begin{document}
@@ -32,28 +32,36 @@
 \maketitle
 
 \begin{abstract}
-This report presents a verified numerical investigation of two-phase droplet generation in a 2D T-junction micro-injector using the GPU-accelerated Lattice Boltzmann solver TCLB. A conservative Allen-Cahn phase-field model coupled with a Continuum Surface Force (CSF) formulation and smooth hyperbolic-tangent viscosity interpolation is validated against three canonical component benchmarks following a structured Verification and Validation (V\&V) methodology: the Young-Laplace static droplet law ($\sigma_{\mathrm{num}} = 0.08857$, $-1.59\%$ error, $R^2 = 0.9988$), sessile droplet wetting equilibrium ($59.08^\circ$, $89.26^\circ$, and $139.67^\circ$ for targets of $60^\circ$, $90^\circ$, and $143.24^\circ$), and 2D Poiseuille channel flow (profile shape $L_2$ error $0.061\%$, effective viscosity error $+0.70\%$). A five-point parametric sweep over the continuous-phase capillary number ($Ca \in [0.0050, 0.0117]$, $We \in [0.137, 0.745]$) captures the transition from confined slugging ($L_{\mathrm{slug}}/H > 1$) to steady shear-dominated dripping, yielding a tight power-law scaling for the dimensionless Sauter mean diameter, $D_{21}/H = 0.0149\,Ca^{-0.850}$ ($R^2 = 0.9997$), and breakup length, $L_b/H = 0.0246\,Ca^{-1.140}$ ($R^2 = 0.9807$). A grid independence study at refinement ratio $r = 1.5$ ($1280 \times 64$ vs. $1920 \times 96$) demonstrates topological invariance and a $48.2\%$ reduction in in-flight mass drift (effective order $p = 1.62$). Finally, replacing the Multi-Relaxation-Time (MRT) collision operator with the Cumulant operator reduces in-flight diameter drift by $10.7\times$ ($-1.60\%/100\text{ LU}$ to $+0.15\%/100\text{ LU}$), cuts droplet-to-droplet scatter by $65.5\%$, and suppresses low-viscosity acoustic pressure oscillations by two orders of magnitude.
+This report presents a verified numerical investigation of two-phase droplet generation in a canonical 2D T-junction cross-flow geometry using the GPU-accelerated Lattice Boltzmann solver TCLB. Operating in the laminar, matched-density regime ($\rho_d/\rho_c = 1$, $Re_c \in [27.4, 63.8]$), the study couples a conservative Allen-Cahn phase-field model with a Continuum Surface Force (CSF) formulation and smooth hyperbolic-tangent viscosity interpolation. Following a structured Verification and Validation (V\&V) methodology, the solver is first verified against three independent analytical benchmarks: the Young-Laplace static droplet law ($\sigma_{\mathrm{num}} = 0.08857$, $-1.59\%$ error, $R^2 = 0.9988$), sessile droplet wetting equilibrium ($59.08^\circ$, $89.26^\circ$, and $139.67^\circ$ for targets of $60^\circ$, $90^\circ$, and $143.24^\circ$), and 2D Poiseuille channel flow (profile shape $L_2$ error $0.061\%$, effective viscosity error $+0.70\%$). A five-point parametric sweep over the continuous-phase capillary number ($Ca \in [0.0050, 0.0117]$, $We \in [0.137, 0.745]$) resolves the transition from confined Taylor slugging ($L_{\mathrm{slug}}/H > 1$) to steady shear-dominated dripping, yielding power-law scaling for the dimensionless Sauter mean diameter, $D_{21}/H = 0.0149\,Ca^{-0.850}$ ($R^2 = 0.9997$), and breakup length, $L_b/H = 0.0246\,Ca^{-1.140}$ ($R^2 = 0.9807$). A grid independence study at refinement ratio $r = 1.5$ ($1280 \times 64$ vs. $1920 \times 96$) demonstrates topological invariance and a $48.2\%$ reduction in in-flight mass drift (effective order $p = 1.62$). Finally, replacing the Multi-Relaxation-Time (MRT) collision operator with the Cumulant operator reduces in-flight diameter drift by $10.7\times$ ($-1.60\%/100\text{ LU}$ to $+0.15\%/100\text{ LU}$), cuts droplet-to-droplet scatter by $65.5\%$, raises volumetric mass recovery by $29.6$ percentage points ($46.3\%$ to $75.9\%$), and suppresses low-viscosity acoustic pressure noise by nearly two orders of magnitude.
 \end{abstract}
 
 \tableofcontents
 \clearpage
 
 % ==============================================================================
-\section{Introduction and Engineering Objectives}
+\section{Introduction and Engineering Scope}
 % ==============================================================================
 
-Controlled atomization and monodisperse droplet generation in cross-flowing geometries are central to aerospace propulsion micro-injectors, liquid-fuel emulsification, and microfluidic reactors. In a T-junction injector, a dispersed fuel phase enters perpendicularly through a side branch of width $D$ into a continuous cross-flow channel of height $H$. The interplay between viscous shear, interfacial tension, confinement-induced pressure buildup, and wall wettability determines whether the injector operates in the \emph{squeezing}, \emph{dripping}, or \emph{jetting} regime.
+Controlled droplet generation in cross-flowing T-junctions is a canonical benchmark problem in multiphase fluid mechanics, directly relevant to microfluidic emulsification, lab-on-a-chip devices, and fundamental cross-flow breakup modeling. In a T-junction, a dispersed phase enters perpendicularly through a side branch of width $D$ into a continuous cross-flow channel of height $H$. The competition between capillary restoring forces, viscous shear, confinement-induced pressure buildup, and wall wettability determines whether breakup occurs in the \emph{squeezing}, \emph{dripping}, or \emph{jetting} regime.
 
-The objective of this study is to establish a fully automated, reproducible, and rigorously verified Computational Fluid Dynamics (CFD) workflow using the open-source Lattice Boltzmann framework TCLB. Rather than relying on unverified qualitative visualizations, the methodology follows a four-stage Verification and Validation (V\&V) structure:
+The objective of this project is to build a fully automated, reproducible, and rigorously verified Lattice Boltzmann CFD workflow using the open-source GPU solver TCLB. Rather than treating the solver as a black box, the work isolates and quantifies numerical modeling errors across four structured stages:
 \begin{enumerate}
-    \item \textbf{Component Verification:} Independent calibration of interfacial tension, contact angle hysteresis, effective viscosity, and boundary condition accuracy through Young-Laplace, sessile drop, and Poiseuille benchmarks.
-    \item \textbf{Parametric Scaling Study:} Automated dual-probe optical tracking across five cross-flow velocities to extract dimensionless scaling laws for Sauter mean diameter ($D_{21}/H$), jet breakup length ($L_b/H$), and Strouhal number ($St$).
+    \item \textbf{Component Verification:} Independent measurement of effective surface tension, equilibrium contact angles, kinematic viscosity, and boundary condition accuracy through Young-Laplace, sessile drop, and Poiseuille benchmarks.
+    \item \textbf{Parametric Scaling Study:} Automated dual-probe optical tracking across five cross-flow velocities to extract dimensionless scaling laws for Sauter mean diameter ($D_{21}/H$), breakup length ($L_b/H$), and Strouhal number ($St$).
     \item \textbf{Grid Independence Study (GIS):} Constant-surface-tension mesh refinement ($r = 1.5$) with Richardson extrapolation and Grid Convergence Index (GCI) uncertainty quantification.
-    \item \textbf{Collision Operator Assessment:} Direct quantitative comparison between the standard Multi-Relaxation-Time (MRT) and Cumulant collision operators under identical physical and geometric parameters.
+    \item \textbf{Collision Operator Assessment:} Controlled quantitative comparison between the standard Multi-Relaxation-Time (MRT) and Cumulant collision operators on identical grids and physical parameters.
 \end{enumerate}
 
-Detailed mathematical derivations, discretization choices, and physical justifications for all theoretical models used in this work are compiled in Appendices~\ref{app:lbm}--\ref{app:vv}.
+\subsection{Modeling Scope and Physical Assumptions}
 
+To ensure transparent interpretation of the results, the physical scope of the present configuration is defined explicitly:
+\begin{itemize}
+    \item \textbf{Two-Dimensional Geometry:} The 2D formulation captures planar shear, confinement, and capillary retraction, but omits out-of-plane azimuthal neck curvature ($1/R_\theta = 0$), which delays pinch-off downstream relative to 3D square microchannels.
+    \item \textbf{Matched Density Ratio ($\rho_d / \rho_c = 1$):} The \texttt{d2q9\_csf} solver operates in the weakly compressible, unity-density-ratio regime with a viscosity contrast of $\lambda = \nu_d / \nu_c = 0.48$. This directly represents liquid--liquid microfluidic systems and serves as a verified baseline prior to extending toward 3D or high-density-ratio liquid--gas atomization models.
+    \item \textbf{Laminar Flow Regime:} Simulations span $Re_c \in [27.4, 63.8]$ and low Mach numbers ($Ma < 0.08$), keeping compressibility errors below $1\%$ as verified in the Poiseuille benchmark.
+\end{itemize}
+
+Detailed mathematical formulations, discretization choices, and physical justifications for all theoretical models used in this work are compiled in Appendices~\ref{app:lbm}--\ref{app:vv}.
 % ==============================================================================
 \section{Numerical Setup and Automated Measurement Methodology}
 % ==============================================================================
